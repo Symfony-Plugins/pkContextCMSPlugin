@@ -1,0 +1,211 @@
+# Borrows extensively from sfSimpleCMS. TBB
+
+# For all tables: use INNODB, which gives us better
+# foreign key handling and support for transactions
+options:
+  type: INNODB
+
+pkContextCMSPage:
+  tableName: pk_context_cms_page
+  actAs:
+    - Timestampable
+    - NestedSet
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    slug:
+      type: string(255)
+      unique: yes
+    template:
+      type: string(100)
+    is_published: boolean
+    view_is_secure: boolean
+    archived: boolean
+    author_id:
+      type: integer(4)
+    deleter_id:
+      type: integer(4)
+  indexes:
+    slugindex:
+      fields: [slug]
+  relations:
+    Author:
+      class: sfGuardUser
+      foreign: id
+      local: author_id
+      type: one
+    Deleter:
+      class: sfGuardUser
+      foreign: id
+      local: author_id
+      type: one
+
+pkContextCMSArea:
+  tableName: pk_context_cms_area
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    page_id:
+      type: integer(4)
+    name:
+      type: string(100)
+    culture:
+      type: string(7)
+    latest_version:
+      type: integer(4)
+  indexes:
+    page_index:
+      fields: [page_id] 
+  relations:
+    Page:
+      type: one
+      class: pkContextCMSPage
+      foreign: id
+      onDelete: cascade
+      local: page_id
+      foreignAlias: Areas
+
+pkContextCMSAreaVersion:
+  tableName: pk_context_cms_area_version
+  actAs:
+    - Timestampable
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    area_id: 
+      type: integer(4)
+    version:
+      type: integer(4)
+    author_id:
+      type: integer(4)
+  indexes:
+    area_index:
+      fields: [area_id] 
+  relations:
+    Area:
+      type: one
+      class: pkContextCMSArea
+      foreign: id
+      onDelete: cascade
+      local: area_id
+      foreignAlias: AreaVersions
+    Author:
+      class: sfGuardUser
+      foreign: id
+      local: author_id
+      type: one
+
+pkContextCMSAreaVersionSlot:
+  tableName: pk_context_cms_area_version_slot
+  columns:
+    slot_id:  
+      type: integer(4)
+    area_version_id:  
+      type: integer(4)
+    # Permanently unique id of this subslot within this area
+    permid:
+      type: integer(4)
+      # Handy in fixtures
+      default: 1
+    # Current visual ordering within this area on this page.
+    rank:
+      type: integer(4)
+      default: 1
+  indexes:
+    area_version_index:
+      fields: [area_version_id]
+  relations:
+    AreaVersion:
+      type: one
+      class: pkContextCMSAreaVersion
+      foreign: id
+      onDelete: cascade
+      local: area_version_id
+      foreignAlias: AreaVersionSlots
+    Slot:
+      type: one
+      class: pkContextCMSSlot
+      foreign: id
+      onDelete: cascade
+      local: slot_id
+      foreignAlias: AreaVersionSlots
+
+# Slots are always stored and rendered as HTML.
+# However, templates can specify specific editor options 
+# when rendering them (e.g. the use of a particular FCK toolbar).
+
+pkContextCMSSlot:
+  tableName: pk_context_cms_slot
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    # If type is pkContextCMSRichText, then there
+    # MUST BE a pkContextCMSRichText module and a pkContextRichTextSlot 
+    # class with Doctrine column aggregation inheritance from pkContextSlot
+    # (although it doesn't actually have to define new columns if it's
+    # happy storing its data entirely in the value string). 
+    type:
+      type: string(100)
+    value:
+      type: string
+
+pkContextCMSTextSlot:
+  inheritance:
+    extends: pkContextCMSSlot
+    type: column_aggregation
+    keyField: type
+    keyValue: 'pkContextCMSText'
+
+pkContextCMSRichTextSlot:
+  inheritance:
+    extends: pkContextCMSSlot
+    type: column_aggregation
+    keyField: type
+    keyValue: 'pkContextCMSRichText'
+
+pkContextCMSSlideshowSlot:
+  inheritance:
+    extends: pkContextCMSSlot
+    type: column_aggregation
+    keyField: type
+    keyValue: 'pkContextCMSSlideshow'
+
+pkContextCMSVideoSlot:
+  inheritance:
+    extends: pkContextCMSSlot
+    type: column_aggregation
+    keyField: type
+    keyValue: 'pkContextCMSVideo'
+
+pkContextCMSAccess:
+  tableName: pk_context_cms_access
+  columns:
+    page_id: integer(4)
+    # currently just edit or view
+    privilege: string(100)
+    user_id: integer(4)
+  relations:
+    User:
+      class: sfGuardUser
+      foreign: id
+      local: user_id
+      type: one
+      foreignAlias: Accesses
+    Page:
+      class: pkContextCMSPage
+      foreign: id
+      local: page_id
+      type: one
+      foreignAlias: Accesses
+  indexes:
+    pageindex:
+      fields: [page_id]
+

@@ -1,0 +1,36 @@
+pkContextCMSPage:
+  home:
+    slug: "/"
+    template: home
+    is_published: true
+    Areas:
+      home_en_title:
+        name: title
+        culture: en
+        latest_version: 1
+        AreaVersions:
+          home_en_title_version_1:
+            version: 1
+            AreaVersionSlots:
+              home_en_title_version_1_permid_1:
+                permid: 1
+                Slot:
+                  type: pkContextCMSText 
+                  value: "Home"
+      home_en_body:
+        name: body 
+        culture: en
+        latest_version: 1
+        AreaVersions:
+          home_en_body_version_1:
+            version: 1
+            AreaVersionSlots:
+              home_en_body_version_1_permid_1:
+                permid: 1
+                Slot:
+                  type: pkContextCMSRichText 
+                  value: "This slot is in the <i>body</i> of the page."
+    # Make sure it is recognized as a root node
+    children: { }
+
+
