@@ -1,8 +1,0 @@
-all:
-  doctrine:
-    class:        sfDoctrineDatabase
-    param:
-      dsn:        mysql:dbname=cmstest;host=localhost
-      username:   root
-      password:   root
-      
