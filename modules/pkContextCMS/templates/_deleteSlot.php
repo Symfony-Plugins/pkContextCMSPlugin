@@ -12,7 +12,7 @@
     pkContextCMSTools::getSlotTypeOptions(),
     pkContextCMSTools::getOption($options, 'default-type', 
       'pkContextCMSRichText'))) ?>
-<?php echo submit_tag('Add') ?>
+<?php echo submit_tag('Add', array("class" => "submit")) ?>
 <?php echo button_to_function('Cancel',
   "$('#pk-context-cms-add-slot-form-$name').hide()") ?>
 </form>  

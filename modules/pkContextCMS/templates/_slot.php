@@ -25,9 +25,9 @@
       "permid" => $permid,
       "options" => $options,
       "validationData" => $validationData)) ?>
-  <?php echo submit_tag("Save", array("onClick" => "window.pkContextCMS.callOnSubmit('$id'); return true")) ?>
+  <?php echo submit_tag("Save", array("onClick" => "window.pkContextCMS.callOnSubmit('$id'); return true", "class" => "submit")) ?>
   <?php echo button_to_function("Cancel", 
-    "$('#form-$id').hide(); $('#content-$id').show()") ?>
+    "$('#form-$id').hide(); $('#content-$id').show()", array("class" => "submit")) ?>
   </form>
 <?php endif ?>
 <div class="pk-context-cms-content<?php echo $outlineEditable ? " pk-context-cms-editable" : "" ?>" id="content-<?php echo $id ?>" style="display: <?php echo $showEditor ? "none" : "block"?>"

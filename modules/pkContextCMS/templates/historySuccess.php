@@ -14,9 +14,9 @@
   options_for_select(
     $versions, $version), array("id" => "pk-context-cms-vc-$name-version")) ?>
 <?php echo submit_tag("Preview", array(
-  "name" => "preview", "id" => "pk-context-cms-preview-$name", "onClick" => "$('#pk-context-cms-vc-subaction-$name').val('preview'); return true")) ?>
+  "name" => "preview", "class" => "submit", "id" => "pk-context-cms-preview-$name", "onClick" => "$('#pk-context-cms-vc-subaction-$name').val('preview'); return true")) ?>
 <?php echo submit_tag("Revert", array(
-  "name" => "revert", "id" => "pk-context-cms-revert-$name", "onClick" => "$('#pk-context-cms-vc-subaction-$name').val('revert'); return true")) ?>
+  "name" => "revert", "class" => "submit", "id" => "pk-context-cms-revert-$name", "onClick" => "$('#pk-context-cms-vc-subaction-$name').val('revert'); return true")) ?>
 <?php echo submit_tag("Cancel", array(
-  "name" => "cancel", "id" => "pk-context-cms-cancel-$name", "onClick" => "$('#pk-context-cms-vc-subaction-$name').val('cancel'); return true")) ?>
+  "name" => "cancel", "class" => "submit", "id" => "pk-context-cms-cancel-$name", "onClick" => "$('#pk-context-cms-vc-subaction-$name').val('cancel'); return true")) ?>
 </form>
