@@ -11,8 +11,8 @@ class pkContextCMSSlideshowComponents extends pkContextCMSBaseComponents
   public function executeNormalView()
   {
     $this->setup();
-    $this->width = $this->getOption('width', 320);
-    $this->height = $this->getOption('height', 240);
+    $this->width = $this->getOption('width', 440);
+    $this->height = $this->getOption('height', 330);
     $this->resizeType = $this->getOption('resizeType', 's');
     $this->flexHeight = $this->getOption('flexHeight');
     // Behave well if it's not set yet!
