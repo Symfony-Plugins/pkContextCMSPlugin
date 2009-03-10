@@ -17,7 +17,7 @@
 	<?php include_partial('pkContextCMS/login') ?>
 	<div class="container outter"> 	<!-- the outter crops the drop shadows as the browser collapses -->
 	<div class="container inner">
-		<h1 id="head"><a href="/">Duke University - College of Arts &amp; Sciences</a></h1>  <!-- Wanted: Global Slot for Site Name -->
+		<h1 id="head"><a href="/">Our Company</a></h1>  
 
 		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
 

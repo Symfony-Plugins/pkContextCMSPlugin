@@ -554,6 +554,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $this->log($query->getSql());
     $allResults = $query->execute();
     $all = array();
+    $sufficient = array();
     foreach ($allResults as $actor)
     {
       $all[$actor->id] = $actor->username;

@@ -84,6 +84,27 @@ page with all other pages being added as descendants of the home page:
 
     symfony doctrine:build-all-load
 
+By default pkContextCMS will establish routes which map your modules and 
+actions to:
+
+/cms/modulename/actionname
+
+And check all other URLs to see whether they match a slug (i.e. a path)
+in the CMS, offering up that page via the pkContextCMS/show action if so.
+
+If this is not what you want, you will need to shut off the built-in
+routes via app.yml and write your own:
+
+    pkContextCMS_routes_register: false
+
+In any case, it is up to you to provide a route for the homepage of
+your site. If you want the homepage to be the root page of the CMS,
+just use this route in your routing.yml file:
+
+    homepage:
+      url:   /
+        param: { module: pkContextCMS, action: show, slug: / }
+
 == Customizing Your CMS Site ==
 
 You now have a CMS site. Access your Symfony site's URL to see the
