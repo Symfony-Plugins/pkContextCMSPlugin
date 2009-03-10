@@ -24,6 +24,11 @@ class pkContextCMSComponents extends pkContextCMSBaseComponents
   public function executeTabs(sfRequest $request)
   {
     $this->page = pkContextCMSTools::getCurrentPage();
+    if (!$this->page)
+    {
+      // Tabs on non-CMS pages are relative to the home page
+      $this->page = pkContextCMSPageTable::retrieveBySlug('/');
+    }
     $ancestors = $this->page->getAncestors();
     if (!$ancestors)
     {
