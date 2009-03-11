@@ -167,12 +167,13 @@ the following changes via the breadcrumb trail, which becomes an
 interactive site management tool when logged in:
 
 * Rename the page by clicking on the page title
-* Delete the page
 * Add a child page beneath the current page
+* Open the page management settings dialog via the "gear" icon
+for less frequent changes
 
-(Note that the breadcrumb trail appears on the home page only when
+Note that the breadcrumb trail appears on the home page only when
 logged in with editing privileges. On sub-pages the breadcrumb
-trail always appears.)
+trail always appears.
 
 Deletion of a page is not permanent. Anonymous users, and users who do not
 have editing privileges on the page, will see the usual 404 Not Found error.
