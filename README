@@ -1,3 +1,26 @@
+== READ THIS NOTE FIRST ==
+
+This is a technology preview release of pkContextCMS. Although the
+CMS already works quite well and we are close to launching a production
+site based on it, certain aspects are still maturing. In particular
+the stylesheet we provide here as a convenience is definitely larger
+than the final stylesheet we'll ultimately provide as we haven't had
+time to prune it back. 
+
+Also, IE6/IE7 support has not yet been extensively tested. That will
+of course happen before a stable release. The editing mechanisms all
+work fine in IE (yes, even 6), but there are known CSS issues
+at this stage. We're on top of those.
+
+Another issue we haven't tackled in detail yet is internationalization.
+We do in fact have the capability to store separate slots by culture,
+and we retrieve the appropriate version of a slot for the culture 
+of the logged-in user (as determined by setCulture() and getCulture()
+on the sfUser object). But we haven't done extensive testing of this
+feature. We welcome input from webmasters of internationalized sites.
+
+Enjoy!
+
 = pkContextCMSPlugin =
 
 pkContextCMSPlugin is a CMS (Content Management System) based on the
@@ -29,21 +52,38 @@ pkContextCMSPlugin requires:
 
 * Symfony 1.2
 * Doctrine
-* pkRuleToolsPlugin (from svn+ssh://yourdukeid@trac.aas.duke.edu/plugins/pkRuleToolsPlugin/trunk) 
+* sfJqueryReloadedPlugin 
 * sfDoctrineGuardPlugin
-* sfJqueryReloadedPlugin (from svn+ssh://yourdukeid@trac.aas.duke.edu/plugins/sfJqueryReloadedPlugin/trunk )
-  This version of sfJqueryReloadedPlugin contains additional features
-  and bug fixes added by Tom which are not in the original upstream
-  version on the Symfony site yet.
+* pkToolkitPlugin 
 
-pkContextCMSPlugin is compatible with sfShibbolethPlugin (from
-http://svn.symfony-project.com/plugins/sfShibbolethPlugin/trunk).
-
-Be aware that we may recommend new locations for some of these plugins later,
-specifically recommending the use of a 1.2 branch rather than the trunk once
-1.2 ceases to be on the leading edge.
+pkContextCMSPlugin is compatible with sfShibbolethPlugin (the 1.2 trunk).
 
 == Installation ==
+
+For the time being, we recommend that you check out our
+sample project via Subversion:
+
+svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
+
+Then light that folder up as a virtualhost named cmstest via MAMP, httpd.conf
+or whatever your testing environment requires.
+
+This will give you all of the necessary plugins and the ability to
+`svn update` the whole shebang with one command.
+
+Then, cd to the `cmstest` folder and run this command:
+
+    symfony doctrine:build-all-load
+
+You can now log in as `admin` with the password `admin` to see how the
+site behaves when you're logged in. Start adding subpages, editing
+slots, adding slots to the multiple-slot content area... have a ball with it
+and send your comments to `tom@punkave.com`.
+
+That's the easy way. The notes that follow assume you're doing it 
+the hard way. (: 
+
+* * *
 
 Install the above plug-ins in your Symfony 1.2 project. Since you are
 almost certainly using svn externals to fetch the plugins,
@@ -110,7 +150,8 @@ just use this route in your routing.yml file:
 You now have a CMS site. Access your Symfony site's URL to see the
 home page. 
 
-Click "log in" and log in as the sfDoctrineGuard superuser to see
+Click "log in" and log in as the sfDoctrineGuard superuser 
+(admin/admin) to see
 the editing controls.
 
 === Managing Pages ===
