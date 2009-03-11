@@ -15,15 +15,18 @@
 
 
 	<?php include_partial('pkContextCMS/login') ?>
-	<div class="container outter"> 	<!-- the outter crops the drop shadows as the browser collapses -->
+	<div class="container outer"> 	<?php // the outer crops the drop shadows as the browser collapses ?>
 	<div class="container inner">
-		<h1 id="head"><a href="/">Our Company</a></h1>  
+		<h1 id="head"><?php echo link_to("Our Company", "@homepage") ?></h1>
 
 		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
 
 		<?php echo $sf_data->getRaw('sf_content') ?>
-
 	</div>
+  <div class="container footer">
+  <?php // Use a global slot so it's the same on all pages ?>
+  <?php pk_context_cms_slot('footer', 'pkContextCMSRichText', array("global" => true)) ?>
+  </div>
 	</div>
 
 </body>

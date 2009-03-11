@@ -14,15 +14,18 @@
 <div id="pk-context-cms-content" class="main">
 	<div class="content-container">
 		<div class="content">
-			<?php pk_context_cms_slot('body', 'pkContextCMSRichText') ?>
-			<?php pk_context_cms_slot('footer', 'pkContextCMSRichText', array('tool' => 'Main', 'global' => true)) ?>
+      <?php pk_context_cms_area('body',
+        array('allowed_types' => array('pkContextCMSRichText', 'pkContextCMSText'),
+          'type_options' => array(
+            'pkContextCMSRichText' => array('tool' => 'Main'),
+            'pkContextCMSText' => array('multiline' => true)))) ?>
 		</div>
 	</div>
 </div>
 
 <div id="pk-context-cms-content" class="sidebar">
 	<div class="content-container">	
-		<div class="content ">
+		<div class="content">
 			<?php pk_context_cms_slot('sidebar', 'pkContextCMSRichText', array('tool' => 'Sidebar')) ?>
 		</div>
 	</div>
