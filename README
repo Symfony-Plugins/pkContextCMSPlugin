@@ -75,6 +75,12 @@ Then, cd to the `cmstest` folder and run this command:
 
     symfony doctrine:build-all-load
 
+If Symfony complains that the sfCoreAutoload class cannot be found,
+you'll need to copy the provided file
+config/require-core.php.example to config/require-core.php and edit
+the require path in that file to suit your needs. This shouldn't be
+necessary if Symfony 1.2 is in your PHP include path.
+
 You can now log in as `admin` with the password `admin` to see how the
 site behaves when you're logged in. Start adding subpages, editing
 slots, adding slots to the multiple-slot content area... have a ball with it
