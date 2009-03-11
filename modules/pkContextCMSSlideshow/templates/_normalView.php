@@ -19,10 +19,11 @@
               "permid" => $permid,
               "noajax" => 1)), true))),
     array('class' => 'pk-btn pk-context-media-choose')) ?>
+<br class="c"/>
 <?php endif ?>
-<div class="pk-context-media-show">
+<ul class="pk-context-media-show">
 <?php $first = true ?>
-<?php foreach ($items as $item): ?>
+<?php $n=0; foreach ($items as $item): ?>
   <?php $embed = str_replace(
     array("_WIDTH_", "_HEIGHT_", "_c-OR-s_", "_FORMAT_"),
     array($width, 
@@ -30,10 +31,10 @@
       $resizeType,
       $item->format),
     $item->embed) ?>
-  <div style="display: <?php echo $first ? "block" : "none"?>" <?php echo $embed ?></div>
+  <li class="pk-context-media-show-item shadow" id="pk-context-media-show-item-<?php echo $n ?>" style="height:<?php echo $height ?>"><?php echo $embed ?></li>
   <?php $first = false ?>
-<?php endforeach ?>
-</div>
+<?php $n++; endforeach ?>
+</ul>
 <script>
 $(function() {
   $('.pk-context-media-show li').click(function() {
@@ -43,7 +44,7 @@ $(function() {
     {
       next = $($(this).parent()).children(":first");
     }
-    next.show();
+    next.fadeIn();
   });
 });
 </script>
