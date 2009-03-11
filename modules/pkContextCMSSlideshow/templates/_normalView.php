@@ -18,7 +18,7 @@
               "slug" => $slug, 
               "permid" => $permid,
               "noajax" => 1)), true))),
-    array('class' => 'pk-btn')) ?>
+    array('class' => 'pk-btn pk-context-media-choose')) ?>
 <?php endif ?>
 <div class="pk-context-media-show">
 <?php $first = true ?>
