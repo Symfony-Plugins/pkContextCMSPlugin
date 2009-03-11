@@ -556,6 +556,23 @@ give that group a permission named `editors`, and set
 `edit_sufficient_credentials` to `editors`. Now the dropdown list will
 display only the members of the `editors` group.
 
+=== On/Off: Hiding Pages, by Choice and By Default ===
+
+pkContextCMS offers an "on/off" toggle under "manage page settings."
+Pages that are turned off are completely invisible to users who do not
+have editing credentials for them; a user without appropriate privileges
+gets a 404 not found error just as if the page did not exist. In most cases
+you should use this in preference to actually deleting the page because the
+content is still available if you choose to bring it back later.
+
+By default all new pkContextCMS pages are in the "on" state.
+If you need to approach the matter more conservatively, you can easily
+change this with the following `app.yml` setting:
+
+    all:
+      pkContextCMS:
+        default_on: false
+
 == Creating Custom Slot Types ==
 
 You are not limited to the two slot types provided with

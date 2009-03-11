@@ -177,6 +177,7 @@ class pkContextCMSActions extends sfActions
     $slug = "$base/$pathComponent";
 
     $page = new pkContextCMSPage();
+    $page->setArchived(!sfConfig::get('app_pkContextCMS_default_on', true));
 
     $page->setSlug($slug);
     $existingPage = pkContextCMSPageTable::retrieveBySlug($slug);
@@ -352,7 +353,8 @@ class pkContextCMSActions extends sfActions
       if ($this->form->isValid())
       {
         $this->form->save();
-        return 'redirect';
+        // Oops must be case correct in production
+        return 'Redirect';
         $this->logMessage("XXXX VALID", "info");
       }
       else

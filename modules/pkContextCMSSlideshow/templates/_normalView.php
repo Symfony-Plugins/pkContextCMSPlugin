@@ -20,7 +20,7 @@
               "noajax" => 1)), true))),
     array('class' => 'pk-btn')) ?>
 <?php endif ?>
-<ul class="pk-context-media-show">
+<div class="pk-context-media-show">
 <?php $first = true ?>
 <?php foreach ($items as $item): ?>
   <?php $embed = str_replace(
@@ -30,10 +30,10 @@
       $resizeType,
       $item->format),
     $item->embed) ?>
-  <li style="display: <?php echo $first ? "block" : "none"?>" <?php echo $embed ?></li>
+  <div style="display: <?php echo $first ? "block" : "none"?>" <?php echo $embed ?></div>
   <?php $first = false ?>
 <?php endforeach ?>
-</ul>
+</div>
 <script>
 $(function() {
   $('.pk-context-media-show li').click(function() {

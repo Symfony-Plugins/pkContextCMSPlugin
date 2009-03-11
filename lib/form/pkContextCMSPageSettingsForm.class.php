@@ -27,13 +27,16 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     {
       unset($all[$userId]);
     }
+    // On vs. off makes more sense to end users, but when we first
+    // designed this feature we had an 'archived vs. unarchived'
+    // approach in mind
     $this->setWidget(
       'archived',
       new sfWidgetFormSelect(
         array(
           'choices' => array(
-            false => "active",
-            true => "archived"
+            false => "On",
+            true => "Off"
           )
         ),
         array(
@@ -44,19 +47,6 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     {
       unset($this['archived']);
     }
-
-    $this->setWidget(
-      'is_published',
-      new sfWidgetFormSelect(
-        array(
-          'choices' => array(
-            false => "unpublished",
-            true => "published"
-          )
-        ),
-        array(
-          'class' => 'pk-radio-select'
-        )));
 
     $this->setWidget(
       'view_is_secure',

@@ -31,9 +31,6 @@
 			<div class="pk-context-cms-form-row">
 			  <label>Page Status</label>
 			  <p>
-			  <?php echo $form['is_published'] ?>
-			  </p>
-			  <p>
 			  <?php echo $form['view_is_secure'] ?>
 			  </p>
 			<?php if (isset($form['archived'])): ?>
@@ -43,7 +40,7 @@
 			<?php else: ?>
 			<?php //edit by Rick 2.17.09 put the unarchived note in this else statement ?>
 				<p id="pk-context-cms-settings-note" class="pk-note">
-				This page has unarchived children. If you wish to archive it, you must first archive its children.
+				This page has subpages which are turned on (see the side navigation for a list). If you wish to turn it off, you must first turn off its subpages.
 				</p>
 			<?php endif ?>
 			</div>
