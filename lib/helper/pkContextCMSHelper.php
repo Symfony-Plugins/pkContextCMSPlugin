@@ -6,13 +6,15 @@ sfContext::getInstance()->getResponse()->addJavascript(
   sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
   '/js/pkContextCMS.js');
 
-sfContext::getInstance()->getResponse()->addJavascript(
-  sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
-  '/js/pkMultipleSelect.js');
-
-sfContext::getInstance()->getResponse()->addJavascript(
-  sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
-  '/js/pkRadioSelect.js');
+// These now come from pkToolkitPlugin and a single js file
+// is specified project-wide in view.yml (for now anyway)
+//sfContext::getInstance()->getResponse()->addJavascript(
+//  sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
+//  '/js/pkMultipleSelect.js');
+//
+//sfContext::getInstance()->getResponse()->addJavascript(
+//  sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
+//  '/js/pkRadioSelect.js');
 
 sfContext::getInstance()->getResponse()->addJavascript(
   sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
