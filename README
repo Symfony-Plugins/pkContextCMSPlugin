@@ -1131,6 +1131,6 @@ only the updated slot.
 
 == Changelog ==
 
-=== Version 0.13: default routing rules no longer try to override the root
+=== Version 0.12: default routing rules no longer try to override the root
 of the site. Instead we demonstrate how to do that in the 
 `routing.yml` file of the `cmstest` project.
