@@ -159,6 +159,51 @@ pkControls.js to your view.yml file:
       ... Other things ...
       javascripts:    [/pkToolkitPlugin/js/pkControls.js]
 
+== Routing Rules ==
+
+For compatibility reasons, by default your CMS pages will appear in the /cms "folder"
+of your site. That is, the "home page" is `http://yoursite.com/cms`. Administrative
+actions are routed to the /admin "folder." The home page URL ("/") is not overridden
+by default and still goes wherever you'd like it to go in your application.
+
+Of course, this probably isn't what most people want in practice. You can easily
+customize it via your `routing.yml` file so that URLs are presumed to be CMS pages if they do 
+not expressly match a routing rule prepended by a plugin, such as sfDoctrineGuardPlugin's 
+login action. These rules are used by our `cmstest` project:
+
+    # The good old fashioned default rule gets us to the admin, AJAX
+    # and other backend actions of the CMS
+
+    default:
+      url:   /:module/:action/*
+
+    # A homepage rule is expected by pkContextCMS and various other plugins,
+    # so be sure to have one
+
+    homepage:
+      url:  /
+      param: { module: pkContextCMS, action: show, slug: / }
+
+    # Put any routing rules for other modules and actions HERE,
+    # before the catch-all rule that routes URLs to the
+    # CMS by default.
+
+    # Must be the last rule
+
+    pk_context_cms_slug:
+      url:   /:slug
+      param: { module: pkContextCMS, action: show }
+      requirements: { slug: .* }
+
+When using this technique you will also need to turn off the default routing rules of the CMS
+as we've done in the `cmstest` project:
+
+    all:
+      pkContextCMS:
+        routes_register: false
+
+Thanks to Stephen Ostrow for his analysis of this issue.
+
 == Customizing Your CMS Site ==
 
 You now have a CMS site. Access your Symfony site's URL to see the
@@ -1084,3 +1129,8 @@ your edit action, with a value of 1. The edit action will then
 redirect to the updated page rather than attempting to refresh
 only the updated slot. 
 
+== Changelog ==
+
+=== Version 0.13: default routing rules no longer try to override the root
+of the site. Instead we demonstrate how to do that in the 
+`routing.yml` file of the `cmstest` project.

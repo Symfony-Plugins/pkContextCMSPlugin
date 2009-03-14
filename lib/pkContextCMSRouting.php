@@ -7,18 +7,14 @@ class pkContextCMSRouting
     $r = $event->getSubject();
     if (sfConfig::get('app_pkContextCMS_routes_register', true) && in_array('pkContextCMS', sfConfig::get('sf_enabled_modules')))
     {
-      // Everything that doesn't specifically match an action (see next rule)
+      // 0.13: By default we'll use /cms for pages to avoid compatibility problems with
+      // the default routing of other modules. But see the routing.yml of the cmstest
+      // project for a better way to do this so your CMS pages (the point of your site!)
+      // don't have to be locked down in a subfolder
       $r->prependRoute('pk_context_cms_show', 
-        new sfRoute('/:slug', 
+        new sfRoute('/cms/:slug', 
           array('module' => 'pkContextCMS', 'action' => 'show'),
           array('slug' => '.*')));
-      // TBB: this is a big change to simplify the routing of actions
-      // that are mostly AJAXed and not the primary point of the site.
-      // If you don't go this route, you'll need routes for the individual 
-      // actions in the CMS as well as your own non-CMS modules
-      $r->prependRoute('pk_context_cms_action',
-        new sfRoute('/cms/:module/:action',
-          array('module' => '\w+', 'action' => '\w+')));
     }
   }
 }

@@ -40,20 +40,6 @@ class pkContextCMSTools
   }
   static public function urlForPage($slug)
   {
-    // By default, the slug IS the URL. If your CMS is not meant to be at the
-    // root of the site, you might want to approach the matter differently.
-    // However bear in mind you'll have to create individual routes for all 
-    // actions that are not CMS pages, which is not much fun.
-    if (sfConfig::get('app_pkContextCMS_default_routing', true))
-    {
-      // Controller names are fun!
-      $scriptName = $_SERVER['SCRIPT_NAME'];
-      if (sfConfig::get('sf_no_script_name', false))
-      {
-        $scriptName = preg_replace('/\/index\.php$/', '', $scriptName);
-      }
-      return $scriptName . $slug;
-    }
     // sfSimpleCMS found a nice workaround for this
     $routed_url = sfContext::getInstance()->getController()->genUrl('pkContextCMS/show?slug=-PLACEHOLDER-', true);
     $routed_url = str_replace('-PLACEHOLDER-', $slug, $routed_url);
