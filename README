@@ -163,7 +163,7 @@ pkControls.js to your view.yml file:
 
 For compatibility reasons, by default your CMS pages will appear in the /cms "folder"
 of your site. That is, the "home page" is `http://yoursite.com/cms`. Administrative
-actions are routed to the /admin "folder." The home page URL ("/") is not overridden
+actions of the CMS can then use the default Symfony routing rules. The home page URL ("/") is not overridden
 by default and still goes wherever you'd like it to go in your application.
 
 Of course, this probably isn't what most people want in practice. You can easily
