@@ -41,7 +41,10 @@ class pkContextCMSTools
   static public function urlForPage($slug)
   {
     // sfSimpleCMS found a nice workaround for this
-    $routed_url = sfContext::getInstance()->getController()->genUrl('pkContextCMS/show?slug=-PLACEHOLDER-', true);
+    // By using @pk_context_cms_page we can skip to a shorter URL form
+    // and not get tripped up by the default routing rule which could
+    // match first if we wrote pkContextCMS/show 
+    $routed_url = sfContext::getInstance()->getController()->genUrl('@pk_context_cms_page?slug=-PLACEHOLDER-', true);
     $routed_url = str_replace('-PLACEHOLDER-', $slug, $routed_url);
     // We tend to get double slashes because slugs begin with slashes
     // and the routing engine wants to helpfully add one too. Fix that,

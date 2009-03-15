@@ -169,7 +169,7 @@ by default and still goes wherever you'd like it to go in your application.
 Of course, this probably isn't what most people want in practice. You can easily
 customize it via your `routing.yml` file so that URLs are presumed to be CMS pages if they do 
 not expressly match a routing rule prepended by a plugin, such as sfDoctrineGuardPlugin's 
-login action. These rules are used by our `cmstest` project:
+login action. These rules are used by our `cmstest` project. Note that the routing rule for pages must be named `pk_context_cms_page` so that the plugin can use it explicitly to generate short paths to pages, even in the presence of the default rule which would otherwise match first:
 
     # The good old fashioned default rule gets us to the admin, AJAX
     # and other backend actions of the CMS
@@ -184,13 +184,13 @@ login action. These rules are used by our `cmstest` project:
       url:  /
       param: { module: pkContextCMS, action: show, slug: / }
 
-    # Put any routing rules for other modules and actions HERE,
+    # Put any additional routing rules for other modules and actions HERE,
     # before the catch-all rule that routes URLs to the
     # CMS by default.
 
-    # Must be the last rule
+    # Must be the last rule, and must have this name
 
-    pk_context_cms_slug:
+    pk_context_cms_page:
       url:   /:slug
       param: { module: pkContextCMS, action: show }
       requirements: { slug: .* }
@@ -1131,6 +1131,15 @@ only the updated slot.
 
 == Changelog ==
 
-=== Version 0.12: default routing rules no longer try to override the root
+=== Version 0.13 ===
+
+Fixed routing rules of `cmstest` project. Renamed
+the `pk_context_cms_page` rule and instituted the use of 
+`@pk_context_cms_page` in the URL generation method to route to it even 
+if the default routing rule would otherwise match `pkContextCMS/show` first.
+
+=== Version 0.12 ===
+
+Default routing rules no longer try to override the root
 of the site. Instead we demonstrate how to do that in the 
 `routing.yml` file of the `cmstest` project.
