@@ -3,21 +3,27 @@
 class pkContextCMSBaseActions extends sfActions
 {
   protected $validationData = array();
+  
   protected function editSetup()
   {
     return $this->setup(true);
   }
+  
   protected function setup($editing = false)
   {
     $this->reopen = false;
     $this->slug = $this->getRequestParameter('slug');
     $this->name = $this->getRequestParameter('slot');
-    $this->value = $this->getRequestParameter("value");
-    $this->permid = $this->getRequestParameter("permid");
+    $this->value = $this->getRequestParameter('value');
+    $this->permid = $this->getRequestParameter('permid');
+    
     $this->page = pkContextCMSPageTable::retrieveBySlugWithSlots($this->slug);
-    $this->forward404Unless($this->page);
-    $this->user = sfContext::getInstance()->getUser();
+    $this->forward404Unless($this->page);    
     $this->pageid = $this->page->getId();
+    pkContextCMSTools::setCurrentPage(pkContextCMSPageTable::retrieveByIdWithSlots($this->page->id));
+    
+    $this->user = sfContext::getInstance()->getUser();
+    
     // Used to name value parameters, among other things
     $this->id = $this->name . "-" . $this->permid;
     if ($editing)
@@ -38,6 +44,7 @@ class pkContextCMSBaseActions extends sfActions
           sfConfig::get('login_action'));
       }
     }
+    
     // This was stored when the slot's editing view was rendered. If it
     // isn't present we must refuse to play for security reasons.
     $user = $this->getUser();
@@ -53,8 +60,7 @@ class pkContextCMSBaseActions extends sfActions
     $this->forward404Unless($this->options !== false);
     // Clever no?
     $this->type = str_replace("Actions", "", get_class($this));
-    $slot = $this->page->getSlot(
-      $this->name, $this->permid);
+    $slot = $this->page->getSlot($this->name, $this->permid);
     // Copy the slot- we'll be making a new version of it,
     // if we do decide to save that is. 
     if ($slot)
