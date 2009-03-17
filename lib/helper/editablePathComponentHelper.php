@@ -39,7 +39,7 @@ function editable_path_component($value, $renameAction,
     }
     $result .= input_tag("title", html_entity_decode(strip_tags($value)), array("class" => "$classStem-value"));
     $result .= submit_tag("Rename", array("class" => "submit"));
-    $result .= "<span>or</span>";
+    $result .= "<span class="or">or</span>";
     $result .= link_to_function("<span class=\"cancel\">cancel</span>", jq_visual_effect("hide", "#$epcn-rename-form") . jq_visual_effect("fadeIn", "#$epcn-rename-button")."$('.pk-context-cms-rename').toggleClass('editing')", array('class' => 'epc-form-cancel', ));
     $result .= "</form>";
   }
@@ -70,7 +70,7 @@ function actionable_path_component($label, $action, $params = false, $classStem 
   unset($params['labelConfirm']);
   $result .= button_to($labelConfirm, $action, array("query_string" => http_build_query($params)));
   $result .= "<span class='$classStem-action-cancel' id='$epcn-action-cancel'>";
-  $result .= "<span>or</span>" . link_to_function("cancel", 
+  $result .= "<span class="or">or</span>" . link_to_function("cancel", 
     jq_visual_effect("fadeOut", "#$epcn-action-form") . 
     jq_visual_effect("fadeIn", "#$epcn-action-initial")) .
     "</span></span>";

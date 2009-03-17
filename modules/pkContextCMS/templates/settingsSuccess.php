@@ -80,7 +80,7 @@
 	<div id="pk-context-cms-settings-footer">
 	<?php echo submit_tag("Save Changes", 
 	  array("class" => "submit", "id" => "pk-context-cms-settings-submit")) ?>
-	<span>or</span>
+	<span class="or">or</span>
 	<?php echo jq_link_to_function("cancel", 
 	  "$('#pk-context-cms-settings').hide()", array("class"=>"cancel")) ?>
 	<?php if ($page->userHasPrivilege('delete')): ?>

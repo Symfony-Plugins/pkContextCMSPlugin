@@ -13,7 +13,7 @@
     pkContextCMSTools::getOption($options, 'default-type', 
       'pkContextCMSRichText'))) ?>
 <?php echo submit_tag('Add', array('class' => 'submit', 'onmouseup'=>"$(this).parent().hide(); $(this).parent().parent().children('.pk-btn').show()"))?>
-<span>or</span>
+<span class="or">or</span>
 <?php echo jq_link_to_function('cancel',"$('#pk-context-cms-add-slot-form-$name').hide(); $(this).parent().parent().children('.pk-btn').show()", array("class"=>"cancel")) ?>
 </form>
    

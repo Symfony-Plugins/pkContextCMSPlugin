@@ -58,7 +58,7 @@
 	  <?php echo input_tag("title", "", array("class" => "pk-context-cms-add-page-title")) ?>
 		<div class="pk-context-cms-breadcrumb-add-controls">
 		  <?php echo submit_tag("Add", array("class" => "submit")) ?>
-			<span>or</span>
+			<span class="or">or</span>
 		  <?php echo link_to_function("cancel", jq_visual_effect("hide", "#pk-context-add-child-form") . jq_visual_effect("fadeIn", "#pk-context-add-child-button"), array('class' => 'cancel', )) ?>
 		</div>
 	  </form>
