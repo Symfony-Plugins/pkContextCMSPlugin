@@ -74,10 +74,10 @@ same requirements with regard to PHP and PDO.
 For the time being, we recommend that you check out our
 sample project via Subversion:
 
-svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
+    svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
 
-Then light that folder up as a virtualhost named cmstest via MAMP, httpd.conf
-or whatever your testing environment requires.
+Then light up the folder `cmstest/web` as a virtualhost named cmstest via 
+MAMP, `httpd.conf` or whatever your testing environment requires.
 
 This will give you all of the necessary plugins and the ability to
 `svn update` the whole shebang with one command.
@@ -102,9 +102,10 @@ the hard way. (:
 
 * * *
 
-Install the above plug-ins in your Symfony 1.2 project. Since you are
-almost certainly using svn externals to fetch the plugins,
-be sure to create the necessary symbolic links from your projects web/ folder 
+Install the above plug-ins in your Symfony 1.2 project. We strongly encourage
+you to do so using svn externals.
+If you are using that approach you will need to be sure to create the 
+necessary symbolic links from your projects web/ folder 
 to to the web/ folders of the plugins that have one. For best results use
 a relative path:
 
@@ -123,12 +124,12 @@ are mapped to sfGuardAuth's signin and signout actions. If you are
 using sfShibbolethPlugin to extend sfDoctrineGuardPlugin, you'll
 want to change these actions in apps/frontend/config/app.yml:
 
-all:
-  sfShibboleth:
-    domain: duke.edu
-  pkContextCMS:
-    actions_logout: "sfShibbolethAuth/logout"
-    actions_login: "sfShibbolethAuth/login"
+    all:
+      sfShibboleth:
+        domain: duke.edu
+      pkContextCMS:
+        actions_logout: "sfShibbolethAuth/logout"
+        actions_login: "sfShibbolethAuth/login"
 
 You will also need to enable the pkContextCMS modules in 
 your application's `settings.yml` file. Of course you may need
@@ -144,7 +145,7 @@ page with all other pages being added as descendants of the home page:
 By default pkContextCMS will establish routes which map your modules and 
 actions to:
 
-/cms/modulename/actionname
+    /cms/modulename/actionname
 
 And check all other URLs to see whether they match a slug (i.e. a path)
 in the CMS, offering up that page via the pkContextCMS/show action if so.
@@ -1142,6 +1143,10 @@ redirect to the updated page rather than attempting to refresh
 only the updated slot. 
 
 == Changelog ==
+
+=== Version 0.15 ===
+
+Documentation fixes.
 
 === Version 0.14 ===
 
