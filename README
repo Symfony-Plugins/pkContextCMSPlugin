@@ -179,14 +179,15 @@ by default and still goes wherever you'd like it to go in your application.
 
 Of course, this probably isn't what most people want in practice. You can easily
 customize it via your `routing.yml` file so that URLs are presumed to be CMS pages if they do 
-not expressly match a routing rule prepended by a plugin, such as sfDoctrineGuardPlugin's 
-login action. These rules are used by our `cmstest` project. Note that the routing rule for pages must be named `pk_context_cms_page` so that the plugin can use it explicitly to generate short paths to pages, even in the presence of the default rule which would otherwise match first:
+not expressly match a routing rule. And it's not hard to create a catch-all "folder" to contain URLs mapped to Symfony actions rather than CMS pages.
 
-    # The good old fashioned default rule gets us to the admin, AJAX
-    # and other backend actions of the CMS
+These rules are used by our `cmstest` project. Note that the routing rule for pages must be named `pk_context_cms_page` so that the plugin can use it explicitly to generate short paths to pages, even in the presence of the default rule which would otherwise match first:
+
+    # This default routing rule handles all non-CMS actions that are not
+    # explicitly routed by another rule
 
     default:
-      url:   /:module/:action/*
+      url:   /admin/:module/:action/*
 
     # A homepage rule is expected by pkContextCMS and various other plugins,
     # so be sure to have one
@@ -1141,6 +1142,23 @@ redirect to the updated page rather than attempting to refresh
 only the updated slot. 
 
 == Changelog ==
+
+=== Version 0.14 ===
+
+Another fix to the routing rules of the `cmstest` project. The Symfony
+default routing rule isn't really compatible with mapping the
+CMS to the root of the site: it breaks all grandchild pages. We deal
+with this by prefixing the default routing rule with /admin. So 
+for a simple routing system without a lot of explicit rules for
+individual actions and modules, either the (a) CMS pages or (b) everything else
+must be distinguished by a prefix in the URL. The default rules
+prepended by the plugin take the former approach, while the cmstest
+project demonstrates the latter. 
+
+You can of course write explicit routing rules
+for individual Symfony actions and modules that result in nicer URLs for
+those particular actions and modules. That combines well with the
+second approach.
 
 === Version 0.13 ===
 
