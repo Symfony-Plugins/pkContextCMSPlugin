@@ -55,8 +55,19 @@ pkContextCMSPlugin requires:
 * sfJqueryReloadedPlugin 
 * sfDoctrineGuardPlugin
 * pkToolkitPlugin 
+* PHP 5.2.4 or better with PDO (for Symfony)
 
 pkContextCMSPlugin is compatible with sfShibbolethPlugin (the 1.2 trunk).
+
+Mac users can most easily meet the PHP requirements by installing
+the latest version of [MAMP](http://www.mamp.info/). Note that MAMP's PHP 
+must be your command line version of PHP, not Apple's default install of PHP. 
+To fix that, add this line to the `.profile` file in your home directory:
+
+    export PATH="/Applications/MAMP/Library/bin:/Applications/MAMP/bin/php5/bin:$PATH"
+
+Of course your production server will ultimately need to meet the
+same requirements with regard to PHP and PDO.
 
 == Installation ==
 
@@ -73,7 +84,7 @@ This will give you all of the necessary plugins and the ability to
 
 Then, cd to the `cmstest` folder and run this command:
 
-    symfony doctrine:build-all-load
+    ./symfony doctrine:build-all-load
 
 If Symfony complains that the sfCoreAutoload class cannot be found,
 you'll need to copy the provided file
@@ -128,7 +139,7 @@ other modules as well based on your application's needs:
 Load the fixtures for the "stub" site. Every site begins with a home
 page with all other pages being added as descendants of the home page:
 
-    symfony doctrine:build-all-load
+    ./symfony doctrine:build-all-load
 
 By default pkContextCMS will establish routes which map your modules and 
 actions to:
