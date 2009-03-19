@@ -23,11 +23,14 @@ class pkContextCMSRichTextActions extends pkContextCMSBaseActions
     // will be permitted on that (but again, no javascript: src).
     // See pkToolkitPlugin and its pkHtml class.
 
+    // We allow tables. Your preference may vary. You can pass a
+    // different set of allowed_tags as an option to the slot or area.
+
     if ($this->getOption('simplify', true))
     {
       $this->slot->value = pkHtml::simplify(
         $rawValue,
-        $this->getOption('allowed_tags', "<h3><h4><h5><h6><blockquote><p><a><ul><ol><nl><li><b><i><strong><em><strike><code><hr><br><div>"));
+        $this->getOption('allowed_tags', "<h3><h4><h5><h6><blockquote><p><a><ul><ol><nl><li><b><i><strong><em><strike><code><hr><br><div><table><thead><caption><tbody><tr><th><td>"));
     }
     return $this->editSave();
   }
