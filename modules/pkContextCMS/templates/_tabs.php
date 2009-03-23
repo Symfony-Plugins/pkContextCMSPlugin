@@ -1,18 +1,9 @@
-<table id="pk-context-cms-site-navigation" cellspacing="0">
-<tr>
+<ul id="pk-context-cms-site-navigation" >
 <?php // TBB: Let's stop pretending this makes sense in shorthand syntax. ?>
 <?php // When there's more logic than HTML, it's time to write real PHP. ?>
 
 <?php
 $tabcount = 0;
-if (count($tabs))
-{
-  $width = ((960/count($tabs))/960)*100;
-}
-else
-{
-  $width = 960;
-}
 
 foreach ($tabs as $tab)
 {
@@ -31,7 +22,7 @@ foreach ($tabs as $tab)
   if (is_array($tab))
   {
     // Foreign tab implemented by a non-CMS page
-    echo("<th style='width:".$width."%;'");
+    echo("<li");
     echo (fnmatch(isset($tab['pattern']) ? 
        $tab['pattern'] : $tab['url'], 
       $sf_params->get('module') . '/' .
@@ -39,11 +30,11 @@ foreach ($tabs as $tab)
     echo link_to(
       $tab['name'], $tab['url'], 
       array('class' => 'pk-context-cms-page-navigation'));
-    echo("</th>");
+    echo("</li>");
   }
   else
   {
-    echo("<th id='nav-$tabcount' style='width:".$width."%;'");
+    echo("<li id='nav-$tabcount'");
     $classes = '';
     if ($page)
     {
@@ -71,10 +62,11 @@ foreach ($tabs as $tab)
       $tab->getUrl(),
       array('class' => 'pk-context-cms-page-navigation', 
         'target' => '_top'));
-    echo("</th>\n");
+    echo("</li>\n");
   }
-  $tabcount++;
+
+	$tabcount++;
+
 }
 ?>
-</tr>
-</table>
+</ul>
