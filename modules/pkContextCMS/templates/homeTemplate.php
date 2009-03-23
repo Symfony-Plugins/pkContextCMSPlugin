@@ -3,7 +3,7 @@
 <?php // A way to introduce separate body classes for separate templates. ?>
 <?php // Here we use the same one for the home and default templates but ?>
 <?php // you could set something else ?>
-<?php slot('body_class') ?>pk-default<?php end_slot() ?>
+<?php slot('body_class') ?>pk-home<?php end_slot() ?>
 
 <?php slot('tabs') ?>
 <?php // No tabs on home page ?>
