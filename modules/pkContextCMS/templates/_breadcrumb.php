@@ -41,11 +41,11 @@
           "url" => "pkContextCMS/settings?id=$id",
           "update" => "pk-context-cms-settings",
           "script" => true,
-					"loading" => "$('.pk-context-cms-settings-button.open').toggleClass('loading');", 
-          "complete" => jq_visual_effect("slideDown", "#pk-context-cms-settings")."$('.pk-context-cms-settings-button.open').toggleClass('loading').hide(); $('.pk-context-cms-settings-button.close').removeClass('loading').show()",
+					"loading" => "$('.pk-context-cms-settings-button.open').toggleClass('loading')", 
+          "complete" => jq_visual_effect("slideDown", "#pk-context-cms-settings")."$('#pk-context-cms-settings-button-open').toggleClass('loading').hide(); $('#pk-context-cms-settings-button-close').removeClass('loading').show()",
         ),  
-        array('class' => 'pk-context-cms-settings-button open', 'title'=>'Manage This Page')) ?>
-				<?php echo jq_link_to_function('Close Page Settings', '$(".pk-context-cms-settings-button.open").show(); $("#pk-context-cms-settings").slideUp(); $(".pk-context-cms-settings-button.close").addClass("loading").hide()', array('class' => 'pk-context-cms-settings-button close', 'title' => 'Close Page Settings', )) ?>
+        array('class' => 'pk-context-cms-settings-button open', 'id' => 'pk-context-cms-settings-button-open', 'title'=>'Manage This Page')) ?>
+				<?php echo jq_link_to_function('Close Page Settings', '$("#pk-context-cms-settings-button-open").show(); $("#pk-context-cms-settings").slideUp(); $("#pk-context-cms-settings-button-close").addClass("loading").hide()', array('class' => 'pk-context-cms-settings-button close', 'id' => 'pk-context-cms-settings-button-close',  'title' => 'Close Page Settings', )) ?>
     <?php endif ?>		
   <?php endif ?>
 <?php endforeach ?>
@@ -69,5 +69,7 @@
 <?php echo include_partial('postBreadcrumb', array('page' => $page)) ?>
 
 </div>
+
 <?php // You can put this anywhere ?>
 <div id="pk-context-cms-settings" class="shadow"></div>
+<br class="clear c"/>
