@@ -35,7 +35,8 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
         // Nobody, not even the superadmin, can delete the home page
         return false;
       }
-      return $parent->userHasPrivilege('edit');
+      // Make sure we pass the user on!
+      return $parent->userHasPrivilege('edit', $user);
     }
 
     // Caching for speed when answering the same query about the
@@ -43,7 +44,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // a single request (to check editing privs on slots etc)
     if ($user === false)
     {
-        $user = sfContext::getInstance()->getUser();
+      $user = sfContext::getInstance()->getUser();
       if (!isset($this->privileges[$privilege]))
       {
         $this->privileges[$privilege] = $this->userHasPrivilegeBody(
