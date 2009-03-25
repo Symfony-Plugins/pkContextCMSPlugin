@@ -84,9 +84,10 @@
 	<?php echo jq_link_to_function("cancel", 
 	  "$('#pk-context-cms-settings').hide()", array("class"=>"cancel")) ?>
 	<?php if ($page->userHasPrivilege('delete')): ?>
+    <?php # TBB: delete class made the delete button invisible! ?>
 	  <?php echo link_to("Delete Page<span></span>", 
 	    "pkContextCMS/delete?id=" . $page->getId(), 
-	    array("confirm" => "Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn delete', )) ?>
+	    array("confirm" => "Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn', )) ?>
 	<?php endif ?>
 	</div>
 	</form>
