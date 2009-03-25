@@ -636,4 +636,43 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     return $this->parentCache;
   }
+
+//  Right idea, but not yet
+//  public function save(Doctrine_Connection $conn = null)
+//  {
+//    $conn = $conn ? $conn : $this->getTable()->getConnection();
+//    $conn->beginTransaction();
+//    try
+//    {
+//      $ret = parent::save($conn);
+//      $this->updateLuceneIndex();
+//      $conn->commit();
+//      return $ret;
+//    }
+//    catch (Exception $e)
+//    {
+//      $conn->rollBack();
+//      throw $e;
+//    }
+//  }
+//
+//  public function updateLuceneIndex()
+//  {
+//    pkZendSearch::updateLuceneIndex($this,
+//      array('text' => $this->getSearchText())
+//    );
+//  }
+//
+//  public function getSearchText()
+//  {
+//    $text = "";
+//    $this->populateSlotCache();
+//    foreach ($this->slotCache[$this->culture] as $name => $area)
+//    {
+//      foreach ($area as $permid => $slot)
+//      {
+//        $text .= $slot->getSearchText();
+//      }
+//    }
+//  }
 }

@@ -1,3 +1,10 @@
+Notes from testers:
+
+Shim the test login somehow. Or just log them in initially.
+Didn't understand what "add page" meant, typed a URL (to link to?)
+  rather than a title for a subpage.
+* Then she ran into the "delete button is missing" bug, which I fixed.
+
 POST should beat URL parameters and GET.
 
 Implement "unpublished/published/deleted" tristate.

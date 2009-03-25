@@ -171,20 +171,6 @@ pkContextCMSRichTextSlot:
     keyField: type
     keyValue: 'pkContextCMSRichText'
 
-pkContextCMSSlideshowSlot:
-  inheritance:
-    extends: pkContextCMSSlot
-    type: column_aggregation
-    keyField: type
-    keyValue: 'pkContextCMSSlideshow'
-
-pkContextCMSVideoSlot:
-  inheritance:
-    extends: pkContextCMSSlot
-    type: column_aggregation
-    keyField: type
-    keyValue: 'pkContextCMSVideo'
-
 pkContextCMSAccess:
   tableName: pk_context_cms_access
   columns:
