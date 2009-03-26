@@ -6,6 +6,7 @@
     "script" => true),
   array('id' => "pk-context-cms-add-slot-form-$name",
     'name' => "pk-context-cms-add-slot-form-$name",
+		'class' => 'pk-context-cms-add-slot-form', 
     'style' => "display: none")) ?>
 <?php echo select_tag('type',
   options_for_select(

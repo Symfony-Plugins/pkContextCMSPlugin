@@ -1,25 +1,28 @@
 <?php use_helper('pkContextCMS', 'jQuery') ?>
+
 <?php if (!$refresh): ?>
+
   <?php if ($editable): ?>
+		<div class="pk-context-cms-add-slot-controls">
     <?php echo jq_link_to_remote("History",
       array(
         "url" => "pkContextCMS/history?" . http_build_query(
           array("id" => $page->id, "name" => $name)),
         "update" => "pk-context-cms-history-container-$name"
       ), array('class' => 'pk-context-cms-slot-history', ) ) ?>
-    <div id="pk-context-cms-history-container-<?php echo $name ?>">
-    </div>
+
+    <div id="pk-context-cms-history-container-<?php echo $name ?>"></div>
+
     <?php if ($infinite): ?>
-      <?php echo link_to_function("Add Slot<span></span>", 
-        "$('#pk-context-cms-add-slot-form-$name').show(); $(this).hide()", array('class' => 'pk-btn add', )) ?>
-      <?php include_partial('pkContextCMS/addSlot',
-        array('id' => $page->id, 
-          'name' => $name,
-          'options' => $options)) ?>
+	      <?php echo link_to_function("Add Slot<span></span>", "$('#pk-context-cms-add-slot-form-$name').show(); $(this).hide()", array('class' => 'pk-btn add', )) ?>
+	      <?php include_partial('pkContextCMS/addSlot', array('id' => $page->id, 'name' => $name, 'options' => $options)) ?>
     <?php endif ?>
-				<br class="clear c"/>
+		</div>
+
+		<br class="clear c"/>
   <?php endif ?>
-  <div id="pk-context-cms-contents-<?php echo $name ?>">
+
+<div id="pk-context-cms-contents-<?php echo $name ?>" class="pk-context-cms-contents-all-slots">
 <?php endif ?>
 
 <?php if ($preview): ?>
