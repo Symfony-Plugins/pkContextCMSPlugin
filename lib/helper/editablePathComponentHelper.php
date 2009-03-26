@@ -28,7 +28,7 @@ function editable_path_component($value, $renameAction,
     sfContext::getInstance()->getLogger()->info("XXX Value is $value");
     $result .= link_to_function(
       $value, jq_visual_effect("fadeIn", "#$epcn-rename-form") . 
-        jq_visual_effect("hide", "#$epcn-rename-button")."$('.pk-context-cms-rename').toggleClass('editing')", 
+        jq_visual_effect("hide", "#$epcn-rename-button")."$('.pk-context-cms-rename').addClass('editing');", 
         array("id" => "$epcn-rename-button", "class" => "$classStem-rename-button"));
     $result .= form_tag($renameAction, 
       array("id" => "$epcn-rename-form", "style" => "display: none",
@@ -39,8 +39,8 @@ function editable_path_component($value, $renameAction,
     }
     $result .= input_tag("title", html_entity_decode(strip_tags($value)), array("class" => "$classStem-value"));
     $result .= submit_tag("Rename", array("class" => "submit"));
-    $result .= "<span class="or">or</span>";
-    $result .= link_to_function("<span class=\"cancel\">cancel</span>", jq_visual_effect("hide", "#$epcn-rename-form") . jq_visual_effect("fadeIn", "#$epcn-rename-button")."$('.pk-context-cms-rename').toggleClass('editing')", array('class' => 'epc-form-cancel', ));
+    $result .= "<span class='or'>or</span>";
+    $result .= link_to_function("<span class='cancel'>cancel</span>", jq_visual_effect("hide", "#$epcn-rename-form") . jq_visual_effect("fadeIn", "#$epcn-rename-button")."$('.pk-context-cms-rename').removeClass('editing')", array('class' => 'epc-form-cancel', ));
     $result .= "</form>";
   }
   else

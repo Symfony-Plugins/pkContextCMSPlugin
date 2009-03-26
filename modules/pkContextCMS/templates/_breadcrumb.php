@@ -23,7 +23,7 @@
     <?php $title = "<span class='pk-context-cms-archived'>$title</span>" ?>
   <?php endif ?>
   <?php if ($page === $p): ?>
-    <?php echo('<h2 class="pk-context-cms-rename">') ?>
+    <?php echo('<div class="pk-context-cms-rename" id="pk-context-cms-rename">') ?>
     <?php echo editable_path_component($title,
       "pkContextCMS/rename",
       array("id" => $page->id),
@@ -33,7 +33,7 @@
     <?php echo link_to($title, $p->getUrl()) ?>
 	<?php endif ?>
   <?php if ($page === $p): ?>
-    <?php echo("</h2>") ?>
+    <?php echo("</div>") ?>
     <?php if ($p->userHasPrivilege('edit')): ?>  
       <?php $id = $p->getId() ?>
       <?php echo jq_link_to_remote("Manage This Page", 
@@ -41,18 +41,18 @@
           "url" => "pkContextCMS/settings?id=$id",
           "update" => "pk-context-cms-settings",
           "script" => true,
-					"loading" => "$('.pk-context-cms-settings-button.open').toggleClass('loading')", 
-          "complete" => jq_visual_effect("slideDown", "#pk-context-cms-settings")."$('#pk-context-cms-settings-button-open').toggleClass('loading').hide(); $('#pk-context-cms-settings-button-close').removeClass('loading').show()",
+					"loading" => "$('.pk-context-cms-settings-button.open').addClass('loading')", 
+          "complete" => jq_visual_effect("slideDown", "#pk-context-cms-settings")."$('#pk-context-cms-settings-button-open').removeClass('loading').hide(); $('#pk-context-cms-settings-button-close').removeClass('loading').show()",
         ),  
         array('class' => 'pk-context-cms-settings-button open', 'id' => 'pk-context-cms-settings-button-open', 'title'=>'Manage This Page')) ?>
-				<?php echo jq_link_to_function('Close Page Settings', '$("#pk-context-cms-settings-button-open").show(); $("#pk-context-cms-settings").slideUp(); $("#pk-context-cms-settings-button-close").addClass("loading").hide()', array('class' => 'pk-context-cms-settings-button close', 'id' => 'pk-context-cms-settings-button-close',  'title' => 'Close Page Settings', )) ?>
+				<?php echo jq_link_to_function('Close Page Settings', '$("#pk-context-cms-settings-button-close").addClass("loading").hide(); $("#pk-context-cms-settings-button-open").show(); $("#pk-context-cms-settings").slideUp();', array('class' => 'pk-context-cms-settings-button close', 'id' => 'pk-context-cms-settings-button-close',  'title' => 'Close Page Settings', )) ?>
     <?php endif ?>		
   <?php endif ?>
 <?php endforeach ?>
 <?php if ($p->userHasPrivilege('edit')): ?>
 	<span class="pk-context-cms-breadcrumb-slash">/</span>
   <span id="create_form"> 
-  	<h2><?php echo link_to_function("Add Page<span></span>", jq_visual_effect("fadeIn", "#pk-context-add-child-form") . jq_visual_effect("hide", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>
+  	<div><?php echo link_to_function("Add Page<span></span>", jq_visual_effect("fadeIn", "#pk-context-add-child-form") . jq_visual_effect("hide", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>
 	  <?php echo form_tag("pkContextCMS/create", array("id" => "pk-context-add-child-form", "style" => "display: none")) ?>
 	  <?php echo input_hidden_tag("parent", $page->slug) ?>
 	  <?php echo input_tag("title", "", array("class" => "pk-context-cms-add-page-title")) ?>
@@ -62,7 +62,7 @@
 		  <?php echo link_to_function("cancel", jq_visual_effect("hide", "#pk-context-add-child-form") . jq_visual_effect("fadeIn", "#pk-context-add-child-button"), array('class' => 'cancel', )) ?>
 		</div>
 	  </form>
-    </h2>
+    </div>
   </span>
 <?php endif ?>
 
