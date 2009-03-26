@@ -38,10 +38,10 @@ function editable_path_component($value, $renameAction,
       $result .= input_hidden_tag($key, $val);
     }
     $result .= input_tag("title", html_entity_decode(strip_tags($value)), array("class" => "$classStem-value"));
-    $result .= submit_tag("Rename", array("class" => "submit"));
+    $result .= '<div class="epc-rename-button-controls">'.submit_tag("Rename", array("class" => "submit"));
     $result .= "<span class='or'>or</span>";
     $result .= link_to_function("<span class='cancel'>cancel</span>", jq_visual_effect("hide", "#$epcn-rename-form") . jq_visual_effect("fadeIn", "#$epcn-rename-button")."$('.pk-context-cms-rename').removeClass('editing')", array('class' => 'epc-form-cancel', ));
-    $result .= "</form>";
+    $result .= "</div></form>";
   }
   else
   {

@@ -23,12 +23,8 @@
     <?php $title = "<span class='pk-context-cms-archived'>$title</span>" ?>
   <?php endif ?>
   <?php if ($page === $p): ?>
-    <?php echo('<div class="pk-context-cms-rename" id="pk-context-cms-rename">') ?>
-    <?php echo editable_path_component($title,
-      "pkContextCMS/rename",
-      array("id" => $page->id),
-      $p->userHasPrivilege('edit'),
-      "epc") ?>
+    <?php echo('<div class="pk-context-cms-rename h2" id="pk-context-cms-rename">') ?>
+    <?php echo editable_path_component($title, "pkContextCMS/rename", array("id" => $page->id), $p->userHasPrivilege('edit'), "epc") ?>
 	<?php else: ?>
     <?php echo link_to($title, $p->getUrl()) ?>
 	<?php endif ?>
@@ -52,14 +48,14 @@
 <?php if ($p->userHasPrivilege('edit')): ?>
 	<span class="pk-context-cms-breadcrumb-slash">/</span>
   <span id="create_form"> 
-  	<div><?php echo link_to_function("Add Page<span></span>", jq_visual_effect("fadeIn", "#pk-context-add-child-form") . jq_visual_effect("hide", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>
+  	<div class="h2"><?php echo link_to_function("Add Page<span></span>", jq_visual_effect("fadeIn", "#pk-context-add-child-form") . jq_visual_effect("hide", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>
 	  <?php echo form_tag("pkContextCMS/create", array("id" => "pk-context-add-child-form", "style" => "display: none")) ?>
 	  <?php echo input_hidden_tag("parent", $page->slug) ?>
 	  <?php echo input_tag("title", "", array("class" => "pk-context-cms-add-page-title")) ?>
 		<div class="pk-context-cms-breadcrumb-add-controls">
 		  <?php echo submit_tag("Add", array("class" => "submit")) ?>
 			<span class="or">or</span>
-		  <?php echo link_to_function("cancel", jq_visual_effect("hide", "#pk-context-add-child-form") . jq_visual_effect("fadeIn", "#pk-context-add-child-button"), array('class' => 'cancel', )) ?>
+		  <?php echo link_to_function("cancel", jq_visual_effect("hide", "#pk-context-add-child-form") . jq_visual_effect("fadeIn", "#pk-context-add-child-button"), array('class' => 'pk-cancel', )) ?>
 		</div>
 	  </form>
     </div>
