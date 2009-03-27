@@ -23,4 +23,13 @@ abstract class PluginpkContextCMSSlot extends BasepkContextCMSSlot
   {
     return true;
   }
+
+  // You should return a reasonable plaintext representation of your
+  // slot's contents for search indexing purposes. A media slot
+  // would return the title and description of its contents.
+
+  public function getSearchText()
+  {
+    return '';
+  }
 }

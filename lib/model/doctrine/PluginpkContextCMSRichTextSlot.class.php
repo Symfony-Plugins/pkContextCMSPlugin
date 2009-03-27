@@ -5,5 +5,9 @@
  */
 abstract class PluginpkContextCMSRichTextSlot extends BasepkContextCMSRichTextSlot
 {
-
+  public function getSearchText()
+  {
+    // Convert from HTML to plaintext before indexing by Lucene
+    return strip_tags($this->value);
+  }
 }

@@ -16,8 +16,9 @@ Another issue we haven't tackled in detail yet is internationalization.
 We do in fact have the capability to store separate slots by culture,
 and we retrieve the appropriate version of a slot for the culture 
 of the logged-in user (as determined by setCulture() and getCulture()
-on the sfUser object). But we haven't done extensive testing of this
-feature. We welcome input from webmasters of internationalized sites.
+on the sfUser object, defaulting to Symfony's sf_default_culture settings.yml
+setting). But we haven't done extensive testing of this feature. We welcome 
+input from webmasters of internationalized sites.
 
 Enjoy!
 

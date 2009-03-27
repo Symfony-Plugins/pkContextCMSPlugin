@@ -390,4 +390,26 @@ class pkContextCMSActions extends sfActions
     $page->getNode()->delete(); 
     return $this->redirect($parent->getUrl());
   }
+  
+  public function executeSearch(sfRequest $request)
+  {
+    $q = $request->getParameter('q');
+    $query = pkContextCMSPageTable::queryWithSlots();
+    $query = Doctrine::getTable('pkContextCMSPage')->addSearchQuery($query, $q);
+    $user = $this->getUser();
+    if (!$user->isAuthenticated())
+    {
+      $query->andWhere('pkContextCMSPage.view_is_secure = false');
+    }
+    $this->pager = new sfDoctrinePager(
+      'pkMediaItem',
+      pkMediaTools::getOption('per_page'));
+    $this->pager->setQuery($query);
+    $page = $request->getParameter('page', 1);
+    $this->pager->setPage($page);
+    $this->pager->init();
+    $this->results = $this->pager->getResults();
+    $this->pagerUrl = "pkContextCMS/search?" .
+            http_build_query(array("q" => $q));
+  }
 }

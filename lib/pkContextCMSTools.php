@@ -34,7 +34,7 @@ class pkContextCMSTools
     }
     if (!$culture)
     {
-      $culture = sfConfig::get('app_pkContextCMS_default_culture', 'en');
+      $culture = sfConfig::get('sf_default_culture', 'en');
     }
     return $culture;
   }

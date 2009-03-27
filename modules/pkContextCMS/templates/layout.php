@@ -17,6 +17,7 @@
 	<?php include_partial('pkContextCMS/login') ?>
 	<div class="container outer"> 	<?php // the outer crops the drop shadows as the browser collapses ?>
 	<div class="container inner">
+		<?php include_partial('pkContextCMS/search') ?>
 		<h1 id="head"><?php echo link_to("Our Company", "@homepage") ?></h1>
 
 		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>

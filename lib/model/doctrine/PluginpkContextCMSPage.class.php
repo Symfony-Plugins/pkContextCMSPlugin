@@ -513,6 +513,11 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $area->latest_version++;
     $area->save();
     $this->end();
+    // This is AFTER the transaction because otherwise 
+    // the impact of what we've done above doesn't get indexed.
+    // Catch-22.
+    $npage = pkContextCMSPageTable::retrieveByIdWithSlots($this->getId());
+    $npage->updateLuceneIndex();
   }
   public function clearSlotCache()
   {
@@ -637,42 +642,72 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return $this->parentCache;
   }
 
-//  Right idea, but not yet
-//  public function save(Doctrine_Connection $conn = null)
-//  {
-//    $conn = $conn ? $conn : $this->getTable()->getConnection();
-//    $conn->beginTransaction();
-//    try
-//    {
-//      $ret = parent::save($conn);
-//      $this->updateLuceneIndex();
-//      $conn->commit();
-//      return $ret;
-//    }
-//    catch (Exception $e)
-//    {
-//      $conn->rollBack();
-//      throw $e;
-//    }
-//  }
-//
-//  public function updateLuceneIndex()
-//  {
-//    pkZendSearch::updateLuceneIndex($this,
-//      array('text' => $this->getSearchText())
-//    );
-//  }
-//
-//  public function getSearchText()
-//  {
-//    $text = "";
-//    $this->populateSlotCache();
-//    foreach ($this->slotCache[$this->culture] as $name => $area)
-//    {
-//      foreach ($area as $permid => $slot)
-//      {
-//        $text .= $slot->getSearchText();
-//      }
-//    }
-//  }
+  public function delete(Doctrine_Connection $conn = null)
+  {
+    return pkZendSearch::deleteFromDoctrineAndLucene($conn);
+  }
+
+  public function doctrineDelete(Doctrine_Connection $conn)
+  {
+    return parent::delete($conn);
+  }
+
+  public function save(Doctrine_Connection $conn = null)
+  {
+    return pkZendSearch::saveInDoctrineAndLucene($conn, $this->getCulture());
+  }
+
+  public function doctrineSave(Doctrine_Connection $conn)
+  {
+    return parent::save($conn);
+  }
+
+  public function updateLuceneIndex()
+  {
+    $text = $this->getSearchText();
+    pkZendSearch::updateLuceneIndex($this, 
+      array('text' => $text),
+      $this->getCulture());
+  }
+
+  public function getSearchSummary()
+  {
+    return pkString::limitWords($this->getSearchText(false), 100, "...");
+  }
+
+  public function getSearchText($withTitle = true)
+  {
+    $text = "";
+    $this->populateSlotCache();
+    foreach ($this->slotCache[$this->culture] as $name => $area)
+    {
+      if (!$withTitle)
+      {
+        if ($name === 'title')
+        {
+          continue;
+        }
+      }
+      foreach ($area as $permid => $slot)
+      {
+        $text .= $slot->getSearchText() . "\n";
+      }
+    }
+    return $text;
+  }
+
+  // Pages can contain slots for all cultures, but this returns the
+  // culture associated with the slots that were retrieved with
+  // the page in this particular case.
+  public function getCulture()
+  {
+    return $this->culture;
+  }
+
+  // You don't call this ordinarily. It's part of the implementation of
+  // fetching a page along with slots for a particualr culture.
+  public function setCulture($culture)
+  {
+    $this->culture = $culture;
+  }
 }

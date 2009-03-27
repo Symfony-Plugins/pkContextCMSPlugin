@@ -5,4 +5,11 @@
  */
 abstract class PluginpkContextCMSTextSlot extends BasepkContextCMSTextSlot
 {
+  public function getSearchText()
+  {
+    // Convert from HTML to plaintext before indexing by Lucene
+    // (Yes, "plaintext" slot values are stored as valid
+    // HTML for better rendering performance)
+    return strip_tags($this->value);
+  }
 }
