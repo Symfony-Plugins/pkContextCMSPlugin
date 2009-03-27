@@ -403,7 +403,7 @@ class pkContextCMSActions extends sfActions
     }
     $this->pager = new sfDoctrinePager(
       'pkMediaItem',
-      pkMediaTools::getOption('per_page'));
+      sfConfig::get('app_pkContextCMS_search_results_per_page'));
     $this->pager->setQuery($query);
     $page = $request->getParameter('page', 1);
     $this->pager->setPage($page);
