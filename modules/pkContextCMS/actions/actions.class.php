@@ -409,6 +409,7 @@ class pkContextCMSActions extends sfActions
     $this->pager->setPage($page);
     $this->pager->init();
     $this->results = $this->pager->getResults();
+    echo($this->pager->getPage());
     $this->pagerUrl = "pkContextCMS/search?" .
             http_build_query(array("q" => $q));
   }

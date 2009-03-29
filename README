@@ -3,14 +3,13 @@
 This is a technology preview release of pkContextCMS. Although the
 CMS already works quite well and we are close to launching a production
 site based on it, certain aspects are still maturing. In particular
-the stylesheet we provide here as a convenience is definitely larger
+the stylesheet we provide in the cmstest project is definitely larger
 than the final stylesheet we'll ultimately provide as we haven't had
 time to prune it back. 
 
-Also, IE6/IE7 support has not yet been extensively tested. That will
-of course happen before a stable release. The editing mechanisms all
-work fine in IE (yes, even 6), but there are known CSS issues
-at this stage. We're on top of those.
+Also, IE6/IE7 support is still maturing. That will of course happen before 
+a stable release. Editing will work 100% in IE7, while browsing will work
+100% in IE6. Needless to say, Firefox support is rock solid.
 
 Another issue we haven't tackled in detail yet is internationalization.
 We do in fact have the capability to store separate slots by culture,
