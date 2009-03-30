@@ -30,8 +30,6 @@ pkContextCMSPage:
   indexes:
     slugindex:
       fields: [slug]
-    luceneupdateindex:
-      fields: [lucene_update]
   relations:
     Author:
       class: sfGuardUser
