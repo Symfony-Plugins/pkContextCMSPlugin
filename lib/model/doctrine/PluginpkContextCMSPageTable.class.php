@@ -44,8 +44,8 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     if ($page)
     {
       $page->clearSlotCache();
+      $page->setCulture($culture);
     }
-    $page->setCulture($culture);
     return $page;
   }
 
@@ -65,8 +65,8 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     if ($page)
     {
       $page->clearSlotCache();
+      $page->setCulture($culture);
     }
-    $page->setCulture($culture);
     return $page;
   }
   // If culture is null you get the current user's culture,
@@ -110,8 +110,10 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     if ($page)
     {
       $page->clearSlotCache();
+      // Thanks to Quentin Dugauthier for spotting that there were
+      // still instances of this not being inside the if
+      $page->setCulture($culture);
     }
-    $page->setCulture($culture);
     return $page;
   }
 
