@@ -35,7 +35,20 @@
 
 <?php $i = 0 ?>
 <?php foreach ($slots as $permid => $slot): ?>
-	<div class="pk-context-cms-slot">
+   <?php if ($infinite): ?>
+  	<?php if (isset($options['type_options'][$slot->type])): ?>
+  	  <?php $slotOptions = $options['type_options'][$slot->type]; ?>
+  	<?php else: ?>
+  	  <?php $slotOptions = array() ?>
+  	<?php endif ?>
+  <?php else: ?>
+  	<?php $slotOptions = $options ?>
+  <?php endif ?>
+  <?php $outlineEditableClass = "" ?>
+  <?php if ($editable && ((isset($slotOptions['outline_editable']) && $slotOptions['outline_editable']) || $slot->isOutlineEditable())): ?>
+    <?php $outlineEditableClass = "pk-context-cms-slot-has-outline" ?>
+  <?php endif ?>
+	<div class="pk-context-cms-slot <?php echo $outlineEditableClass ?>">
 		<div class="pk-context-cms-slot-controls">		
   <?php if ($infinite): ?>
     <?php if ($editable): ?>
@@ -71,15 +84,6 @@
     <?php endif ?>
   <?php endif ?>
 		</div>
-  <?php if ($infinite): ?>
-  	<?php if (isset($options['type_options'][$slot->type])): ?>
-  	  <?php $slotOptions = $options['type_options'][$slot->type]; ?>
-  	<?php else: ?>
-  	  <?php $slotOptions = array() ?>
-  	<?php endif ?>
-  <?php else: ?>
-  	<?php $slotOptions = $options ?>
-  <?php endif ?>
   <div id="pk-context-cms-contents-<?php echo $name ?>-<?php echo $permid?>">
   <?php pk_context_cms_slot_body($name, 
     $slot->type, 
