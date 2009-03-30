@@ -512,12 +512,8 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     $area->latest_version++;
     $area->save();
+    pkContextCMSLuceneUpdateTable::requestUpdate($this);
     $this->end();
-    // This is AFTER the transaction because otherwise 
-    // the impact of what we've done above doesn't get indexed.
-    // Catch-22.
-    $npage = pkContextCMSPageTable::retrieveByIdWithSlots($this->getId());
-    $npage->updateLuceneIndex();
   }
   public function clearSlotCache()
   {
@@ -644,7 +640,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function delete(Doctrine_Connection $conn = null)
   {
-    return pkZendSearch::deleteFromDoctrineAndLucene($conn);
+    return pkZendSearch::deleteFromDoctrineAndLucene($this, null, $conn);
   }
 
   public function doctrineDelete(Doctrine_Connection $conn)
@@ -654,7 +650,10 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function save(Doctrine_Connection $conn = null)
   {
-    return pkZendSearch::saveInDoctrineAndLucene($conn, $this->getCulture());
+    // We don't use saveInDoctrineAndLucene here because there are
+    // too many side effects and the performance is terrible. Asynchronous 
+    // indexing is the way to go
+    return parent::save($conn);
   }
 
   public function doctrineSave(Doctrine_Connection $conn)
@@ -679,18 +678,21 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   {
     $text = "";
     $this->populateSlotCache();
-    foreach ($this->slotCache[$this->culture] as $name => $area)
+    if (isset($this->slotCache[$this->culture]))
     {
-      if (!$withTitle)
+      foreach ($this->slotCache[$this->culture] as $name => $area)
       {
-        if ($name === 'title')
+        if (!$withTitle)
         {
-          continue;
+          if ($name === 'title')
+          {
+            continue;
+          }
         }
-      }
-      foreach ($area as $permid => $slot)
-      {
-        $text .= $slot->getSearchText() . "\n";
+        foreach ($area as $permid => $slot)
+        {
+          $text .= $slot->getSearchText() . "\n";
+        }
       }
     }
     return $text;

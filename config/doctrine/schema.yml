@@ -30,6 +30,8 @@ pkContextCMSPage:
   indexes:
     slugindex:
       fields: [slug]
+    luceneupdateindex:
+      fields: [lucene_update]
   relations:
     Author:
       class: sfGuardUser
@@ -194,4 +196,21 @@ pkContextCMSAccess:
   indexes:
     pageindex:
       fields: [page_id]
+
+pkContextCMSLuceneUpdate:
+  tableName: pk_context_cms_lucene_update
+  columns:
+    page_id:
+      type: integer(4)
+    culture:
+      type: string(7)
+  indexes:
+    page_and_culture_index:
+      fields: [page_id, culture]
+  relations:
+    Page:
+      class: pkContextCMSPage
+      foreign: id
+      local: page_id
+      type: one
 

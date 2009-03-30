@@ -23,8 +23,8 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     if ($page)
     {
       $page->clearSlotCache();
+      $page->setCulture($culture);
     }
-    $page->setCulture($culture);
     return $page;
   }
 
