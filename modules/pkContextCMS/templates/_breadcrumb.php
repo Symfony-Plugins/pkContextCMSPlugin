@@ -48,7 +48,7 @@
 <?php if ($p->userHasPrivilege('edit')): ?>
 	<span class="pk-context-cms-breadcrumb-slash">/</span>
   <span id="create_form"> 
-  	<div class="h2"><?php echo link_to_function("Add Page<span></span>", '$("#pk-context-add-child-form").show(); ' . jq_visual_effect("fadeOut", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>
+  	<div class="h2"><?php echo link_to_function("Add Page<span></span>", '$("#pk-context-add-child-form").fadeIn(); ' . jq_visual_effect("fadeOut", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>
 	  <?php echo form_tag("pkContextCMS/create", array("id" => "pk-context-add-child-form", "style" => "display: none")) ?>
 	  <?php echo input_hidden_tag("parent", $page->slug) ?>
 	  <?php echo input_tag("title", "", array("class" => "pk-context-cms-add-page-title")) ?>
