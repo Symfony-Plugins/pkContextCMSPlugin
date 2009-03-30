@@ -399,11 +399,12 @@ class pkContextCMSActions extends sfActions
     $user = $this->getUser();
     if (!$user->isAuthenticated())
     {
-      $query->andWhere('pkContextCMSPage.view_is_secure = false');
+      $query->andWhere($query->getRootAlias() . ".view_is_secure = false");
     }
     $this->pager = new sfDoctrinePager(
       'pkMediaItem',
-      sfConfig::get('app_pkContextCMS_search_results_per_page'));
+      sfConfig::get('app_pkContextCMS_search_results_per_page', 10));
+    $this->results = $query->execute();
     $this->pager->setQuery($query);
     $page = $request->getParameter('page', 1);
     $this->pager->setPage($page);
