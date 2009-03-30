@@ -56,6 +56,8 @@ pkContextCMSPlugin requires:
 * sfDoctrineGuardPlugin
 * pkToolkitPlugin 
 * PHP 5.2.4 or better with PDO (for Symfony)
+* Zend Search
+* cron or other scheduled task support (for search index updates)
 
 pkContextCMSPlugin is compatible with sfShibbolethPlugin (the 1.2 trunk).
 
@@ -96,6 +98,19 @@ You can now log in as `admin` with the password `admin` to see how the
 site behaves when you're logged in. Start adding subpages, editing
 slots, adding slots to the multiple-slot content area... have a ball with it
 and send your comments to `tom@punkave.com`.
+
+For the new Lucene-based search features to work you will also need
+to set up a cron job. For the search index to be brought up to date
+every ten minutes, use:
+
+0,10,20,30,40,50 * * * * /path/to/your/project/symfony pkContextCMS:update-lucen
+e
+
+Synchronous lucene search index updates are for the birds. They slow
+down editing and create consistency problems with Doctrine's caching
+mechanism which are extremely difficult to debug. If cron jobs are a 
+problem for you, trigger this task via system() from a PHP page that
+is hit periodically.
 
 That's the easy way. The notes that follow assume you're doing it 
 the hard way. (: 

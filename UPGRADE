@@ -1,0 +1,18 @@
+Upgrade Notes
+
+Those updating existing installations after March 30th, 2009 will need a 
+new table:
+
+CREATE TABLE pk_context_cms_lucene_update (id BIGINT AUTO_INCREMENT, page_id INT, culture VARCHAR(7), INDEX page_and_culture_index_idx (page_id, culture), INDEX page_id_idx (page_id), PRIMARY KEY(id)) ENGINE = INNODB;
+
+For the new Lucene-based search features to work you will also need
+to set up a new cron job. For the search index to be brought up to date
+every ten minutes, use:
+
+0,10,20,30,40,50 * * * * /path/to/your/project/symfony pkContextCMS:update-lucene
+
+Synchronous lucene search index updates are for the birds - they slow
+down editing and create consistency problems with Doctrine's caching
+mechanism which are extremely difficult to debug. If cron jobs are a 
+problem for you, trigger this task via system() from a PHP page that
+is hit periodically.
