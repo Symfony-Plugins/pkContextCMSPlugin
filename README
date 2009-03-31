@@ -742,10 +742,12 @@ The relevant portion of `config/doctrine/schema.yml` for
 The `extends` keyword specifies the class we are inheriting from, while
 the `keyValue` field must contain the name of the type. Doctrine uses
 this to figure out what class of object to create when loading a 
-record from the `pk_context_cms_slot` table. The slot type name name is
+record from the `pk_context_cms_slot` table. The slot type name is
 recorded in the `type` column. You don't need to worry
 about the details, but for more information about them,
 see the excellent Doctrine documentation.
+
+*Note that the keyValue setting does not include the word Slot.*
 
 *Yes, you can have custom columns in the database for your type.*
 A plaintext slot doesn't need them because the `value` column works
