@@ -2,9 +2,13 @@
 
 <?php if (!$refresh): ?>
 
+<!-- START SLOT -->
+<div id="pk-context-cms-contents-container-<?php echo $name ?>" class="pk-context-cms-contents-container">
+	
   <?php if ($editable): ?>
 		<div class="pk-context-cms-add-slot-controls">
-    <?php echo jq_link_to_remote("History",
+    
+		<?php echo jq_link_to_remote("History",
       array(
         "url" => "pkContextCMS/history?" . http_build_query(
           array("id" => $page->id, "name" => $name)),
@@ -22,7 +26,7 @@
 		<br class="clear c"/>
   <?php endif ?>
 
-<div id="pk-context-cms-contents-<?php echo $name ?>" class="pk-context-cms-contents-all-slots">
+
 <?php endif ?>
 
 <?php if ($preview): ?>
@@ -48,6 +52,7 @@
   <?php if ($editable && ((isset($slotOptions['outline_editable']) && $slotOptions['outline_editable']) || $slot->isOutlineEditable())): ?>
     <?php $outlineEditableClass = "pk-context-cms-slot-has-outline" ?>
   <?php endif ?>
+<div id="pk-context-cms-contents-<?php echo $name ?>" class="pk-context-cms-contents-all-slots">
 	<div class="pk-context-cms-slot <?php echo $outlineEditableClass ?>">
 		<div class="pk-context-cms-slot-controls">		
   <?php if ($infinite): ?>
@@ -84,19 +89,18 @@
     <?php endif ?>
   <?php endif ?>
 		</div>
-  <div id="pk-context-cms-contents-<?php echo $name ?>-<?php echo $permid?>">
-  <?php pk_context_cms_slot_body($name, 
-    $slot->type, 
-    $permid,
-    array_merge(array("preview" => $preview), $slotOptions), array(), false) ?>
-  </div>
-  <?php $i++ ?>
-
+		
+  	<div id="pk-context-cms-contents-<?php echo $name ?>-<?php echo $permid?>">
+  		<?php pk_context_cms_slot_body($name, $slot->type, $permid, array_merge(array("preview" => $preview), $slotOptions), array(), false) ?>
+  	</div>
 	</div>
-<?php endforeach ?>
+</div>
+<?php $i++; endforeach ?>
 
 <?php if (!$refresh): ?>
-  </div>
+		</div>
+
+<!-- END SLOT -->
   <?php if (0): ?>
     <?php echo jq_sortable_element("#pk-context-cms-contents-$name", array(
     	'url' => 'pkContextCMS/sortArea?' .
