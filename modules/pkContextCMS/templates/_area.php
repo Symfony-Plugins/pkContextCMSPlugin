@@ -15,7 +15,7 @@
         "update" => "pk-context-cms-history-container-$name"
       ), array('class' => 'pk-context-cms-slot-history', ) ) ?>
 
-    <div id="pk-context-cms-history-container-<?php echo $name ?>"></div>
+    <div id="pk-context-cms-history-container-<?php echo $name ?>" class="pk-context-cms-history-container"></div>
 
     <?php if ($infinite): ?>
 	      <?php echo link_to_function("Add Slot<span></span>", "$('#pk-context-cms-add-slot-form-$name').show(); $(this).hide()", array('class' => 'pk-btn add', )) ?>
