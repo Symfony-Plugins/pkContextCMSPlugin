@@ -82,11 +82,26 @@ class pkContextCMSBaseActions extends sfActions
       array('permid' => $this->permid, 'slot' => $this->slot));
     if  ($this->getRequestParameter('noajax'))
     {
-      return $this->redirect($this->page->getUrl());
+      return $this->redirectToPage();
     }
     else
     {
       return $this->editAjax(false);
+    }
+  }
+
+  protected function redirectToPage()
+  {
+    // Used for non-AJAX edits of global slots so that we can
+    // redirect back to the real page after the edit succeeds
+    if ($this->hasRequestParameter('actual_slug'))
+    {
+      return $this->redirect(pkContextCMSTools::urlForPage(
+        $this->getRequestParameter('actual_slug')));
+    }
+    else
+    {
+      return $this->redirect($this->page->getUrl());
     }
   }
 

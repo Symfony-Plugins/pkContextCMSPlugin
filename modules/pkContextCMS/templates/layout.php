@@ -18,7 +18,10 @@
 	<div class="container outer"> 	<?php // the outer crops the drop shadows as the browser collapses ?>
 	<div class="container inner">
 		<?php include_partial('pkContextCMS/search') ?>
-		<h1 id="head"><?php echo link_to("Our Company", "@homepage") ?></h1>
+    <div id="logo">
+      <?php // Insert an image from the media plugin as our logo ?>
+      <?php pk_context_cms_slot("logo", 'pkContextCMSSlideshow', array("global" => true)) ?>
+    </div>
 
 		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
 
