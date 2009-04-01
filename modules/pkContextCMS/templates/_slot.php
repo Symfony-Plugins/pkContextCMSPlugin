@@ -25,9 +25,12 @@
       "permid" => $permid,
       "options" => $options,
       "validationData" => $validationData)) ?>
-  <?php echo submit_tag("Save", array("onClick" => "window.pkContextCMS.callOnSubmit('$id'); return true", "class" => "submit")) ?>
-  <?php echo button_to_function("Cancel", 
-    "$('#form-$id').hide(); $('#content-$id').show()", array("class" => "submit")) ?>
+
+	<div class="form-row">  <!-- I HOPE YOU GUYS DON'T MIND I ADDED THIS FORM-ROW BECAUSE IT'S TOTALLY AWESOME ` rick -->
+	  <?php echo submit_tag("Save", array("onClick" => "window.pkContextCMS.callOnSubmit('$id'); return true", "class" => "submit")) ?>
+	  <?php echo button_to_function("Cancel", "$('#form-$id').hide(); $('#content-$id').show()", array("class" => "submit")) ?>
+	</div>
+
   </form>
 <?php endif ?>
 <div class="pk-context-cms-content<?php echo $outlineEditable ? " pk-context-cms-editable" : "" ?>" id="content-<?php echo $id ?>" style="display: <?php echo $showEditor ? "none" : "block"?>"
