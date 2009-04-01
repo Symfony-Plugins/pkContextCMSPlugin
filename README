@@ -1150,6 +1150,13 @@ display an external editing page. When `noajax` is set,
 the user is redirected to the updated page instead. This is
 described in more detail in the next section.
 
+If you want your slot to work as a global slot, you'll also need
+to be sure to pass the slug of the actual page as a parameter
+of your `after` URL. As part of a call to `http_build_query` it
+looks like this:
+
+    "actual_slug" => pkContextCMSTools::getRealPage()->getSlug()
+
 You'll also want to turn off the "double-click to edit" behavior that
 would otherwise open the inline editor, as explained in the
 previous section.
