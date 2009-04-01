@@ -19,8 +19,9 @@
 	<div class="container inner">
 		<?php include_partial('pkContextCMS/search') ?>
     <div id="logo">
-      <?php // Insert an image from the media plugin as our logo ?>
-      <?php pk_context_cms_slot("logo", 'pkContextCMSSlideshow', array("global" => true)) ?>
+      <?php // Insert an image from the media plugin as our logo. ?>
+      <?php // use the cropping feature, and link the logo to our home page ?>
+      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 400, "height" => 200, "resizeType" => "c", "link" => "/")) ?>
     </div>
 
 		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
