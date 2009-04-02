@@ -26,7 +26,7 @@
       "options" => $options,
       "validationData" => $validationData)) ?>
 
-	<div class="form-row">  <!-- I HOPE YOU GUYS DON'T MIND I ADDED THIS FORM-ROW BECAUSE IT'S TOTALLY AWESOME ` rick -->
+	<div class="form-row">  <?php // I HOPE YOU GUYS DON'T MIND I ADDED THIS FORM-ROW BECAUSE IT'S TOTALLY AWESOME ` rick ?>
 	  <?php echo submit_tag("Save", array("onClick" => "window.pkContextCMS.callOnSubmit('$id'); return true", "class" => "submit")) ?>
 	  <?php echo button_to_function("Cancel", "$('#form-$id').hide(); $('#content-$id').show()", array("class" => "submit")) ?>
 	</div>
