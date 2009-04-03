@@ -42,7 +42,11 @@ EOF;
     foreach ($updates as $update)
     {
       $page = pkContextCMSPageTable::retrieveByIdWithSlots($update->page_id, $update->culture);
-      $page->updateLuceneIndex(); 
+      // Careful, pages die
+      if ($page)
+      {
+        $page->updateLuceneIndex(); 
+      }
       $update->delete();
     }
   }

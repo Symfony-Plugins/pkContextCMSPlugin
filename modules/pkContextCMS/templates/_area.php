@@ -102,7 +102,7 @@
 	
     <?php // Wraps the actual content - edit and normal views - ?>
     <?php // for this individual slot ?>
-  	<div id="pk-context-cms-contents-<?php echo $name ?>-<?php echo $permid?>">
+  	<div id="pk-context-cms-contents-<?php echo $name ?>-<?php echo $permid?>" class="pk-context-cms-contents <?php echo $slot->type ?>">
       <?php // Now we can include the slot ?>
   		<?php pk_context_cms_slot_body($name, $slot->type, $permid, array_merge(array("preview" => $preview), $slotOptions), array(), false) ?>
   	</div>
