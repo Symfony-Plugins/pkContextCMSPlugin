@@ -17,7 +17,13 @@
 	<?php include_partial('pkContextCMS/login') ?>
 	<div class="container outer"> 	<?php // the outer crops the drop shadows as the browser collapses ?>
 	<div class="container inner">
-		<?php include_partial('pkContextCMS/search') ?>
+		
+	  <div id="topper">
+	  <?php // Use a global slot so it's the same on all pages and on non-CMS pages ?>
+    <?php pk_context_cms_slot('top', 'pkContextCMSRichText', array("global" => true)) ?>
+    <?php include_partial('pkContextCMS/search') ?>
+	  </div>
+
     <div id="logo">
       <?php // Insert an image from the media plugin as our logo. ?>
       <?php // use the cropping feature, and link the logo to our home page ?>
