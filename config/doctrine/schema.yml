@@ -211,4 +211,5 @@ pkContextCMSLuceneUpdate:
       foreign: id
       local: page_id
       type: one
+      onDelete: cascade
 

@@ -1,9 +1,33 @@
 Upgrade Notes
 
-Those updating existing installations after March 30th, 2009 will need a 
-new table:
+2008-04-07:
+
+Privileges for editing pages and privileges for managing pages
+(adding and deleting them) are now managed separately. If you are
+already using the app_pkContextCMS_edit_group feature to grant
+editing privileges to certain users within certain parts of the site,
+you'll need to decide whether to extend add/delete privileges to
+those users as well via app_pkContextCMS_manage_group and the 
+new multiple select element that has been added to the page settings
+dialog. See the manual for more information about the changes.
+
+Those upgrading installations created between March 30th, 2009 and
+April 7th, 2009 should execute the following SQL statement to 
+add ON DELETE CASCADE to the pk_context_cms_lucene_update table
+so that outstanding indexing requests don't break the "delete page"
+feature:
+
+ALTER TABLE pk_context_cms_lucene_update ADD FOREIGN KEY (page_id) REFERENCES pk_context_cms_page(id) ON DELETE CASCADE;
+
+2008-04-30 (updated 2008-04-07):
+
+Those updating existing installations created prior to the svn version
+of March 30th, 2009 will need a new table and an ON DELETE CASCADE
+foreign key constraint for it:
 
 CREATE TABLE pk_context_cms_lucene_update (id BIGINT AUTO_INCREMENT, page_id INT, culture VARCHAR(7), INDEX page_and_culture_index_idx (page_id, culture), INDEX page_id_idx (page_id), PRIMARY KEY(id)) ENGINE = INNODB;
+
+ALTER TABLE pk_context_cms_lucene_update ADD FOREIGN KEY (page_id) REFERENCES pk_context_cms_page(id) ON DELETE CASCADE;
 
 For the new Lucene-based search features to work you will also need
 to set up a new cron job. For the search index to be brought up to date

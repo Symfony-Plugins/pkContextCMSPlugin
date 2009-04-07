@@ -17,16 +17,6 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
       'template', 
       new sfWidgetFormSelect(
         array('choices' => pkContextCMSTools::getTemplates())));
-    list($all, $selected, $inherited, $sufficient) = 
-      $this->getObject()->getAccessesById('edit');
-    foreach ($inherited as $userId)
-    {
-      unset($all[$userId]);
-    }
-    foreach ($sufficient as $userId)
-    {
-      unset($all[$userId]);
-    }
     // On vs. off makes more sense to end users, but when we first
     // designed this feature we had an 'archived vs. unarchived'
     // approach in mind
@@ -61,16 +51,8 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
           'class' => 'pk-radio-select'
         )));
 
-    $this->setWidget(
-      'editors', 
-      new sfWidgetFormSelect(
-        array(
-          // + operator is correct: we don't want renumbering when
-          // ids are numeric
-          'choices' => 
-            array("" => "Choose a User to Add") + $all,
-          'multiple' => true,
-          'default' => $selected)));
+    $this->addPrivilegeWidget('edit', 'editors');
+    $this->addPrivilegeWidget('manage', 'managers');
 
     $this->setValidator(
       'slug',
@@ -89,12 +71,6 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
       new sfValidatorChoice(
         array('required' => true,
           'choices' => array_keys(pkContextCMSTools::getTemplates()))));
-    $this->setValidator(
-      'editors',
-      new sfValidatorChoice(
-        array('required' => false, 
-          'multiple' => true,
-          'choices' => array_keys($all))));
 
     // The slug of the home page cannot change (chicken and egg problems)
     if ($this->getObject()->getSlug() === '/')
@@ -116,10 +92,41 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     $user = sfContext::getInstance()->getUser();
     if (!$user->hasCredential('cms_admin'))
     {
-      unset($this->editors);
-      unset($this->slug);
-    }
+      unset($this['editors']);
+      unset($this['managers']);
+      unset($this['slug']);
+    } 
   }
+  protected function addPrivilegeWidget($privilege, $widgetName)
+  {
+    list($all, $selected, $inherited, $sufficient) = 
+      $this->getObject()->getAccessesById($privilege);
+    foreach ($inherited as $userId)
+    {
+      unset($all[$userId]);
+    }
+    foreach ($sufficient as $userId)
+    {
+      unset($all[$userId]);
+    }
+    $this->setWidget(
+      $widgetName,
+      new sfWidgetFormSelect(
+        array(
+          // + operator is correct: we don't want renumbering when
+          // ids are numeric
+          'choices' => 
+            array("" => "Choose a User to Add") + $all,
+          'multiple' => true,
+          'default' => $selected)));
+    $this->setValidator(
+      $widgetName,
+      new sfValidatorChoice(
+        array('required' => false, 
+          'multiple' => true,
+          'choices' => array_keys($all))));
+  }
+
   public function updateObject($values = null)
   {
     $object = parent::updateObject($values);
@@ -131,16 +138,20 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     $slug = preg_match("/^(\/.*?)\/*$/", $slug, $matches);
     $object->slug = $matches[1];
 
-    // Only true for admins
-    if (isset($this['editors']))
+    $this->savePrivileges($object, 'edit', 'editors');
+    $this->savePrivileges($object, 'manage', 'managers');
+  }
+  protected function savePrivileges($object, $privilege, $widgetName)
+  {
+    if (isset($this[$widgetName]))
     {
-      $editorIds = $this->getValue('editors');
+      $editorIds = $this->getValue($widgetName);
       // Happens when the list is empty (sigh)
       if ($editorIds === null)
       {
         $editorIds = array();
       }
-      $object->setAccessesById('edit', $editorIds);
+      $object->setAccessesById($privilege, $editorIds);
     }
   }
 }

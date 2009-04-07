@@ -45,47 +45,22 @@
 					<?php endif ?>
 			</div>
 		</div>
-		
-	<?php if (isset($form['editors'])): ?>
-	  <div id="pk-context-cms-settings-right">
-	  	<div class="pk-context-cms-form-row">
-		
-		    <label>Page Editors</label>
-				<div class="pk-context-cms-local-editors">
-			    <h4>Local Editors</h4>
-			    <?php echo $form['editors'] ?>
-				</div>
-
-				<?php if (count($inheritedEditors) > 0): ?>
-				<div class="pk-context-cms-inherited-editors">
-		    	<h4>Inherited Editors</h4>
-			    <ul>
-			    <?php foreach($inheritedEditors as $editorName): ?>
-			      <li><?php echo htmlspecialchars($editorName) ?></li>
-			    <?php endforeach ?>
-			    </ul>
-					<?php if(0): ?>
-				    <h4>Admins</h4>
-				    <ul>
-				    <?php foreach($adminEditors as $editorName): ?>
-				      <li><?php echo htmlspecialchars($editorName) ?></li>
-				    <?php endforeach ?>
-				    </ul>
-					<?php endif ?>
-				</div>
-				<?php endif ?>
-			
-		  </div>
-	  </div>
-	<?php endif ?>
-
+	
+  <?php include_partial('pkContextCMS/privileges', 
+    array('form' => $form, 'widget' => 'editors',
+      'label' => 'Privilege:<br /> Page Editing', 'inherited' => $inherited['edit'],
+      'admin' => $admin['edit'])) ?>
+  <?php include_partial('pkContextCMS/privileges', 
+    array('form' => $form, 'widget' => 'managers',
+      'label' => 'Privilege:<br /> Add and Delete Pages', 'inherited' => $inherited['manage'],
+      'admin' => $admin['manage'])) ?>
 	<br class="c"/>
 	
 	<div id="pk-context-cms-settings-footer">
 	<?php echo submit_tag("Save Changes", array("class" => "submit", "id" => "pk-context-cms-settings-submit")) ?>
 	<span class="or">or</span>
 	<?php echo jq_link_to_function('cancel', '$("#pk-context-cms-settings").slideUp(); $("#pk-context-cms-settings-button-open").show(); $("#pk-context-cms-settings-button-close").addClass("loading").hide()', array('class' => 'cancel', 'title' => 'cancel', )) ?>
-	<?php if ($page->userHasPrivilege('delete')): ?>
+	<?php if ($page->userHasPrivilege('manage')): ?>
     <?php # TBB: delete class made the delete button invisible! ?>
 	  <?php echo link_to("Delete Page<span></span>", 
 	    "pkContextCMS/delete?id=" . $page->getId(), 

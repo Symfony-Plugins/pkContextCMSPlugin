@@ -248,7 +248,7 @@ the editing controls.
 
 === Managing Pages ===
 
-When a user has editing privileges on a page, they are able to make
+When a user has appropriate privileges on a page, they are able to make
 the following changes via the breadcrumb trail, which becomes an
 interactive site management tool when logged in:
 
@@ -261,10 +261,16 @@ Note that the breadcrumb trail appears on the home page only when
 logged in with editing privileges. On sub-pages the breadcrumb
 trail always appears.
 
-Deletion of a page is not permanent. Anonymous users, and users who do not
+pkContextCMS emphasizes "turning off" pages as the preferred way
+of "almost" deleting them because it is not permanent.
+Anonymous users, and users who do not
 have editing privileges on the page, will see the usual 404 Not Found error.
 But users with editing privileges will see the page with its title
 "struck through" and will be able to undelete the page if they desire.
+You can also delete a page permanently via the small X in the lower right
+corner of the management dialog. Most of the time that's a shortsighted
+thing to do but it is useful when you create an unnecessary
+page by accident.
 
 The side navigation column also offers an editing tool: users with
 editing privileges can change the order of child pages listed there
@@ -620,7 +626,8 @@ override them.
 By default, a pkContextCMS site follows these security rules:
 
 * Anyone can view any page without being authenticated.
-* Any authenticated (logged-in) user can edit any page.
+* Any authenticated (logged-in) user can edit any page,
+and add and delete pages.
 
 This is often sufficient for simple sites. But pkContextCMS can
 also handle more complex security needs.
@@ -650,30 +657,50 @@ edit, regardless of all other settings. Note that the
 sfGuard "superadmin" user always has all credentials.
 
 2) Any user with `edit_sufficient_credentials` can always edit
-anywhere on the site. For instance, if you add such users
-to the `executive_editors` sfGuardGroup and grant that group
-the `executive_editors` permission, then you can give them
-full control of the CMS with these settings:
+pages (but not add or delete them) anywhere on the site. For instance, 
+if you add such users to the `executive_editors` sfGuardGroup and grant that 
+group the `executive_editors` permission, then you can give them
+full editing privileges with these settings:
 
     all:
       pkContextCMS:
         edit_sufficient_credentials: executive_editors
 
+Similarly, any user with `manage_sufficient_credentials` can always
+add or delete pages anywhere on the site. So a more complete setting
+for a typical setup would be:
+
+    all:
+      pkContextCMS:
+        edit_sufficient_credentials: executive_editors
+        manage_sufficient_credentials: executive_editors
+
 3) Any user who is a member of the group specified by
-`edit_group` can *potentially* be made an
+`app_pkContextCMS_edit_group` can *potentially* be made an
 editor in particular parts of the site. If
-`edit_group` is not set, all users are
+`app_pkContextCMS_edit_group` is not set, all users are
 potential editors: 
 
     all:
       pkContextCMS:
         edit_group: editors
 
+Similarly, any user who is a member of the group specified by
+`app_pkContextCMS_manage_group` can potentially be given the ability to add
+and delete pages in a particular part of the site. So a 
+common setup might be:
+
+    all:
+      pkContextCMS:
+        edit_group: editors
+        manage_group: editors
+
 Why is this feature useful? Two reasons: because checking their membership
 in one group is faster than checking their access privileges in the
 entire chain of ancestor pages, and because when an administrator is
 managing the list of users permitted to edit a page the list of users in the
-editors group is less unwieldy than a list of all users.
+editors group is much easier to read than a list of all users (especially
+in a large system with many non-editing users).
 
 4) Editing privileges for any specific page and its descendants
 can be granted to any member of the group specified by 
@@ -681,14 +708,13 @@ can be granted to any member of the group specified by
 any user if `app_pkContextCMS_edit_group` is not set.
 When a user with the `cms_admin` credential clicks on the "lock" icon, 
 they are given the option of assigning editors for that page. 
+The same principle applies to "managing" (adding and deleting)
+pages, with the group being indicated by 
+your `app_pkContextCMS_manage_group` setting.
 
 Note that the pulldown list of possible editors can be quite long
 if there are thousands of people with accounts on your site! This
-is part of why we offer the `edit_group` feature.
-To take advangage of it, add all potential editors to an sfGuardGroup, 
-give that group a permission named `editors`, and set 
-`edit_sufficient_credentials` to `editors`. Now the dropdown list will
-display only the members of the `editors` group.
+is why we recommend setting up groups as described above.
 
 === On/Off: Hiding Pages, by Choice and By Default ===
 

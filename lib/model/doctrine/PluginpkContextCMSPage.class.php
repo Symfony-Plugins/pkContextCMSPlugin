@@ -25,20 +25,23 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function userHasPrivilege($privilege, $user = false)
   {
-    if ($privilege === 'delete')
-    {
-      // If you can EDIT the parent, then you can DELETE
-      // its children (after all, you could create them).
-      $parent = $this->getParent();
-      if (!$parent)
-      {
-        // Nobody, not even the superadmin, can delete the home page
-        return false;
-      }
-      // Make sure we pass the user on!
-      return $parent->userHasPrivilege('edit', $user);
-    }
-
+    // This was nice logic for granting delete privileges if you
+    // have the privilege of editing the parent of the page. 
+    // A good idea, but not what the client wants. We've gone
+    // with a separate 'admin' privilege instead
+//    if ($privilege === 'delete')
+//    {
+//      // If you can EDIT the parent, then you can DELETE
+//      // its children (after all, you could create them).
+//      $parent = $this->getParent();
+//      if (!$parent)
+//      {
+//        // Nobody, not even the superadmin, can delete the home page
+//        return false;
+//      }
+//      // Make sure we pass the user on!
+//      return $parent->userHasPrivilege('edit', $user);
+//    }
     // Caching for speed when answering the same query about the
     // current user over and over again during the lifetime of
     // a single request (to check editing privs on slots etc)
@@ -640,6 +643,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function delete(Doctrine_Connection $conn = null)
   {
+    // TODO: must delete outstanding indexing requests here
     return pkZendSearch::deleteFromDoctrineAndLucene($this, null, $conn);
   }
 

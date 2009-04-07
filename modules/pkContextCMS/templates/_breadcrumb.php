@@ -45,7 +45,7 @@
     <?php endif ?>		
   <?php endif ?>
 <?php endforeach ?>
-<?php if ($p->userHasPrivilege('edit')): ?>
+<?php if ($p->userHasPrivilege('manage')): ?>
 	<span class="pk-context-cms-breadcrumb-slash">/</span>
   <span id="create_form"> 
   	<div class="you-are-here"><?php echo link_to_function("Add Page<span></span>", '$("#pk-context-add-child-form").fadeIn(); ' . jq_visual_effect("fadeOut", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>

@@ -73,26 +73,26 @@ class pkContextCMSActions extends sfActions
   // Note that these fetch based on the id or slug found in the
   // named parameter of the request
 
-  private function retrievePageForEditingById($parameter = 'id')
+  private function retrievePageForEditingById($parameter = 'id', $privilege = 'edit')
   {
     $page = pkContextCMSPageTable::retrieveByIdWithSlots(
       $this->getRequestParameter($parameter));
-    $this->validAndEditable($page);
+    $this->validAndEditable($page, $privilege);
     return $page;
   }
 
-  private function retrievePageForEditingBySlug($parameter = 'slug')
+  private function retrievePageForEditingBySlug($parameter = 'slug', $privilege = 'edit')
   {
     $page = pkContextCMSPageTable::retrieveBySlugWithSlots(
       $this->getRequestParameter($parameter));
-    $this->validAndEditable($page);
+    $this->validAndEditable($page, $privilege);
     return $page;
   }
 
-  private function validAndEditable($page)
+  private function validAndEditable($page, $privilege = 'edit')
   {
     $this->forward404Unless($page);
-    $this->forward404Unless($page->userHasPrivilege('edit'));
+    $this->forward404Unless($page->userHasPrivilege($privilege));
   }
 
   public function executeSort(sfRequest $request)
@@ -160,7 +160,7 @@ class pkContextCMSActions extends sfActions
   public function executeCreate()
   {
     $this->forward404Unless($this->getRequest()->getMethod() == sfRequest::POST);
-    $parent = $this->retrievePageForEditingBySlug('parent');
+    $parent = $this->retrievePageForEditingBySlug('parent', 'manage');
     
     $title = trim($this->getRequestParameter('title'));
 
@@ -365,23 +365,30 @@ class pkContextCMSActions extends sfActions
     // This might make more sense in some kind of read-only form control.
     // TODO: cache the first call that the form makes so this doesn't
     // cause more db traffic.
-    list($all, $selected, $inherited, $sufficient) = $this->page->getAccessesById("edit");
-    $this->inheritedEditors = array();
+    $this->inherited = array();
+    $this->admin = array();
+    $this->addPrivilegeLists('edit');
+    $this->addPrivilegeLists('manage');
+  }
+
+  protected function addPrivilegeLists($privilege)
+  {
+    list($all, $selected, $inherited, $sufficient) = $this->page->getAccessesById($privilege);
+    $this->inherited[$privilege] = array();
     foreach ($inherited as $userId)
     {
-      $this->inheritedEditors[] = $all[$userId];
+      $this->inherited[$privilege][] = $all[$userId];
     }
-    $this->adminEditors = array();
+    $this->admin[$privilege] = array();
     foreach ($sufficient as $userId)
     {
-      $this->adminEditors[] = $all[$userId];
+      $this->admin[$privilege][] = $all[$userId];
     }
   }
 
   public function executeDelete()
   {
-    $page = $this->retrievePageForEditingById();
-    $this->forward404Unless($page->userHasPrivilege('delete'));
+    $page = $this->retrievePageForEditingById('id', 'manage');
     $parent = $page->getParent();
     // tom@punkave.com: we must delete via the nested set
     // node or we'll corrupt the tree. Nasty detail, that.
