@@ -23,7 +23,7 @@
     <?php $title = "<span class='pk-context-cms-archived'>$title</span>" ?>
   <?php endif ?>
   <?php if ($page === $p): ?>
-    <?php echo('<div class="pk-context-cms-rename h2" id="pk-context-cms-rename">') ?>
+    <?php echo('<div class="pk-context-cms-rename you-are-here" id="pk-context-cms-rename">') ?>
     <?php echo editable_path_component($title, "pkContextCMS/rename", array("id" => $page->id), $p->userHasPrivilege('edit'), "epc") ?>
 	<?php else: ?>
     <?php echo link_to($title, $p->getUrl()) ?>
