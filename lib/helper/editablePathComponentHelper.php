@@ -28,7 +28,7 @@ function editable_path_component($value, $renameAction,
     sfContext::getInstance()->getLogger()->info("XXX Value is $value");
     $result .= link_to_function(
       $value, jq_visual_effect("fadeIn", "#$epcn-rename-form") . 
-        "$('.pk-context-cms-rename').addClass('editing');", 
+        "$('.pk-context-cms-rename').addClass('editing');sizeBreadcrumbInput()", 
         array("id" => "$epcn-rename-button", "class" => "$classStem-rename-button"));
     $result .= form_tag($renameAction, 
       array("id" => "$epcn-rename-form", "style" => "display: none",
