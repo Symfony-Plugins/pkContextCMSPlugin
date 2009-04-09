@@ -46,14 +46,16 @@
 			</div>
 		</div>
 	
+  <div id="pk-context-cms-settings-right">
   <?php include_partial('pkContextCMS/privileges', 
     array('form' => $form, 'widget' => 'editors',
-      'label' => 'Privilege:<br /> Page Editing', 'inherited' => $inherited['edit'],
+      'label' => 'Editors', 'inherited' => $inherited['edit'],
       'admin' => $admin['edit'])) ?>
   <?php include_partial('pkContextCMS/privileges', 
     array('form' => $form, 'widget' => 'managers',
-      'label' => 'Privilege:<br /> Add and Delete Pages', 'inherited' => $inherited['manage'],
+      'label' => 'Managers', 'inherited' => $inherited['manage'],
       'admin' => $admin['manage'])) ?>
+  </div>
 	<br class="c"/>
 	
 	<div id="pk-context-cms-settings-footer">
@@ -61,7 +63,6 @@
 	<span class="or">or</span>
 	<?php echo jq_link_to_function('cancel', '$("#pk-context-cms-settings").slideUp(); $("#pk-context-cms-settings-button-open").show(); $("#pk-context-cms-settings-button-close").addClass("loading").hide()', array('class' => 'cancel', 'title' => 'cancel', )) ?>
 	<?php if ($page->userHasPrivilege('manage')): ?>
-    <?php # TBB: delete class made the delete button invisible! ?>
 	  <?php echo link_to("Delete Page<span></span>", 
 	    "pkContextCMS/delete?id=" . $page->getId(), 
 	    array("confirm" => "Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn icon delete', )) ?>

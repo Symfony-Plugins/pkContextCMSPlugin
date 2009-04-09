@@ -1,5 +1,4 @@
 <?php if (isset($form[$widget])): ?>
-  <div id="pk-context-cms-settings-right">
     <div class="pk-context-cms-form-row">
   
       <label><?php echo $label ?></label>
@@ -28,5 +27,4 @@
       <?php endif ?>
     
     </div>
-  </div>
 <?php endif ?>
