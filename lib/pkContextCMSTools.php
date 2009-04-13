@@ -52,6 +52,9 @@ class pkContextCMSTools
     $routed_url = preg_replace('/([^:])\/\//', '$1/', $routed_url);
     return $routed_url;
   }
+  // We need a separate flag so that even a non-CMS page can
+  // restore its state (i.e. set the page back to null)
+  static private $global = false;
   static private $currentPage = null;
   static private $savedCurrentPage = null;
   static public function setCurrentPage($page)
@@ -76,15 +79,18 @@ class pkContextCMSTools
         $global->save();
       }
       self::setCurrentPage($global);
+      self::$global = true;
     }
   }
 
   static public function globalShutdown()
   {
-    if (self::$savedCurrentPage)
+    if (self::$global)
     {
       self::setCurrentPage(self::$savedCurrentPage);
-      self::$savedCurrentPage = false;
+      // Set to null not false
+      self::$savedCurrentPage = null;
+      self::$global = false;
     }
   }
 
