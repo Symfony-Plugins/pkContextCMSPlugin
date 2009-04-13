@@ -33,7 +33,7 @@
 
   </form>
 <?php endif ?>
-<div class="pk-context-cms-normal-view<?php echo $outlineEditable ? " pk-context-cms-editable" : "" ?>" id="content-<?php echo $id ?>" style="display: <?php echo $showEditor ? "none" : "block"?>"
+<div class="pk-context-cms-normal-view<?php echo $outlineEditable ? " pk-context-cms-editable" : "" ?> <?php echo str_replace('pkcontextcms','pk-slot-type-',strtolower($type)) ?>" id="content-<?php echo $id ?>" style="display: <?php echo $showEditor ? "none" : "block"?>"
   <?php if ($outlineEditable): ?>
     onDblClick="<?php echo $showEditorJS ?>"
   <?php endif ?>
