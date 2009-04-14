@@ -406,7 +406,9 @@ class pkContextCMSActions extends sfActions
     $user = $this->getUser();
     if (!$user->isAuthenticated())
     {
-      $query->andWhere($query->getRootAlias() . ".view_is_secure = false");
+      // I should have made this a non-nullable field but it's too late now
+      $query->andWhere($query->getRootAlias() . ".view_is_secure is null or " .
+        $query->getRootAlias() . ".view_is_secure = false");
     }
     $this->pager = new sfDoctrinePager(
       'pkMediaItem',
