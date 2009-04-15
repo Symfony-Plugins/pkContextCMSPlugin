@@ -1,3 +1,5 @@
+<?php slot('body_class') ?>pk-search-results<?php end_slot() ?>
+
 <h2>Search Results for: <?php echo htmlspecialchars($sf_request->getParameter('q')) ?></h2>
 <dl class="pk-context-cms-search-results">
 <?php foreach ($results as $page): ?>
