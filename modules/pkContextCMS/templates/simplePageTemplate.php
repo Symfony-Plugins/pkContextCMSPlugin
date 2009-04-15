@@ -1,6 +1,6 @@
 <?php use_helper('pkContextCMS') ?>
 
-<div id="pk-context-cms-content" class="col720">
+<div class="col720">
 	<!-- <img src="/images/shadow_720px.png" /> -->
 
 		<div class="content editing">

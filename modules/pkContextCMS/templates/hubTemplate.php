@@ -14,7 +14,7 @@
 <?php include_component('pkContextCMS', 'subnav') # Left Side Navigation ?>
 
 
-<div id="pk-context-cms-content" class="main">
+<div class="main">
 
 	<div class="content-container">
 		<div class="content">

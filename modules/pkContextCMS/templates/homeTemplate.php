@@ -18,7 +18,7 @@
 <?php // you need to reorder the subpages of the home page ?>
 <?php include_component('pkContextCMS', 'subnav') # Left Side Navigation ?>
 
-<div id="pk-context-cms-content" class="main">
+<div class="main">
 	<div class="content-container">
 		<div class="content">
 			<?php pk_context_cms_area('body',
@@ -31,7 +31,7 @@
 </div>
 
 
-<div id="pk-context-cms-sidebar" class="sidebar">
+<div class="sidebar">
 	<div class="content-container">	
 		<div class="content ">
 			<?php pk_context_cms_slot('sidebar', 'pkContextCMSRichText', array('tool' => 'Sidebar')) ?>
