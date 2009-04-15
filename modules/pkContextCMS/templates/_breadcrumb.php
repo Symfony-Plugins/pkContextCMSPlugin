@@ -1,3 +1,14 @@
+<?php if ($page->userHasPrivilege('edit')): ?>
+<h3 id="editing-disabled"></h3>
+<script>
+$(function() {
+  if ($.browser.msie && $.browser.version < 7)   
+  {
+    $('#editing-disabled').html("Editing is not available in Internet Explorer 6. Use IE 7+ or Firefox.");
+    $('#editing-disabled').show();
+  }
+});
+</script>
 <?php use_helper('editablePathComponent') ?>
 <div id="pk-context-cms-breadcrumb">
 <?php $first = true; ?>

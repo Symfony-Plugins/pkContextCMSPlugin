@@ -34,9 +34,6 @@
   </form>
 <?php endif ?>
 <div class="pk-context-cms-normal-view<?php echo $outlineEditable ? " pk-context-cms-editable" : "" ?>" id="content-<?php echo $id ?>" style="display: <?php echo $showEditor ? "none" : "block"?>"
-  <?php if ($outlineEditable): ?>
-    onDblClick="<?php echo $showEditorJS ?>"
-  <?php endif ?>
 >
 <?php include_component($normalModule, 
   "normalView", 
@@ -46,3 +43,23 @@
     "permid" => $permid,
     "options" => $options)) ?>
 </div>
+<script>
+$(function() {
+  var normalView = $('#content-<?php echo $id ?>')[0];
+  if (normalView)
+  {
+    if (($.browser.msie) && ($.browser.version < 7))
+    {
+      // IE6 is too broken to be allowed to edit
+      $(normalView).removeClass("pk-context-cms-editable");
+    } 
+    else
+    {
+      <?php if ($outlineEditable): ?>
+      $(normalView).dblclick(function() { <?php echo $showEditorJS ?> return false});
+      <?php endif ?>
+    }
+  }
+});
+</script>
+
