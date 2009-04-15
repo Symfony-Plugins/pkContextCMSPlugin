@@ -9,6 +9,7 @@ $(function() {
   }
 });
 </script>
+<?php endif ?>
 <?php use_helper('editablePathComponent') ?>
 <div id="pk-context-cms-breadcrumb">
 <?php $first = true; ?>
