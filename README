@@ -133,6 +133,29 @@ a relative path:
     ln -s ../plugins/pkContextCMSPlugin/web pkContextCMSPlugin
     # Similar for other plugins required
 
+The search features of the plugin rely on Zend Search, so you must
+install the Zend framework. 
+[The latest version of the minimal Zend framework is sufficient.](http://framework.zend.com/download/latest) If you choose to install this system-wide
+where all PHP code can easily find it with a `require` statement, great.
+If you prefer to install it in your Symfony project's
+`lib/vendor` folder, you'll need to modify your `ProjectConfiguration` class
+to ensure that `require` statements can easily find files there:
+
+    class ProjectConfiguration extends sfProjectConfiguration
+    {
+      public function setup()
+      {
+        // We do this here because we chose to put Zend in lib/vendor/Zend.
+        // If it is installed system-wide then this isn't necessary to
+        // enable Zend Search
+        set_include_path(
+          sfConfig::get('sf_lib_dir') .
+            '/vendor' . PATH_SEPARATOR . get_include_path());
+        // for compatibility / remove and enable only the plugins you want
+        $this->enableAllPluginsExcept(array('sfPropelPlugin', 'sfCompat10Plugin'));
+      }
+    }
+
 Create an application in your project. Then create a
 module folder named pkContextCMS as a home for your page templates
 and layouts (and possibly other customizations):

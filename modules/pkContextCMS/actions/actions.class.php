@@ -411,7 +411,7 @@ class pkContextCMSActions extends sfActions
         $query->getRootAlias() . ".view_is_secure = false");
     }
     $this->pager = new sfDoctrinePager(
-      'pkMediaItem',
+      'pkContextCMSPage',
       sfConfig::get('app_pkContextCMS_search_results_per_page', 10));
     $this->results = $query->execute();
     $this->pager->setQuery($query);
