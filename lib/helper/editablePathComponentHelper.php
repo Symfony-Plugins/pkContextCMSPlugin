@@ -1,6 +1,6 @@
 <?php
 
-use_helper('jQuery');
+use_helper('jQuery', 'Form');
 
 global $epcn;
 
