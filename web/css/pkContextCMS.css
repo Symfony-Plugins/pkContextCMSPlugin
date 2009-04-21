@@ -1051,28 +1051,32 @@ margin: 0 10px;
 }
 
 /*LINK STYLE FOR RICHTEXT SLOTS*/
-.pk-context-cms-contents.pkContextCMSRichText a:link,
-.pk-context-cms-contents.pkContextCMSRichText a:visited {
+.pkContextCMSHandbook a:link,
+.pkContextCMSRichText a:link,
+.pkContextCMSHandbook a:visited,
+.pkContextCMSRichText a:visited {
 	color: #13A0BC;
 	text-decoration: underline;
 }
 
-.pk-context-cms-contents.pkContextCMSRichText a:hover
+.pkContextCMSHandbook a:hover,
+.pkContextCMSRichText a:hover
 {
 	color: #000;
 }
 
-
-.pk-context-cms-contents.pkContextCMSRichText ol {
+.pkContextCMSHandbook ol,
+.pkContextCMSRichText ol {
 list-style: decimal;
 list-style-position: inside;
 }
 
-.pk-context-cms-contents.pkContextCMSRichText ul {
-list-style: disc;
+.pkContextCMSHandbook ul,
+.pkContextCMSRichText ul {
+list-style-type: none;
 list-style-position: inside;
+list-style-image: url(/pkContextCMSPlugin/images/pk-icon-list-bullet.png);
 }
-
 
 /* [END] pkContextCMS GENERAL TEMPLATE STYLES ======================== */
 
