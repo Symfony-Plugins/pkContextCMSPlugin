@@ -3,7 +3,8 @@
 class pkContextCMSBaseActions extends sfActions
 {
   protected $validationData = array();
-  
+  protected $newSlot = false;
+
   protected function editSetup()
   {
     return $this->setup(true);
@@ -70,6 +71,7 @@ class pkContextCMSBaseActions extends sfActions
     else
     {
       $this->slot = $this->page->createSlot($this->type);
+      $this->newSlot = true;
     }
   }
 
@@ -78,7 +80,7 @@ class pkContextCMSBaseActions extends sfActions
     $this->slot->save();
     $this->page->newAreaVersion(
       $this->name, 
-      'update', 
+      $this->newSlot ? 'add' : 'update', 
       array('permid' => $this->permid, 'slot' => $this->slot));
     if  ($this->getRequestParameter('noajax'))
     {

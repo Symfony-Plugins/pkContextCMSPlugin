@@ -45,10 +45,8 @@ foreach ($tabs as $tab)
           $classes .= "pk-context-cms-current-page ";
         }
       } 
-      sfContext::getInstance()->getLogger()->info("CHECKING");
       if ($page->isEqualTo($tab))
       {
-        sfContext::getInstance()->getLogger()->info("EQUAL");
         $classes .= "pk-context-cms-current-page ";
       }
     }  

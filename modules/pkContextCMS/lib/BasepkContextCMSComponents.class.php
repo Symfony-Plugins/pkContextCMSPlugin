@@ -76,9 +76,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
   public function executeArea()
   {
     $this->page = pkContextCMSTools::getCurrentPage();
-    $this->logMessage($this->name, 'info');
-    $this->slots = $this->page->getArea($this->name);
-    sfContext::getInstance()->getLogger()->info("Slots before: " . count($this->slots));
+    $this->slots = $this->page->getArea($this->name, $this->addSlot, true);
     $this->editable = $this->page->userHasPrivilege('edit');
     $user = $this->getUser();
     // Clean this up for nicer templates
@@ -91,15 +89,10 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
       if ($user->hasAttribute("area-options-$id-$name", "pkContextCMS"))
       {
         $this->options = $user->getAttribute("area-options-$id-$name", array(), "pkContextCMS");
-        $this->logMessage("We have options", "info");
-        ob_start();
-        var_dump($this->options);
-        sfContext::getInstance()->getLogger()->info(ob_get_clean());
       }
       else
       {
         // BZZT: probably a hack attempt
-        $this->logMessage("We have no options", "info");
         throw new sfException("executeArea without options");
       }
     }
@@ -118,13 +111,6 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
         }
         $this->slots[1] = $this->page->createSlot($this->options['type']);
       }
-    }
-    if (isset($this->addSlot))
-    {
-      $this->logMessage("Adding a slot", "info");
-      $permidAndRank = $this->page->getNextPermidAndRank($this->name);
-      $this->slots[$permidAndRank['permid']] = $this->page->createSlot($this->addSlot);
-      sfContext::getInstance()->getLogger()->info("Slots after: " . count($this->slots));
     }
   }
 }

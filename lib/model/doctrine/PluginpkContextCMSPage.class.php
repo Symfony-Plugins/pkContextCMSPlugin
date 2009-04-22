@@ -69,11 +69,9 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // Rule 1: admin can do anything
     if ($user->hasCredential('cms_admin'))
     {
-      $this->log("has cms_admin");
       return true;
     }
     $key = "app_pkContextCMS_$privilege" . "_sufficient_credentials";
-    $this->log("KEY IS $key");
     $sufficientCredentials = sfConfig::get(
         "app_pkContextCMS_$privilege" . "_sufficient_credentials", false);
     $sufficientGroup = sfConfig::get(
@@ -89,17 +87,14 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // privilege, anyone can do it...
     if (!$loginRequired)
     {
-      $this->log("login not required");
       // Except for rule 2a: individual pages can be conveniently locked for 
       // viewing purposes on an otherwise public site
       if (($privilege === 'view') && $this->view_is_secure)
       {
-        $this->log("however this page requires login and we are viewing");
         return $user->isAuthenticated();
       } 
       else
       {
-        $this->log("so in we go");
         return true;
       }
     }
@@ -108,7 +103,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // logged in, bye-bye
     if (!$user->isAuthenticated())
     {
-      $this->log("not authenticated, fail");
       return false;
     }
 
@@ -118,7 +112,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     if (($sufficientCredentials === false) && ($candidateGroup === false) && ($sufficientGroup === false))
     {
       // Logging in is the only requirement
-      $this->log("no required group, no sufficient credentials, we're in");
       return true; 
     }
 
@@ -127,13 +120,11 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     if ($sufficientCredentials && 
       ($user->hasCredential($sufficientCredentials)))
     {
-      $this->log("user has sufficient credentials");
       return true;
     }
     if ($sufficientGroup && 
       ($user->hasGroup($sufficientGroup)))
     {
-      $this->log("user is in sufficient group");
       return true;
     }
 
@@ -142,7 +133,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     if ($candidateGroup && 
       (!$user->hasGroup($candidateGroup)))
     {
-      $this->log("user not in candidate group");
       return false;
     }
 
@@ -150,7 +140,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // check for an explicit grant of privileges to this user, on
     // this page or on any ancestor page.
     $result = $this->userHasExplicitPrivilege($privilege);
-    $this->log("Explicit privilege for user: $result\n");
     return $result;
   }
 
@@ -163,9 +152,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     {
       $ids[] = $page->id;
     }
-    $this->log("Ancestor count: " . count($ids) . " page id: " . $this->id);
     $ids[] = $this->id;
-    $this->log("Ancestors are: " . implode(",", $ids));
     $user_id = sfContext::getInstance()->getUser()->getGuardUser()->getId();
     // One "yes" answer is enough.
     $result = Doctrine_Query::create()->
@@ -219,10 +206,33 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     return false;
   }
-  public function getArea($name)
+  // $new can be a slot class name, an already-created slot object, or false.
+  // If it is false no new slot is added to the list to be returned.
+  // If it is a class name the slot is constructed for you. 
+  //
+  // If $newFirst is true the new slot will be at the top of the area,
+  // otherwise the bottom.
+  public function getArea($name, $new = false, $newFirst = false)
   {
     $this->populateSlotCache();
     $results = array();
+    if ($new)
+    {
+      $permidAndRank = $this->getNextPermidAndRank($name, $newFirst);
+      if (!($new instanceof pkContextCMSSlot))
+      {
+        // It's a class name, make one
+        $new = $this->createSlot($new);
+      }
+      else
+      {
+        // We passed one in
+      }
+    }
+    if ($new && $newFirst)
+    {
+      $results[$permidAndRank['permid']] = $new;
+    }
     if (isset($this->slotCache[$this->culture][$name]))
     {
       foreach ($this->slotCache[$this->culture][$name] as $permid => $slot)
@@ -230,13 +240,18 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
         $results[$permid] = $slot;
       }
     }
+    if ($new && (!$newFirst))
+    {
+      $results[$permidAndRank['permid']] = $new;
+    }
     return $results;
   }
 
-  public function getNextPermidAndRank($name)
+  public function getNextPermidAndRank($name, $first = false)
   {
     $query = Doctrine_Query::create()->
-        select('max(s.permid) as m, max(s.rank) as r')->
+        select('max(s.permid) as m, ' 
+          . ($first ? 'min' : 'max') . '(s.rank) as r')->
         from('pkContextCMSArea a')->
         leftJoin('a.AreaVersions v')->
         leftJoin('v.AreaVersionSlots s')->
@@ -251,9 +266,18 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     {
       $permid = 1;
     }
+    // Negative ranks = perfectly fine and useful for
+    // implementing "new slots on top"
     if (isset($result[0]['r']))
     {
-      $rank = $result[0]['r'] + 1;  
+      if ($first)
+      {
+        $rank = $result[0]['r'] - 1;
+      }
+      else
+      {
+        $rank = $result[0]['r'] + 1;
+      }
     }
     else
     {
@@ -451,7 +475,17 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // because that makes rollback easy to implement etc. But we
     // MUST fetch the latest copy of the area object to make sure
     // we don't create duplicate versions.
-    $newSlots = $this->getArea($name);
+
+    // When we're adding a new slot to an area we need to make sure it
+    // it is first in the hash so it gets ranked first
+    if ($action === 'add')
+    {
+      $newSlots = $this->getArea($name, $params['slot'], true);
+    }
+    else
+    {
+      $newSlots = $this->getArea($name);
+    }
     $area = pkContextCMSAreaTable::retrieveOrCreateByPageIdAndName(
       $this->id,
       $name);
@@ -466,7 +500,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $areaVersion->author_id = 
       sfContext::getInstance()->getUser()->getGuardUser()->getId();
     $areaVersion->save();
-    $newSlots = $this->getArea($name);
     if ($action === 'delete')
     {
       if (isset($newSlots[$params['permid']]))
@@ -480,9 +513,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     elseif ($action === 'add')
     {
-      // Make sure we get a truly unique permid within this slot
-      $permidAndRank = $this->getNextPermidAndRank($name);
-      $newSlots[$permidAndRank['permid']] = $params['slot'];
+      // We took care of this in the getArea call
     }
     elseif ($action === 'sort')
     {
@@ -556,7 +587,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
         $withParameters);
     } 
     $query->orderBy("u.username asc");
-    $this->log($query->getSql());
     $allResults = $query->execute();
     $all = array();
     $sufficient = array();

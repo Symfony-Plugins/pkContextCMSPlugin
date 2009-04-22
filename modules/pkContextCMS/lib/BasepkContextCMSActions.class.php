@@ -97,19 +97,11 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeSort(sfRequest $request)
   {
-    $this->logMessage("Entering executeSort", "info");
     $page = $this->retrievePageForEditingById('page');
-    if (!$page)
-    {
-      $this->logMessage("No page found in executeSort", "info");
-    }
+    $this->forward404Unless($page);
     if (!$page->getNode()->hasChildren())
     {
       $page = $page->getNode()->getParent();
-      if (!$page)
-      {
-        $this->logMessage("No parent page found in executeSort", "info");
-      }
       $this->forward404Unless($page);
     }
     $order = $this->getRequestParameter('pk-context-cms-navcolumn-page');
@@ -314,7 +306,6 @@ class BasepkContextCMSActions extends sfActions
     $this->preview = false;
     if ($subaction == 'preview')
     {
-      $this->logMessage("found preview", "info");
       $version = $request->getParameter('version');
       $this->preview = true;
     }
@@ -346,7 +337,6 @@ class BasepkContextCMSActions extends sfActions
     }
     $this->page = $this->retrievePageForEditingById($from);
     $this->form = new pkContextCMSPageSettingsForm($this->page);
-    $this->logMessage("XXXX REQUEST " . json_encode($_REQUEST), "info");
     if ($from === 'settings[id]')
     {
       $this->form->bind($request->getParameter("settings"));
@@ -355,11 +345,6 @@ class BasepkContextCMSActions extends sfActions
         $this->form->save();
         // Oops must be case correct in production
         return 'Redirect';
-        $this->logMessage("XXXX VALID", "info");
-      }
-      else
-      {
-        $this->logMessage("XXXX INVALID", "info");
       }
     }
     // This might make more sense in some kind of read-only form control.

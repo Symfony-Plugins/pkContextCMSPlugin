@@ -25,7 +25,6 @@ function editable_path_component($value, $renameAction,
   $result = "";
   if ($edit)
   {
-    sfContext::getInstance()->getLogger()->info("XXX Value is $value");
     $result .= link_to_function(
       $value, jq_visual_effect("fadeIn", "#$epcn-rename-form") . 
         "$('.pk-context-cms-rename').addClass('editing');sizeBreadcrumbInput()", 
