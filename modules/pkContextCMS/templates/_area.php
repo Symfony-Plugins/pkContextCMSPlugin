@@ -63,9 +63,9 @@
   <?php // Wraps an individual slot, with its controls ?>
 	<div class="pk-context-cms-slot <?php echo $outlineEditableClass ?>">
     <?php // Controls for that individual slot ?>
-		<div class="pk-context-cms-slot-controls">		
-      <?php if ($infinite): ?>
-        <?php if ($editable): ?>
+    <?php if ($editable): ?>
+      <div class="pk-context-cms-slot-controls">		
+        <?php if ($infinite): ?>
           <?php echo jq_link_to_remote("Delete Slot", 
             array(
               "url" => "pkContextCMS/deleteSlot?" .
@@ -96,10 +96,9 @@
                 "update" => "pk-context-cms-contents-$name"), array('class' => 'pk-context-cms-slot-controls-down', 'title' => 'Move Down', )) ?>
           <?php endif ?>
         <?php endif ?>
-      <?php endif ?>
-      <?php // End controls for this individual slot ?>
-		</div>
-	
+        <?php // End controls for this individual slot ?>
+      </div>
+    <?php endif ?>	
     <?php // Wraps the actual content - edit and normal views - ?>
     <?php // for this individual slot ?>
   	<div id="pk-context-cms-contents-<?php echo $name ?>-<?php echo $permid?>" class="pk-context-cms-contents <?php echo $slot->type ?>">
