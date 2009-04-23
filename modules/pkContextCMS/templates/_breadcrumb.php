@@ -83,7 +83,7 @@ $(function() {
 	</script>
 <?php endif ?>
 
-<?php echo include_partial('postBreadcrumb', array('page' => $page)) ?>
+<?php echo include_partial('pkContextCMS/postBreadcrumb', array('page' => $page)) ?>
 
 </div>
 
