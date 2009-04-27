@@ -18,4 +18,4 @@
   'type_options' => array(
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
   	'pkContextCMSText' => array('multiline' => true)
-	))) ?>	
+	))) ?>
