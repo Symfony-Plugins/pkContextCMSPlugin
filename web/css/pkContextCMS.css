@@ -76,21 +76,6 @@ blockquote, q {
 quotes: "" "";
 }
 
-.pk-context-cms-login,
-.pk-context-cms-logout {
-float: right;
-display: inline;
-color: #999;
-}
-
-.pk-context-cms-login li,
-.pk-context-cms-logout li {
-float: left;
-display: inline;
-line-height: 30px;
-margin: 0 10px 0 0;
-}
-
 /* [START] pkContextCMS BREADCRUMB =========================== */
 
 #pk-context-cms-breadcrumb, /* CMS and Non-CMS Breadcrumb styles - Non-CMS could be broken out and dupilicated across plugin css that uses breadcrumb for release*/
@@ -1074,8 +1059,9 @@ list-style-position: inside;
 .pkContextCMSHandbook ul,
 .pkContextCMSRichText ul {
 list-style-type: none;
-list-style-position: inside;
+list-style-position: outside;
 list-style-image: url(/pkContextCMSPlugin/images/pk-icon-list-bullet.png);
+margin: 0 0 10px 20px;
 }
 
 /* [END] pkContextCMS GENERAL TEMPLATE STYLES ======================== */
@@ -1119,3 +1105,19 @@ color: #EF9920;
 
 
 /* [END] pkContextCMS Default Template ======================== */
+
+
+.pk-context-cms-login,
+.pk-context-cms-logout {
+float: right;
+display: inline;
+color: #999;
+}
+
+.pk-context-cms-login li,
+.pk-context-cms-logout li {
+float: left;
+display: inline;
+line-height: 30px;
+margin: 0 10px 0 0;
+}
