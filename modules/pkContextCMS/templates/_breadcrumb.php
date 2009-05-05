@@ -82,8 +82,10 @@ $(function() {
 	});
 	</script>
 <?php endif ?>
-
-<?php echo include_partial('pkContextCMS/postBreadcrumb', array('page' => $page)) ?>
+<?php # You can use this slot to add virtual items to the breadcrumb. ?>
+<?php # Useful when a page has internal sub-structure kept in the ?>
+<?php # query string, for instance ?>
+<?php include_slot('after-breadcrumb-inline') ?>
 
 </div>
 

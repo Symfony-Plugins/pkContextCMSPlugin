@@ -5,18 +5,15 @@
 <?php // you could set something else ?>
 <?php slot('body_class') ?>pk-home<?php end_slot() ?>
 
-<?php slot('tabs') ?>
-<?php // No tabs on home page ?>
-<?php end_slot() ?>
-
-<?php if (pkContextCMSTools::getCurrentPage()->userHasPrivilege('edit')): ?>
-	<?php include_component('pkContextCMS', 'breadcrumb') # Breadcrumb Navigation ?>
+<?php if (!pkContextCMSTools::getCurrentPage()->userHasPrivilege('edit')): ?>
+  <?php # Remove the breadcrumb trail and side nav unless the user has ?>
+  <?php # editing privs on the home page, in which case we need their ?>
+  <?php # editing features. We do display tabs on the home page. ?>
+  <?php slot('breadcrumb') ?>
+  <?php end_slot() ?>
+  <?php slot('subnav') ?>
+  <?php end_slot() ?>
 <?php endif ?>
-
-<?php // You could remove this from the home page template. If you did, ?>
-<?php // you'd want to provide a way to access it if you're an admin and ?>
-<?php // you need to reorder the subpages of the home page ?>
-<?php include_component('pkContextCMS', 'subnav') # Left Side Navigation ?>
 
 <div class="main">
 	<div class="content-container">
