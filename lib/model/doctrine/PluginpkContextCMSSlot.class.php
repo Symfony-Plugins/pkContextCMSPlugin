@@ -32,4 +32,22 @@ abstract class PluginpkContextCMSSlot extends BasepkContextCMSSlot
   {
     return '';
   }
+
+  public function getArrayValue($default = array())
+  {
+    if (strlen($this->value))
+    {
+      return unserialize($this->value);
+    }
+    return $default;
+  }
+ 
+  public function setArrayValue($value)
+  {
+    if (!is_array($value))
+    {
+      throw new Exception("Argument is not an array in setArrayValue");
+    }
+    $this->value = serialize($value);
+  }
 }
