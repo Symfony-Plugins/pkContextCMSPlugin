@@ -730,23 +730,12 @@ display: block;
 
 #content-top-1
 {
-	text-align:right;
+/*	text-align:right; /* There seems to be some disagreement about this one */
 	line-height: 20px;
 	font-size: 11px;
 	color: #888;
 	min-height:20px !important;
 	margin: 0;
-}
-
-#content-top-1 a:link
-{
-	color: #888;
-	text-decoration:none;
-}
-
-#content-top-1 a:hover
-{
-	color: #000;
 }
 
 #content-top-1 ul li
@@ -1045,6 +1034,18 @@ margin: 0 10px;
 .pkContextCMSRichText a:hover
 {
 	color: #000;
+}
+
+#pk-context-cms-contents-top .pkContextCMSRichText a:link,
+#pk-context-cms-contents-top .pkContextCMSRichText a:visited {
+	color: #888;
+	text-decoration: none;
+}
+
+#pk-context-cms-contents-top .pkContextCMSRichText a:hover
+{
+	color: #000;
+	text-decoration:underline;
 }
 
 .pkContextCMSHandbook ol,
