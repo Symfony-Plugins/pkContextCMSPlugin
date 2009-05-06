@@ -453,10 +453,11 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $conn->commit();
   }
 
+  // 20090505: you must pass valid HTML text (i.e. pre-escaped entities)
   public function setTitle($title)
   {
     $slot = $this->createSlot('pkContextCMSText');
-    $slot->value = htmlspecialchars($title);
+    $slot->value = $title;
     $slot->save();
     $this->newAreaVersion('title', 'update', 
       array(
