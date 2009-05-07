@@ -73,7 +73,7 @@ class BasepkContextCMSActions extends sfActions
   // Note that these fetch based on the id or slug found in the
   // named parameter of the request
 
-  private function retrievePageForEditingById($parameter = 'id', $privilege = 'edit')
+  protected function retrievePageForEditingById($parameter = 'id', $privilege = 'edit')
   {
     $page = pkContextCMSPageTable::retrieveByIdWithSlots(
       $this->getRequestParameter($parameter));
@@ -81,7 +81,7 @@ class BasepkContextCMSActions extends sfActions
     return $page;
   }
 
-  private function retrievePageForEditingBySlug($parameter = 'slug', $privilege = 'edit')
+  protected function retrievePageForEditingBySlug($parameter = 'slug', $privilege = 'edit')
   {
     $page = pkContextCMSPageTable::retrieveBySlugWithSlots(
       $this->getRequestParameter($parameter));
@@ -89,7 +89,7 @@ class BasepkContextCMSActions extends sfActions
     return $page;
   }
 
-  private function validAndEditable($page, $privilege = 'edit')
+  protected function validAndEditable($page, $privilege = 'edit')
   {
     $this->forward404Unless($page);
     $this->forward404Unless($page->userHasPrivilege($privilege));
@@ -110,7 +110,7 @@ class BasepkContextCMSActions extends sfActions
     return sfView::NONE;
   }
 
-  private function sortBody($parent, $order)
+  protected function sortBody($parent, $order)
   {
     foreach ($order as $id)
     {

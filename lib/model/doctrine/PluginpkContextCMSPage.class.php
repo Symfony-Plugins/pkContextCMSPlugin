@@ -321,7 +321,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return $title;
   }
 
-  public function getAreaVersions($name)
+  public function getAreaVersions($name, $selectOptions = true)
   {
     $results = Doctrine_Query::create()->
       from("pkContextCMSArea a")->
@@ -335,9 +335,17 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $area = $results[0];
     foreach ($area->AreaVersions as $areaVersion)
     {
-      $versions[$areaVersion->version] = 
-        $areaVersion->created_at . " " . ($areaVersion->Author ? 
-            $areaVersion->Author->username : "NONE");
+			if ($selectOptions)
+			{
+	      $versions[$areaVersion->version] = 
+	        $areaVersion->created_at . " " . ($areaVersion->Author ? 
+	            $areaVersion->Author->username : "NONE");
+			}
+			else
+			{
+				$versions[$areaVersion->version] =
+					array("created_at" => $areaVersion->created_at, "author" => $areaVersion->Author ? $areaVersion->Author->username : "NONE", "summary" => "TODO");
+			}
     }
     return $versions;
   }
