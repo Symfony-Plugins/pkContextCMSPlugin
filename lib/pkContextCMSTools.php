@@ -163,6 +163,12 @@ class pkContextCMSTools
   }
   static public function getTemplates()
   {
+    if (sfConfig::get('app_pkContextCMS_get_templates_method'))
+    {
+      $method = sfConfig::get('app_pkContextCMS_get_templates_method');
+      var_dump($method);
+      return call_user_func($method);
+    }
     return sfConfig::get('app_pkContextCMS_templates', array(
       'default' => 'Default Page',
       'home' => 'Home Page'));
