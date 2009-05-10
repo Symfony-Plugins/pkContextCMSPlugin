@@ -339,12 +339,12 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 			{
 	      $versions[$areaVersion->version] = 
 	        $areaVersion->created_at . " " . ($areaVersion->Author ? 
-	            $areaVersion->Author->username : "NONE");
+	            $areaVersion->Author->username : "NONE") . " " . $areaVersion->diff;
 			}
 			else
 			{
 				$versions[$areaVersion->version] =
-					array("created_at" => $areaVersion->created_at, "author" => $areaVersion->Author ? $areaVersion->Author->username : "NONE", "summary" => "TODO");
+					array("created_at" => $areaVersion->created_at, "author" => $areaVersion->Author ? $areaVersion->Author->username : "NONE", "diff" => $areaVersion->diff);
 			}
     }
     return $versions;
@@ -475,6 +475,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function newAreaVersion($name, $action, $params = false)
   {
+    $diff = '';
     if ($params === false)
     {
       $params = array();
@@ -489,6 +490,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // it is first in the hash so it gets ranked first
     if ($action === 'add')
     {
+      $diff = '> ' . pkString::limitCharacters($params['slot']->getSearchText(), 20);
       $newSlots = $this->getArea($name, $params['slot'], true);
     }
     else
@@ -508,9 +510,9 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $areaVersion->version = $area->latest_version + 1;
     $areaVersion->author_id = 
       sfContext::getInstance()->getUser()->getGuardUser()->getId();
-    $areaVersion->save();
     if ($action === 'delete')
     {
+      $diff = '< ' . pkString::limitCharacters($newSlots[$params['permid']]->getSearchText(), 20);
       if (isset($newSlots[$params['permid']]))
       {
         unset($newSlots[$params['permid']]);
@@ -518,6 +520,25 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     elseif ($action === 'update')
     {
+      $oldText = '';
+      if (isset($newSlots[$params['permid']]))
+      {
+        $oldText = $newSlots[$params['permid']]->getSearchText();
+      }
+      $newText = $params['slot']->getSearchText();
+      $fullDiff = pkString::diff($oldText, $newText);
+      $diff = '';
+      ob_start();
+      var_dump($fullDiff);
+      sfContext::getInstance()->getLogger()->info("GG: " . str_replace("\n", " ", ob_get_clean()));
+      if (!empty($fullDiff['onlyin1']))
+      {
+        $diff .= '< ' . pkString::limitCharacters($fullDiff['onlyin1'][0], 20);
+      }
+      if (!empty($fullDiff['onlyin2']))
+      {
+        $diff .= '> ' . pkString::limitCharacters($fullDiff['onlyin2'][0], 20);
+      }
       $newSlots[$params['permid']] = $params['slot']; 
     }
     elseif ($action === 'add')
@@ -526,6 +547,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     elseif ($action === 'sort')
     {
+      $diff = '[Reordered slots]';
       $newerSlots = array();
       foreach ($params['permids'] as $permid)
       {
@@ -535,8 +557,14 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     elseif ($action === 'revert')
     {
+      // TODO: actually represent the changes carried out by the reversion
+      // in the diff. That's rather expensive because many slots in the area
+      // may have changed all at once.
+      $diff = '[Reverted to older version]';
       # We just want whatever is in the slot cache copied to a new version
     }
+    $areaVersion->diff = $diff;
+    $areaVersion->save();
 
     $rank = 1;
     foreach ($newSlots as $permid => $slot)

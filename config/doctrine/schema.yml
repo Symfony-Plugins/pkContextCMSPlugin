@@ -84,6 +84,8 @@ pkContextCMSAreaVersion:
       type: integer(4)
     author_id:
       type: integer(4)
+    diff:
+      type: string(200)
   indexes:
     area_index:
       fields: [area_id] 

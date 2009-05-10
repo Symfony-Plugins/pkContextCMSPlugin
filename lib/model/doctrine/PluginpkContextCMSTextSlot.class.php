@@ -7,9 +7,20 @@ abstract class PluginpkContextCMSTextSlot extends BasepkContextCMSTextSlot
 {
   public function getSearchText()
   {
+    // TODO: move this "HTML to text" logic to pkHTML rather than duplicating it
+
     // Convert from HTML to plaintext before indexing by Lucene
     // (Yes, "plaintext" slot values are stored as valid
     // HTML for better rendering performance)
+    // Convert from HTML to plaintext before indexing by Lucene
+    
+    // However first add line breaks after certain tags for better diff results
+    // (this method is also used for generating informational diffs between versions).
+    // This is a noncritical feature so it doesn't have to be as precise
+    // as strip_tags and shouldn't try to substitute for it in the matter of 
+    // actually removing the tags
+    $this->value = preg_replace("/(<p>|<br.*?>|<blockquote>|<li>|<dt>|<dd>|<nl>|<ol>)/i", "$1\n", $this->value);
+    
     return strip_tags($this->value);
   }
 }
