@@ -7,17 +7,19 @@ the stylesheet we provide in the cmstest project is definitely larger
 than the final stylesheet we'll ultimately provide as we haven't had
 time to prune it back. 
 
-Also, IE6/IE7 support is still maturing. That will of course happen before 
-a stable release. Editing will work 100% in IE7, while browsing will work
-100% in IE6. Needless to say, Firefox support is rock solid.
+Editing works 100% in Firefox, Safari and Internet Explorer 7+. 
+Editing is expressly not supported in Internet Explorer 6. Of course,
+browsing the site as a user works just fine in Internet Explorer 6.
 
-Another issue we haven't tackled in detail yet is internationalization.
-We do in fact have the capability to store separate slots by culture,
-and we retrieve the appropriate version of a slot for the culture 
-of the logged-in user (as determined by setCulture() and getCulture()
-on the sfUser object, defaulting to Symfony's sf_default_culture settings.yml
-setting). But we haven't done extensive testing of this feature. We welcome 
-input from webmasters of internationalized sites.
+Internationalization is supported at a basic level: separate versions
+of content are served depending on the result of calling getCulture()
+for the current user. When you edit, you are editing the version of
+the content for your current culture. The user's culture defaults, as
+usual, to the sf_default_culture settings.yml setting. The search index also 
+distinguishes between cultures. Webmasters who make use of internationalization will want
+to add a "culture switcher" to their sites so that a user interface is
+available to make these features visible. Thanks to Quentin
+Dugauthier for his assistance in debugging these features.
 
 Enjoy!
 
@@ -59,7 +61,9 @@ pkContextCMSPlugin requires:
 * Zend Search
 * cron or other scheduled task support (for search index updates)
 
-pkContextCMSPlugin is compatible with sfShibbolethPlugin (the 1.2 trunk).
+Many users will also want pkMediaPlugin and pkMediaCMSSlotsPlugin.
+
+pkContextCMSPlugin is compatible with sfShibbolethPlugin (the 1.2 trunk version).
 
 Mac users can most easily meet the PHP requirements by installing
 the latest version of [MAMP](http://www.mamp.info/). Note that MAMP's PHP 
@@ -108,8 +112,7 @@ For the new Lucene-based search features to work you will also need
 to set up a cron job. For the search index to be brought up to date
 every ten minutes, use:
 
-0,10,20,30,40,50 * * * * /path/to/your/project/symfony pkContextCMS:update-lucen
-e
+0,10,20,30,40,50 * * * * /path/to/your/project/symfony pkContextCMS:update-lucene
 
 Synchronous lucene search index updates are for the birds. They slow
 down editing and create consistency problems with Doctrine's caching
@@ -318,8 +321,9 @@ text edit control). Click "Save" to save your changes.
 
 Every slot also offers version control. The arrow-in-a-circle icon
 accesses a dropdown list of all changes that have been made to that slot,
-labeled by date, time and author. Pick any version and click "Preview"
-to redisplay that version of the slot. To revert to an old version,
+labeled by date, time and author and including a short summary of the change
+to help you remember what's different about that version. Pick any version and 
+click "Preview" to redisplay that version of the slot. To revert to an old version,
 copying it to create a new version of the slot, click "Revert." Click
 "Cancel" if you decide not to switch versions.
 
@@ -331,7 +335,8 @@ Editing users are able to add and remove slots from an area at any time,
 selecting from a list of slots approved for use in that area. The slots
 can also be reordered via up and down arrow buttons (used here instead
 of drag and drop to avoid possible browser bugs when dragging and dropping 
-complex HTML).
+complex HTML, and because drag and drop is not actually much fun to use
+when a column spans multiple pages).
 
 The usefulness of areas may not be entirely clear when only 
 plaintext and rich text slots are in use on a site. Their usefulness
