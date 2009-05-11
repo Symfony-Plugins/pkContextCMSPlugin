@@ -342,6 +342,7 @@ class BasepkContextCMSActions extends sfActions
       $this->form->bind($request->getParameter("settings"));
       if ($this->form->isValid())
       {
+        $this->logMessage("YY settings is valid");
         $this->form->save();
         // Oops must be case correct in production
         return 'Redirect';

@@ -677,7 +677,10 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   {
     // Could probably be more elegant using Doctrine collections
     $query = Doctrine_Query::create();
-    $query->from('pkContextCMSAccess a')
+    // Make sure we select() only a.* so that we don't wind up
+    // reloading the page object and causing problems in updateObject().
+    $query->select('a.*')
+      ->from('pkContextCMSAccess a')
       ->innerJoin('a.Page p')
       ->where('a.privilege = ? AND p.id = ?', array($privilege, $this->id));
     $accesses = $query->execute();

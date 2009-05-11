@@ -130,7 +130,6 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
   public function updateObject($values = null)
   {
     $object = parent::updateObject($values);
-
     // This part isn't validation, it's just normalization.
     $slug = $object->slug;
     $slug = trim($slug);
