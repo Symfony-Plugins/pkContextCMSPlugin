@@ -124,7 +124,6 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
         {
           break;
         }
-        
         if ($slot->type !== $this->options['type'])
         {
           $this->slots = array();

@@ -9,7 +9,7 @@ class pkContextCMSBaseComponents extends sfComponents
     $this->realSlug = pkContextCMSTools::getRealPage()->slug;
     $this->slot = $this->page->getSlot(
           $this->name, $this->permid);
-    if (!$this->slot)
+    if ((!$this->slot) || ($this->slot->type !== $this->type))
     {
       $this->slot = $this->page->createSlot($this->type);
     }
@@ -48,6 +48,7 @@ class pkContextCMSBaseComponents extends sfComponents
       $this->form = $this->validationData['form'];
     }
   }
+  
   public function executeSlot()
   {
     // Sadly components have no preExecute method

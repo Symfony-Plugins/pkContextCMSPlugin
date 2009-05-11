@@ -62,6 +62,11 @@ class pkContextCMSBaseActions extends sfActions
     // Clever no?
     $this->type = str_replace("Actions", "", get_class($this));
     $slot = $this->page->getSlot($this->name, $this->permid);
+    if ($slot && ($slot->type !== $this->type))
+    {
+      // Ignore a slot of the wrong type (template edits can cause this)
+      $slot = false;
+    }
     // Copy the slot- we'll be making a new version of it,
     // if we do decide to save that is. 
     if ($slot)
