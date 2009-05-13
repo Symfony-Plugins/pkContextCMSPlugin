@@ -490,7 +490,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // it is first in the hash so it gets ranked first
     if ($action === 'add')
     {
-      $diff = '> ' . pkString::limitCharacters($params['slot']->getSearchText(), 20);
+      $diff = '<strong>' . pkString::limitCharacters($params['slot']->getSearchText(), 20) . "</strong>";
       $newSlots = $this->getArea($name, $params['slot'], true);
     }
     else
@@ -512,7 +512,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       sfContext::getInstance()->getUser()->getGuardUser()->getId();
     if ($action === 'delete')
     {
-      $diff = '< ' . pkString::limitCharacters($newSlots[$params['permid']]->getSearchText(), 20);
+      $diff = '<strike>' . pkString::limitCharacters($newSlots[$params['permid']]->getSearchText(), 20) . '</strike>';
       if (isset($newSlots[$params['permid']]))
       {
         unset($newSlots[$params['permid']]);
@@ -533,11 +533,11 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       sfContext::getInstance()->getLogger()->info("GG: " . str_replace("\n", " ", ob_get_clean()));
       if (!empty($fullDiff['onlyin1']))
       {
-        $diff .= '< ' . pkString::limitCharacters($fullDiff['onlyin1'][0], 20);
+        $diff .= '<strike>' . pkString::limitCharacters($fullDiff['onlyin1'][0], 20) . '</strike>';
       }
       if (!empty($fullDiff['onlyin2']))
       {
-        $diff .= '> ' . pkString::limitCharacters($fullDiff['onlyin2'][0], 20);
+        $diff .= '<strong>' . pkString::limitCharacters($fullDiff['onlyin2'][0], 20) . '</strong>';
       }
       $newSlots[$params['permid']] = $params['slot']; 
     }

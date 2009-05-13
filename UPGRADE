@@ -16,6 +16,11 @@ As a result you'll need an ALTER TABLE statement:
 
 ALTER TABLE pk_context_cms_area_version ADD COLUMN diff varchar(200);
 
+And you'll need to rebuild your Doctrine model classes:
+
+symfony doctrine:build-model
+symfony cc
+
 2008-04-07:
 
 Privileges for editing pages and privileges for managing pages
