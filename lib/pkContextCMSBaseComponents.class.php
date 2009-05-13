@@ -41,7 +41,7 @@ class pkContextCMSBaseComponents extends sfComponents
     // Useful if you're reimplementing that via a button etc
     $id = $this->id;
     $this->showEditorJS = 
-      "$('#content-$id').hide(); $('#form-$id').show();";
+      "$('#content-$id').hide(); $('#form-$id').fadeIn();";
     if (isset($this->validationData['form']))
     {
       // Make Symfony 1.2 form validation extra-convenient
