@@ -131,30 +131,27 @@ class BasepkContextCMSActions extends sfActions
 
   protected function sortBody($parent, $order)
   {
-    $children = $parent->getNode()->getChildren();
-    $childrenById = pkArray::listToHashById($children);
-    // Repeated calls to moveAsLastChildOf produce inconsistent behavior
-    // even if we make refresh() calls. Let's try a peer-oriented approach
+    $this->logMessage("ZZ PARENT IS " . $parent->slug);
+    // ACHTUNG: I've made attempts to rewrite this more efficiently. They resulted in
+    // corrupted nested sets. Corrupted nested sets equal corrupted site page hierarchies
+    // equal VERY BAD. I suggest leaving this rarely invoked function the way it is.
     foreach ($order as $id)
     {
-      if (!isset($childrenById[$id]))
+      $child = Doctrine::getTable('pkContextCMSPage')->find($id);
+      if (!$child)
       {
-        // This will happen with foreign tabs and the home page tab
-        $this->logMessage("ZZ SKIPPING $id");
+        $this->logMessage("ZZ skipping non-page");
+        continue;
+      }
+      if ($child->getNode()->getParent() != $parent)
+      {
+        $this->logMessage("ZZ skipping non-child");
         continue;
       }
       $this->logMessage("ZZ MOVING $id");
-      $child = $childrenById[$id];
-      if (isset($last))
-      {
-        $child->getNode()->moveAsNextSiblingOf($last);
-      }
-      else
-      {
-        $child->getNode()->moveAsFirstChildOf($parent);
-      }
-      $last = $child;
+      $child->getNode()->moveAsLastChildOf($parent);
     }
+    // Now: did that work consistently?
     $children = $parent->getNode()->getChildren();
     $this->logMessage("ZZ resulting order is " . implode(",", pkArray::getIds($children)));
   }
