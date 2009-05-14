@@ -97,14 +97,33 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeSort(sfRequest $request)
   {
-    $page = $this->retrievePageForEditingById('page');
+    return $this->sortBodyWrapper('pk-context-cms-navcolumn-page');
+  }
+  
+  public function executeSortTabs(sfRequest $request)
+  {
+    return $this->sortBodyWrapper('pk-context-cms-site-navigation', '/');
+  }
+
+  protected function sortBodyWrapper($parameter, $slug = false)
+  {
+    $request = $this->getRequest();
+    if ($slug !== false)
+    {
+      $page = pkContextCMSPageTable::retrieveBySlugWithSlots($slug);
+      $this->validAndEditable($page, 'edit');
+    } 
+    else
+    {
+      $page = $this->retrievePageForEditingById('page');
+    }
     $this->forward404Unless($page);
     if (!$page->getNode()->hasChildren())
     {
       $page = $page->getNode()->getParent();
       $this->forward404Unless($page);
     }
-    $order = $this->getRequestParameter('pk-context-cms-navcolumn-page');
+    $order = $this->getRequestParameter($parameter);
     $this->forward404Unless(is_array($order));
     $this->sortBody($page, $order);
     return sfView::NONE;
@@ -112,14 +131,32 @@ class BasepkContextCMSActions extends sfActions
 
   protected function sortBody($parent, $order)
   {
+    $children = $parent->getNode()->getChildren();
+    $childrenById = pkArray::listToHashById($children);
+    // Repeated calls to moveAsLastChildOf produce inconsistent behavior
+    // even if we make refresh() calls. Let's try a peer-oriented approach
     foreach ($order as $id)
     {
-      $child = Doctrine::getTable('pkContextCMSPage')->find($id);
-      if ($child) 
+      if (!isset($childrenById[$id]))
       {
-        $child->getNode()->moveAsLastChildOf($parent);
+        // This will happen with foreign tabs and the home page tab
+        $this->logMessage("ZZ SKIPPING $id");
+        continue;
       }
+      $this->logMessage("ZZ MOVING $id");
+      $child = $childrenById[$id];
+      if (isset($last))
+      {
+        $child->getNode()->moveAsNextSiblingOf($last);
+      }
+      else
+      {
+        $child->getNode()->moveAsFirstChildOf($parent);
+      }
+      $last = $child;
     }
+    $children = $parent->getNode()->getChildren();
+    $this->logMessage("ZZ resulting order is " . implode(",", pkArray::getIds($children)));
   }
 
   public function executeRename(sfRequest $request)

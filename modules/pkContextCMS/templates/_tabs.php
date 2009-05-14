@@ -34,7 +34,8 @@ foreach ($tabs as $tab)
   }
   else
   {
-    echo("<li id='nav-$tabcount'");
+    $id = $tab->getId();
+    echo("<li id='pk-context-cms-site-navigation-$id'");
     $classes = '';
     if ($page)
     {
@@ -68,3 +69,6 @@ foreach ($tabs as $tab)
 }
 ?>
 </ul>
+<?php if ($draggable): ?>
+  <?php echo jq_sortable_element('#pk-context-cms-site-navigation', array('url' =>   'pkContextCMS/sortTabs?page=' . $page->getId())) ?>
+<?php endif ?>
