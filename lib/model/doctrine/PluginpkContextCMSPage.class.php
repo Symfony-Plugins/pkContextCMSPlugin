@@ -71,78 +71,90 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     {
       return true;
     }
-    $key = "app_pkContextCMS_$privilege" . "_sufficient_credentials";
-    $sufficientCredentials = sfConfig::get(
-        "app_pkContextCMS_$privilege" . "_sufficient_credentials", false);
-    $sufficientGroup = sfConfig::get(
-        "app_pkContextCMS_$privilege" . "_sufficient_group", false);
-    $candidateGroup = sfConfig::get(
-        "app_pkContextCMS_$privilege" . "_candidate_group", false);
-    // By default users must log in to do anything except view
-    $loginRequired = sfConfig::get(
-        "app_pkContextCMS_$privilege" . "_login_required", 
-        ($privilege === 'view' ? false : true));
-
-    // Rule 2: if no login is required for the site as a whole for this
-    // privilege, anyone can do it...
-    if (!$loginRequired)
+    $privileges = explode("|", $privilege);
+    foreach ($privileges as $privilege)
     {
-      // Except for rule 2a: individual pages can be conveniently locked for 
-      // viewing purposes on an otherwise public site
-      if (($privilege === 'view') && $this->view_is_secure)
+      $key = "app_pkContextCMS_$privilege" . "_sufficient_credentials";
+      $sufficientCredentials = sfConfig::get(
+          "app_pkContextCMS_$privilege" . "_sufficient_credentials", false);
+      $sufficientGroup = sfConfig::get(
+          "app_pkContextCMS_$privilege" . "_sufficient_group", false);
+      $candidateGroup = sfConfig::get(
+          "app_pkContextCMS_$privilege" . "_candidate_group", false);
+      // By default users must log in to do anything except view
+      $loginRequired = sfConfig::get(
+          "app_pkContextCMS_$privilege" . "_login_required", 
+          ($privilege === 'view' ? false : true));
+
+      // Rule 2: if no login is required for the site as a whole for this
+      // privilege, anyone can do it...
+      if (!$loginRequired)
       {
-        return $user->isAuthenticated();
-      } 
-      else
+        // Except for rule 2a: individual pages can be conveniently locked for 
+        // viewing purposes on an otherwise public site
+        if (($privilege === 'view') && $this->view_is_secure)
+        {
+          if ($user->isAuthenticated())
+          {
+            return true;
+          }
+          continue;
+        } 
+        else
+        {
+          return true;
+        }
+      }
+
+      // Corollary of rule 2: if login IS required and you're not
+      // logged in, bye-bye
+      if (!$user->isAuthenticated())
+      {
+        continue;
+      }
+
+      // Rule 3: if there are no sufficient credentials and there is no
+      // required or sufficient group, then login alone is sufficient. Common 
+      // on sites with one admin
+      if (($sufficientCredentials === false) && ($candidateGroup === false) && ($sufficientGroup === false))
+      {
+        // Logging in is the only requirement
+        return true; 
+      }
+
+      // Rule 4: if the user has sufficient credentials... that's sufficient!
+      // Many sites will want to simply say 'editors can edit everything' etc
+      if ($sufficientCredentials && 
+        ($user->hasCredential($sufficientCredentials)))
+      {
+        return true;
+      }
+      if ($sufficientGroup && 
+        ($user->hasGroup($sufficientGroup)))
+      {
+        return true;
+      }
+
+      // Rule 5: if there is a candidate group, make sure the user is a member
+      // before checking for explicit privileges for that user
+      if ($candidateGroup && 
+        (!$user->hasGroup($candidateGroup)))
+      {
+        continue;
+      }
+
+      // Rule 6: when minimum but not sufficient credentials are present,
+      // check for an explicit grant of privileges to this user, on
+      // this page or on any ancestor page.
+      $result = $this->userHasExplicitPrivilege($privilege);
+      if ($result)
       {
         return true;
       }
     }
-
-    // Corollary of rule 2: if login IS required and you're not
-    // logged in, bye-bye
-    if (!$user->isAuthenticated())
-    {
-      return false;
-    }
-
-    // Rule 3: if there are no sufficient credentials and there is no
-    // required or sufficient group, then login alone is sufficient. Common 
-    // on sites with one admin
-    if (($sufficientCredentials === false) && ($candidateGroup === false) && ($sufficientGroup === false))
-    {
-      // Logging in is the only requirement
-      return true; 
-    }
-
-    // Rule 4: if the user has sufficient credentials... that's sufficient!
-    // Many sites will want to simply say 'editors can edit everything' etc
-    if ($sufficientCredentials && 
-      ($user->hasCredential($sufficientCredentials)))
-    {
-      return true;
-    }
-    if ($sufficientGroup && 
-      ($user->hasGroup($sufficientGroup)))
-    {
-      return true;
-    }
-
-    // Rule 5: if there is a candidate group, make sure the user is a member
-    // before checking for explicit privileges for that user
-    if ($candidateGroup && 
-      (!$user->hasGroup($candidateGroup)))
-    {
-      return false;
-    }
-
-    // Rule 6: when minimum but not sufficient credentials are present,
-    // check for an explicit grant of privileges to this user, on
-    // this page or on any ancestor page.
-    $result = $this->userHasExplicitPrivilege($privilege);
-    return $result;
+    return false;
   }
-
+  
   private function userHasExplicitPrivilege($privilege)
   {
     // Use caching proxy implementation

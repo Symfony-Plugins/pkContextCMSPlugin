@@ -44,7 +44,7 @@ class BasepkContextCMSActions extends sfActions
 
       }
     }
-    if ($page->archived && (!$page->userHasPrivilege('edit')))
+    if ($page->archived && (!$page->userHasPrivilege('edit|manage')))
     {
       $this->forward404();
     }
@@ -73,7 +73,7 @@ class BasepkContextCMSActions extends sfActions
   // Note that these fetch based on the id or slug found in the
   // named parameter of the request
 
-  protected function retrievePageForEditingById($parameter = 'id', $privilege = 'edit')
+  protected function retrievePageForEditingById($parameter = 'id', $privilege = 'edit|manage')
   {
     $page = pkContextCMSPageTable::retrieveByIdWithSlots(
       $this->getRequestParameter($parameter));
@@ -81,7 +81,7 @@ class BasepkContextCMSActions extends sfActions
     return $page;
   }
 
-  protected function retrievePageForEditingBySlug($parameter = 'slug', $privilege = 'edit')
+  protected function retrievePageForEditingBySlug($parameter = 'slug', $privilege = 'edit|manage')
   {
     $page = pkContextCMSPageTable::retrieveBySlugWithSlots(
       $this->getRequestParameter($parameter));
@@ -89,7 +89,7 @@ class BasepkContextCMSActions extends sfActions
     return $page;
   }
 
-  protected function validAndEditable($page, $privilege = 'edit')
+  protected function validAndEditable($page, $privilege = 'edit|manage')
   {
     $this->forward404Unless($page);
     $this->forward404Unless($page->userHasPrivilege($privilege));
@@ -115,7 +115,7 @@ class BasepkContextCMSActions extends sfActions
     } 
     else
     {
-      $page = $this->retrievePageForEditingById('page');
+      $page = $this->retrievePageForEditingBySlugId('page');
     }
     $this->forward404Unless($page);
     if (!$page->getNode()->hasChildren())
@@ -160,7 +160,7 @@ class BasepkContextCMSActions extends sfActions
   {
     $page = $this->retrievePageForEditingById();
     $this->forward404Unless($page);
-    $this->forward404Unless($page->userHasPrivilege('edit'));    
+    $this->forward404Unless($page->userHasPrivilege('edit|manage'));    
     // Rename never changes the slug, just the title
     $page->setTitle(htmlspecialchars($request->getParameter('title')));
     $page->save();
@@ -350,7 +350,7 @@ class BasepkContextCMSActions extends sfActions
     $id = $request->getParameter('id');
     $page = pkContextCMSPageTable::retrieveByIdWithSlotsForVersion($id, $version);
     $this->forward404Unless($page);
-    $this->forward404Unless($page->userHasPrivilege('edit'));    
+    $this->forward404Unless($page->userHasPrivilege('edit|manage'));    
     $this->name = $this->getRequestParameter('name');
     if ($subaction == 'revert')
     {
