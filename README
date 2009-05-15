@@ -21,6 +21,10 @@ to add a "culture switcher" to their sites so that a user interface is
 available to make these features visible. Thanks to Quentin
 Dugauthier for his assistance in debugging these features.
 
+Internationalization is also supported for the `title_prefix` option
+and will be supported for all future options that expect user-readable content
+in the `app.yml` file.
+
 Enjoy!
 
 = pkContextCMSPlugin =
@@ -209,13 +213,32 @@ just use this route in your routing.yml file:
       url:   /
         param: { module: pkContextCMS, action: show, slug: / }
 
-Finally, to get the benefit of the progressively enhanced form controls
+=== Enhanced Form Controls ===
+
+To get the benefit of the progressively enhanced form controls
 featured in our admin tools, you'll need to add pkToolkitPlugin's
 pkControls.js to your view.yml file:
 
     default:
       ... Other things ...
       javascripts:    [/pkToolkitPlugin/js/pkControls.js]
+
+=== Title Prefix ===
+
+By default, the title element of each page will contain the title of that page.
+In many cases you'll wish to specify a prefix for the title as well.
+
+You can do so by setting `app_pkContextCMS_title_prefix` in `app.yml`. This option supports
+optional internationalization:
+
+    all:
+      pkContextCMS:
+        # You can do it this way...
+        title_prefix:
+          en: 'Our Company : '
+          fr: 'French Prefix : '
+        # OR this way for a single-culture site
+        title_prefix: 'Our Company'      
 
 == Routing Rules ==
 
@@ -695,8 +718,8 @@ full editing privileges with these settings:
         edit_sufficient_credentials: executive_editors
 
 Similarly, any user with `manage_sufficient_credentials` can always
-add or delete pages anywhere on the site. So a more complete setting
-for a typical setup would be:
+add or delete pages anywhere on the site, in addition to editing content. So 
+a more complete setting for a typical setup would be:
 
     all:
       pkContextCMS:

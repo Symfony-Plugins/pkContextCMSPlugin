@@ -173,4 +173,23 @@ class pkContextCMSTools
       'default' => 'Default Page',
       'home' => 'Home Page'));
   }
+  // Fetch an internationalized option from app.yml. Example:
+  // all:
+  //   pkContextCMS:
+  
+  static public function getOptionI18n($option, $default = false, $culture = false)
+  {
+    $culture = self::cultureOrDefault($culture);
+    $values = sfConfig::get("app_pkContextCMS_$option", array());
+    if (!is_array($values))
+    {
+      // Convenience for single-language sites
+      return $values;
+    }
+    if (isset($values[$culture]))
+    {
+      return $values[$culture];  
+    } 
+    return $default; 
+  }
 }

@@ -49,7 +49,8 @@ class BasepkContextCMSActions extends sfActions
       $this->forward404();
     }
     // Title is pre-escaped as valid HTML
-    $this->getResponse()->setTitle($page->getTitle(), false);
+    $prefix = pkContextCMSTools::getOptionI18n('title_prefix');
+    $this->getResponse()->setTitle($prefix . $page->getTitle(), false);
     $this->page = $page;
     // Necessary to allow the use of
     // pkContextCMSTools::getCurrentPage() in the layout.
