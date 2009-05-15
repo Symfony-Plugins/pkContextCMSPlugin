@@ -741,7 +741,9 @@ display: block;
 #content-top-1 ul li
 {
 display:inline;
-padding:0 10px 0 0;
+padding:0;
+margin:0 20px 0 0;
+
 }
 
 #pk-context-cms-contents-container-top .pk-context-cms-add-slot-controls,
