@@ -524,9 +524,9 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       sfContext::getInstance()->getUser()->getGuardUser()->getId();
     if ($action === 'delete')
     {
-      $diff = '<strike>' . pkString::limitCharacters($newSlots[$params['permid']]->getSearchText(), 20) . '</strike>';
       if (isset($newSlots[$params['permid']]))
       {
+        $diff = '<strike>' . pkString::limitCharacters($newSlots[$params['permid']]->getSearchText(), 20) . '</strike>';
         unset($newSlots[$params['permid']]);
       }
     }
