@@ -189,6 +189,7 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
       }
     }
   }
+  
   public function addSearchQuery(Doctrine_Query $q = null, $luceneQuery)
   {
     // Page searches are always specific to this user's culture
@@ -196,9 +197,24 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     $luceneQuery = "+(text:($luceneQuery))";
     return pkZendSearch::addSearchQuery($this, $q, $luceneQuery, $culture);
   }
+  
+  public function addSearchQueryWithScores(Doctrine_Query $q = null, $luceneQuery, &$scores)
+  {
+    // Page searches are always specific to this user's culture
+    $culture = pkContextCMSTools::getUserCulture();
+    $luceneQuery = "+(text:($luceneQuery))";
+    return pkZendSearch::addSearchQueryWithScores($this, $q, $luceneQuery, $culture, $scores);
+  }
+  
   // Just a hook used by the above
   public function searchLucene($query, $culture)
   {
     return pkZendSearch::searchLucene($this, $query, $culture);
+  }
+  
+  // Just a hook used by the above
+  public function searchLuceneWithScores($query, $culture)
+  {
+    return pkZendSearch::searchLuceneWithScores($this, $query, $culture);
   }
 }
