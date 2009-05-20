@@ -116,7 +116,7 @@ class BasepkContextCMSActions extends sfActions
     } 
     else
     {
-      $page = $this->retrievePageForEditingBySlugId('page');
+      $page = $this->retrievePageForEditingById('page');
     }
     $this->forward404Unless($page);
     if (!$page->getNode()->hasChildren())
