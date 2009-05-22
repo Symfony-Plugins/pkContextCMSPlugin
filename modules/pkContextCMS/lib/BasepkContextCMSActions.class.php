@@ -443,4 +443,115 @@ class BasepkContextCMSActions extends sfActions
     $this->pagerUrl = "pkContextCMS/search?" .
             http_build_query(array("q" => $q));
   }
+  
+  public function executePageTree(sfRequest $request)
+  {
+    // Work in progress, stubbed out for now
+    
+    $this->forward404();
+    
+    // Reorganizing the tree = escaping your page-specific security limitations.
+    // So only full CMS admins can do it.
+    $this->forward404Unless($this->getUser()->hasCredential('cms_admin'));
+    
+    // This would be prohibitive with thousands of pages due to
+    // memory limitations, PHP/Doctrine is a memory hog when it comes
+    // to hydrating objects. Think about that at some point
+    $q = pkContextCMSPageTable::queryWithTitles();
+    // Take advantage of the structure information
+    // inherent in the Doctrine nested set to organize
+    // this neatly into a flat list in the correct order
+    // without multiple queries. This will need changing
+    // if we ever ditch the Doctrine nested set behavior
+    $q->orderBy($q->getRootAlias() . '.lft');
+    $pages = $q->execute();
+    $pageInfos = array();
+    $lastLevel = 0;
+    $parents = array();
+    foreach ($pages as $page)
+    {
+      if (!$page->lft)
+      {
+        // The global page that hosts global slots, and any other pages outside the tree
+        // that may come into being later 
+        continue;
+      }
+      $level = $page->getLevel();
+      if ($level < $lastLevel)
+      {
+        // Careful, watch out for:
+        //  1
+        //     a
+        //        b
+        //          c
+        //  2
+        // which needs three 'after' links between c and 2
+        for ($i = 0; ($i < ($lastLevel - $level)); $i++)
+        {
+          $pageInfos[] = $this->generateAfterPageInfo($lastPage, $parents, $i);
+          array_pop($parents);
+        }
+      }
+      elseif ($level > $lastLevel)
+      {
+        // Should always be true since the home page is at level 0
+        if (count($pageInfos))
+        {
+          $pageInfos[count($pageInfos) - 1]['hasChildren'] = true;
+        }
+        $parents[] = $lastPage->getId();
+        $pageInfo = array();
+        $pageInfo['id'] = 'before-' . $page->getId();
+        $pageInfo['title'] = 'before';
+        $pageInfo['level'] = $level;
+        $pageInfo['class'] = 'pagetree-before ' . $this->getParentClasses($parents);
+        $pageInfos[] = $pageInfo;
+      }
+      $pageInfo = array();
+      $pageInfo['title'] = $page->getTitle();
+      $pageInfo['level'] = $page->getLevel();
+      $pageInfo['class'] = 'pagetree-normal' . $this->getParentClasses($parents);
+      $pageInfo['id'] = $page->getId();
+      $pageInfos[] = $pageInfo;
+      $lastLevel = $page->getLevel();
+      $lastPage = $page;
+    }
+    // Often a cascade of after links, not just one, after the last child in the tree
+    for ($i = 0; ($i < $lastLevel); $i++)
+    {
+      $pageInfos[] = $this->generateAfterPageInfo($lastPage, $parents, $i);
+      array_pop($parents);
+    }
+    
+    $this->pageInfos = $pageInfos;
+  }
+  
+  protected function getParentClasses($parents)
+  {
+    $result = '';
+    foreach ($parents as $p)
+    {
+      $result .= " descendantof-$p";
+    }
+    if (count($parents))
+    {
+      $lastParent = pkArray::last($parents);
+      $result .= " childof-$lastParent";
+    }
+    if (count($parents) < 2)
+    {
+      $result .= " toplevel";
+    }
+    return $result;
+  }
+  
+  protected function generateAfterPageInfo($lastPage, $parents, $minusLevels)
+  {
+    $pageInfo = array();
+    $pageInfo['id'] = 'after-' . $lastPage->getId();
+    $pageInfo['title'] = 'after';
+    $pageInfo['level'] = $lastPage->getLevel() - $minusLevels;
+    $pageInfo['class'] = 'pagetree-after ' . $this->getParentClasses($parents);
+    return $pageInfo;
+  }
 }
