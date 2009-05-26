@@ -208,7 +208,8 @@ function _pk_context_cms_navcolumn_body(
       {
         $class = "self_item";
       }
-      $result .= "<li id=\"pk-context-cms-navcolumn-page-" . $child->id . "\" class=\"$class\">\n";
+      // Specific format to please jQuery.sortable
+      $result .= "<li id=\"pk-context-cms-navcolumn_" . $child->id . "\" class=\"$class\">\n";
       $title = $child->getTitle();
       if ($child->getArchived())
       {

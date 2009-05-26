@@ -98,7 +98,7 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeSort(sfRequest $request)
   {
-    return $this->sortBodyWrapper('pk-context-cms-navcolumn-page');
+    return $this->sortBodyWrapper('pk-context-cms-navcolumn');
   }
   
   public function executeSortTabs(sfRequest $request)
@@ -109,22 +109,32 @@ class BasepkContextCMSActions extends sfActions
   protected function sortBodyWrapper($parameter, $slug = false)
   {
     $request = $this->getRequest();
+    $this->logMessage("ZZ sortBodyWrapper");
     if ($slug !== false)
     {
       $page = pkContextCMSPageTable::retrieveBySlugWithSlots($slug);
+      $this->logMessage("ZZ got slug by slots");
       $this->validAndEditable($page, 'edit');
+      $this->logMessage("ZZ is valid and editable");
     } 
     else
     {
       $page = $this->retrievePageForEditingById('page');
+      $this->logMessage("ZZ got page for editing by id");      
     }
+    $this->logMessage("ZZ Page is " . $page->id, "info");
     $this->forward404Unless($page);
     if (!$page->getNode()->hasChildren())
     {
       $page = $page->getNode()->getParent();
+      $this->logMessage("ZZ bumping up to parent");
       $this->forward404Unless($page);
     }
     $order = $this->getRequestParameter($parameter);
+    ob_start();
+    var_dump($_REQUEST);
+    $this->logMessage("ZZ request is " . ob_get_clean());
+    $this->logMessage("ZZ is_array order: " . is_array($order));
     $this->forward404Unless(is_array($order));
     $this->sortBody($page, $order);
     return sfView::NONE;
@@ -460,14 +470,15 @@ class BasepkContextCMSActions extends sfActions
     $q = pkContextCMSPageTable::queryWithTitles();
     // Take advantage of the structure information
     // inherent in the Doctrine nested set to organize
-    // this neatly into a flat list in the correct order
-    // without multiple queries. This will need changing
+    // this painlessly without multiple queries. This will need changing
     // if we ever ditch the Doctrine nested set behavior
     $q->orderBy($q->getRootAlias() . '.lft');
     $pages = $q->execute();
     $pageInfos = array();
-    $lastLevel = 0;
+    $lastLevel = -1;
     $parents = array();
+    $tree = array();
+    $lastPage = null;
     foreach ($pages as $page)
     {
       if (!$page->lft)
@@ -485,44 +496,29 @@ class BasepkContextCMSActions extends sfActions
         //        b
         //          c
         //  2
-        // which needs three 'after' links between c and 2
+        // which needs three pops
         for ($i = 0; ($i < ($lastLevel - $level)); $i++)
         {
-          $pageInfos[] = $this->generateAfterPageInfo($lastPage, $parents, $i);
           array_pop($parents);
         }
       }
       elseif ($level > $lastLevel)
       {
-        // Should always be true since the home page is at level 0
-        if (count($pageInfos))
+        if ($lastPage)
         {
-          $pageInfos[count($pageInfos) - 1]['hasChildren'] = true;
+          $parents[] = $lastPage->getId();
         }
-        $parents[] = $lastPage->getId();
-        $pageInfo = array();
-        $pageInfo['id'] = 'before-' . $page->getId();
-        $pageInfo['title'] = 'before';
-        $pageInfo['level'] = $level;
-        $pageInfo['class'] = 'pagetree-before ' . $this->getParentClasses($parents);
-        $pageInfos[] = $pageInfo;
       }
       $pageInfo = array();
       $pageInfo['title'] = $page->getTitle();
       $pageInfo['level'] = $page->getLevel();
-      $pageInfo['class'] = 'pagetree-normal' . $this->getParentClasses($parents);
       $pageInfo['id'] = $page->getId();
+      $tree[pkArray::last($parents)][] = $page->getId();
       $pageInfos[] = $pageInfo;
       $lastLevel = $page->getLevel();
       $lastPage = $page;
     }
-    // Often a cascade of after links, not just one, after the last child in the tree
-    for ($i = 0; ($i < $lastLevel); $i++)
-    {
-      $pageInfos[] = $this->generateAfterPageInfo($lastPage, $parents, $i);
-      array_pop($parents);
-    }
-    
+    $this->tree = $tree;
     $this->pageInfos = $pageInfos;
   }
   

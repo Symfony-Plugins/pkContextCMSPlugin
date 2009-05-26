@@ -9,6 +9,7 @@
 <style>
 #pagetree li
 {
+  padding-left: 20px;
   display: none;
 }
 #pagetree li.toplevel
@@ -21,21 +22,43 @@
   color: red;
 }
 </style>
+<?php $lastLevel = 0 ?>
 <ul id="pagetree">
   <?php foreach ($pageInfos as $pageInfo): ?>
-    <li id="<?php echo $pageInfo['id'] ?>" class="<?php echo $pageInfo['class'] ?>">
-      <?php echo str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $pageInfo['level']) ?>
-      <?php if (isset($pageInfo['hasChildren'])): ?>
-        <?php $id = $pageInfo['id'] ?>
-        <?php echo link_to_function("&gt; ", "$('.childof-$id').show(); $('#$id-close').show(); $('#$id-open').hide();", array("id" => "$id-open")) ?>
-        <?php echo link_to_function("&lt; ", "$('.descendantof-$id').hide(); $('#$id-close').hide(); $('#$id-open').show();", array("id" => "$id-close", 'style' => 'display: none')) ?>
-      <?php else: ?>
-        o 
-      <?php endif ?>
-      <?php echo $pageInfo['title'] ?>
-    </li>
+    <?php $newLevel = $pageInfo['level'] ?>
+    <?php if ($newLevel > $lastLevel): ?>
+      <ul>
+    <?php endif ?>
+    <?php for ($i = $newLevel; ($i < $lastLevel); $i++): ?>
+      </ul></li>
+    <?php endfor ?>
+    <?php $id = $pageInfo['id'] ?>
+    <li id="<?php echo $id ?>" class="<?php echo ($newLevel < 2) ? 'toplevel' : '' ?>">
+    <?php // If it has kids... ?>
+    <?php if (isset($tree[$id])): ?>
+      <?php echo link_to_function("&gt; ", "$('#$id > ul').children().show(); $('#$id-close').show(); $('#$id-open').hide();", array("id" => "$id-open")) ?>
+      <?php echo link_to_function("&lt; ", "$('#$id > ul').children().hide(); $('#$id-close').hide(); $('#$id-open').show();", array("id" => "$id-close", 'style' => 'display: none')) ?>
+    <?php else: ?>
+      o
+    <?php endif ?>
+    <?php echo $pageInfo['title'] ?>
+    <?php if (!isset($tree[$id])): ?>
+      </li>
+    <?php endif ?>
+    <?php $lastLevel = $newLevel ?>
   <?php endforeach ?>
+<?php for ($i = 0; ($i < $lastLevel); $i++): ?>
+  </ul></li>
+<?php endfor ?>
 </ul>
 <script>
-$('#pagetree').sortable();
+$('#pagetree li').draggable();
+$('#pagetree li').droppable({
+  drop: function(event, ui)
+  { 
+    var e = ui.draggable;
+    $(e).css({ top: '0px', left: '0px' });
+    $(this).before(e);
+  }
+});
 </script>
