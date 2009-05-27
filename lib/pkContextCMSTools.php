@@ -192,4 +192,16 @@ class pkContextCMSTools
     } 
     return $default; 
   }
+  
+  static private $globalButtons = array();
+  
+  static public function addGlobalButton($label, $link, $class)
+  {
+    self::$globalButtons[] = array("label" => $label, "link" => $link, "class" => $class);
+  }
+  
+  static public function getGlobalButtons()
+  {
+    return self::$globalButtons;
+  }
 }
