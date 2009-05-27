@@ -187,12 +187,14 @@ pkContextCMSAccess:
       local: user_id
       type: one
       foreignAlias: Accesses
+      onDelete: cascade
     Page:
       class: pkContextCMSPage
       foreign: id
       local: page_id
       type: one
       foreignAlias: Accesses
+      onDelete: cascade
   indexes:
     pageindex:
       fields: [page_id]
