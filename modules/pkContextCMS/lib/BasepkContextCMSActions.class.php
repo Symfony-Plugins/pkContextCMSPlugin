@@ -76,6 +76,8 @@ class BasepkContextCMSActions extends sfActions
 
   protected function retrievePageForEditingById($parameter = 'id', $privilege = 'edit|manage')
   {
+    $value = $this->getRequestParameter($parameter);
+    $this->logMessage("ZZ parameter is $parameter value is $value");
     $page = pkContextCMSPageTable::retrieveByIdWithSlots(
       $this->getRequestParameter($parameter));
     $this->validAndEditable($page, $privilege);
@@ -92,8 +94,10 @@ class BasepkContextCMSActions extends sfActions
 
   protected function validAndEditable($page, $privilege = 'edit|manage')
   {
-    $this->forward404Unless($page);
-    $this->forward404Unless($page->userHasPrivilege($privilege));
+    $this->logMessage("ZZ page is " . $page->id);
+    $this->logMessage("ZZ privilege is " . $page->userHasPrivilege($privilege));
+    $this->flunkUnless($page);
+    $this->flunkUnless($page->userHasPrivilege($privilege));
   }
 
   public function executeSort(sfRequest $request)
@@ -123,19 +127,19 @@ class BasepkContextCMSActions extends sfActions
       $this->logMessage("ZZ got page for editing by id");      
     }
     $this->logMessage("ZZ Page is " . $page->id, "info");
-    $this->forward404Unless($page);
+    $this->flunkUnless($page);
     if (!$page->getNode()->hasChildren())
     {
       $page = $page->getNode()->getParent();
       $this->logMessage("ZZ bumping up to parent");
-      $this->forward404Unless($page);
+      $this->flunkUnless($page);
     }
     $order = $this->getRequestParameter($parameter);
     ob_start();
     var_dump($_REQUEST);
     $this->logMessage("ZZ request is " . ob_get_clean());
     $this->logMessage("ZZ is_array order: " . is_array($order));
-    $this->forward404Unless(is_array($order));
+    $this->flunkUnless(is_array($order));
     $this->sortBody($page, $order);
     return sfView::NONE;
   }
@@ -170,8 +174,8 @@ class BasepkContextCMSActions extends sfActions
   public function executeRename(sfRequest $request)
   {
     $page = $this->retrievePageForEditingById();
-    $this->forward404Unless($page);
-    $this->forward404Unless($page->userHasPrivilege('edit|manage'));    
+    $this->flunkUnless($page);
+    $this->flunkUnless($page->userHasPrivilege('edit|manage'));    
     // Rename never changes the slug, just the title
     $page->setTitle(htmlspecialchars($request->getParameter('title')));
     $page->save();
@@ -196,12 +200,12 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeCreate()
   {
-    $this->forward404Unless($this->getRequest()->getMethod() == sfRequest::POST);
+    $this->flunkUnless($this->getRequest()->getMethod() == sfRequest::POST);
     $parent = $this->retrievePageForEditingBySlug('parent', 'manage');
     
     $title = trim($this->getRequestParameter('title'));
 
-    $this->forward404Unless(strlen($title));
+    $this->flunkUnless(strlen($title));
 
     $pathComponent = $title;
     $pathComponent = strtolower(preg_replace("/[\W]+/", "-", $title));
@@ -314,7 +318,7 @@ class BasepkContextCMSActions extends sfActions
           array('permids' => $permids));
         $page = pkContextCMSPageTable::retrieveByIdWithSlots(
           $request->getParameter('id'));
-        $this->forward404Unless($page);
+        $this->flunkUnless($page);
         pkContextCMSTools::setCurrentPage($page);
       }
     }
@@ -329,7 +333,7 @@ class BasepkContextCMSActions extends sfActions
       array('permid' => $this->getRequestParameter('permid')));
     $page = pkContextCMSPageTable::retrieveByIdWithSlots(
       $request->getParameter('id'));
-    $this->forward404Unless($page);
+    $this->flunkUnless($page);
     pkContextCMSTools::setCurrentPage($page);
   }
 
@@ -339,7 +343,7 @@ class BasepkContextCMSActions extends sfActions
 //  {
 //    $page = pkContextCMSPageTable::retrieveByIdWithSlots(
 //      $request->getParameter('id'));
-//    $this->forward404Unless($page);
+//    $this->flunkUnless($page);
 //    pkContextCMSTools::setCurrentPage($page);
 //    $this->name = $this->getRequestParameter('name');
 //  }
@@ -360,8 +364,8 @@ class BasepkContextCMSActions extends sfActions
     }
     $id = $request->getParameter('id');
     $page = pkContextCMSPageTable::retrieveByIdWithSlotsForVersion($id, $version);
-    $this->forward404Unless($page);
-    $this->forward404Unless($page->userHasPrivilege('edit|manage'));    
+    $this->flunkUnless($page);
+    $this->flunkUnless($page->userHasPrivilege('edit|manage'));    
     $this->name = $this->getRequestParameter('name');
     if ($subaction == 'revert')
     {
@@ -462,7 +466,7 @@ class BasepkContextCMSActions extends sfActions
     
     // Reorganizing the tree = escaping your page-specific security limitations.
     // So only full CMS admins can do it.
-    $this->forward404Unless($this->getUser()->hasCredential('cms_admin'));
+    $this->flunkUnless($this->getUser()->hasCredential('cms_admin'));
     
     // This would be prohibitive with thousands of pages due to
     // memory limitations, PHP/Doctrine is a memory hog when it comes
@@ -550,4 +554,45 @@ class BasepkContextCMSActions extends sfActions
     $pageInfo['class'] = 'pagetree-after ' . $this->getParentClasses($parents);
     return $pageInfo;
   }
+  
+  protected function flunkUnless($condition)
+  {
+    if ($condition)
+    {
+      return;
+    }
+    $this->logMessage("ZZ flunked", "info");
+    $this->forward('pkContextCMS', 'cleanSignin');
+  }
+  
+  // Do NOT use these as the default signin actions. They are special-purpose
+  // ajax/iframe breakers for use in forcing the user back to the login page
+  // when they try to do an ajax action after timing out.
+  
+  public function executeCleanSignin(sfRequest $request)
+  {
+    // Template is a frame/ajax breaker, redirects to phase 2
+  }
+  
+  public function executeCleanSigninPhase2(sfRequest $request)
+  {
+    $this->getRequest()->isXmlHttpRequest();
+    $cookies = array_keys($_COOKIE);
+    foreach ($cookies as $cookie)
+    {
+      // Leave the sfGuardPlugin remember me cookie alone
+      if ($cookie === sfConfig::get('app_sf_guard_plugin_remember_cookie_name', 'sfRemember'))
+      {
+        continue;
+      }
+      // ACHTUNG: only works if we specify the domain ('/' in most cases).
+      // This lives in factory.yml... where we can't access it. So unfortunately
+      // a redundant setting is needed
+      setcookie($cookie, "", time() - 3600, sfConfig::get('app_pkToolkit_cleanLogin_cookie_domain', '/'));
+    }
+    $url = sfContext::getInstance()->getController()->genUrl('sfGuardAuth/signin', true);
+    header("Location: $url");
+    exit(0);
+  }
+  
 }
