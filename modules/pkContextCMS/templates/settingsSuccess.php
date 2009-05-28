@@ -78,7 +78,7 @@
 	<?php // you can do this: { linkTemplate: "<a href='#'>_LABEL_</a>",  ?>
 	<?php //                    spanTemplate: "<span>_LINKS_</span>",     ?>
 	<?php //                    betweenLinks: " " }                       ?>
-	pkRadioSelect('.pk-radio-select', { });
+	// pkRadioSelect('.pk-radio-select', { });
 	$('#pk-context-cms-settings').show();
 
 	init_shadows();

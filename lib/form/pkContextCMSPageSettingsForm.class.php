@@ -22,15 +22,14 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     // approach in mind
     $this->setWidget(
       'archived',
-      new sfWidgetFormSelect(
+      new sfWidgetFormChoice(
         array(
+          'expanded' => true,
           'choices' => array(
             false => "On",
             true => "Off"
-          )
-        ),
-        array(
-          'class' => 'pk-radio-select'
+          ),
+          'default' => false
         )));
 
     if ($this->getObject()->hasChildren())
@@ -40,15 +39,14 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
 
     $this->setWidget(
       'view_is_secure',
-      new sfWidgetFormSelect(
+      new sfWidgetFormChoice(
         array(
+          'expanded' => true,
           'choices' => array(
             false => "Public",
             true => "Hidden"
-          )
-        ),
-        array(
-          'class' => 'pk-radio-select'
+          ),
+          'default' => false
         )));
 
     $this->addPrivilegeWidget('edit', 'editors');
