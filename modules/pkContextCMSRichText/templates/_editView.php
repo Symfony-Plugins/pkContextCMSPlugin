@@ -7,7 +7,7 @@
   array_merge($options, array("rich" => "fck"))) ?>
 <?php $tag = str_replace('type="text"', 'type="hidden"', $tag) ?>
 <?php echo $tag ?>
-<script>
+<script type="text/javascript">
 pkContextCMS.registerOnSubmit("<?php echo $id ?>", 
   function(slotId)
   {
