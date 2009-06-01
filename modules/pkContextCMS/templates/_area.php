@@ -2,48 +2,86 @@
 
 <?php // We don't replace the area controls on an AJAX refresh, ?>
 <?php // just the contents ?>
+<?php if ($editable): ?>
+
+<?php slot('pk-cancel') ?>
+<!-- .pk-controls.area Cancel Button -->
+<li class="pk-controls-item cancel">
+	<a href="#" class="pk-btn icon pk-cancel">Cancel</a>					
+</li>
+<?php end_slot() ?>
+
+<?php slot('pk-history-controls') // START - PK-HISTORY SLOT ====================================  ?>
+<!-- .pk-controls.pk-area-controls History Module -->
+<li class="pk-controls-item history">
+	<?php echo jq_link_to_remote("History", array(
+      "url" => "pkContextCMS/history?" . http_build_query(array("id" => $page->id, "name" => $name)),
+			'before' => '$(".pk-history-browser .pk-history-items").attr("id","pk-history-items-'.$name.'");
+									 $(".pk-history-browser .pk-history-items").attr("rel","pk-area-'.$name.'");', 
+      "update" => "pk-history-items-$name"), 
+			array(
+				'class' => 'pk-btn icon pk-history', 
+	)); ?>
+	<ul class="pk-history-options">
+		<li><a href="#" class="pk-btn icon pk-history-revert">Save as Current Revision</a></li>
+	</ul>
+</li>
+<?php end_slot() // END - PK-HISTORY SLOT ==================================== ?>
+
+
+<?php endif ?>
+
 <?php if (!$refresh): ?>
   <?php // Wraps the whole thing, including the area controls ?>
-  <div id="pk-context-cms-contents-container-<?php echo $name ?>" class="pk-context-cms-contents-container">
+  <div id="pk-area-<?php echo $name ?>" class="pk-area">
     
   <?php // The area controls ?>
   <?php if ($editable): ?>
-		<div class="pk-context-cms-add-slot-controls">
-    
-		<?php echo jq_link_to_remote("History",
-      array(
-        "url" => "pkContextCMS/history?" . http_build_query(
-          array("id" => $page->id, "name" => $name)),
-        "update" => "pk-context-cms-history-container-$name"
-      ), array('class' => 'pk-context-cms-slot-history', ) ) ?>
-
-    <div id="pk-context-cms-history-container-<?php echo $name ?>" class="pk-context-cms-history-container"></div>
-
     <?php if ($infinite): ?>
-	      <?php echo link_to_function("Add Slot<span></span>", "$('#pk-context-cms-add-slot-form-$name').show(); $(this).hide()", array('class' => 'pk-btn add', )) ?>
-	      <?php include_partial('pkContextCMS/addSlot', array('id' => $page->id, 'name' => $name, 'options' => $options)) ?>
+		<ul class="pk-controls pk-area-controls">
+			<!-- .pk-controls.pk-area-controls Add Slot Module -->
+			<li class="pk-controls-item slot">
+				<?php echo link_to_function("Add Slot", "", array('class' => 'pk-btn icon pk-add slot', )) ?>
+				<ul class="pk-area-options slot">
+	      	<?php include_partial('pkContextCMS/addSlot', array('id' => $page->id, 'name' => $name, 'options' => $options)) ?>
+				</ul>
+			</li>	
+			
+			<?php include_slot('pk-history-controls') ?>
+			<?php include_slot('pk-cancel') ?>
+			
+		</ul>
     <?php endif ?>
-		</div>
 
-		<br class="clear c"/>
+
   <?php endif ?>
+	<?php if (!$infinite): ?>
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function(){
+				$('#pk-area-<?php echo $name ?>').addClass('singleton');
+				$('#pk-area-<?php echo $name ?>.singleton .pk-slot-controls').prependTo($('#pk-area-<?php echo $name ?>')).addClass('pk-area-controls').removeClass('pk-slot-controls');
+			});
+		</script>
+	<?php endif ?>
+
   <?php // End area controls ?>
+
 <?php endif ?>
 
 <?php if ($preview): ?>
-  <div class="pk-context-cms-vc-preview">
-    You are previewing another version of this material. 
-    This will not become the current version unless you click "Revert." If you change your
-    mind, click "cancel."
-  </div>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){
+		$('.pk-history-preview-notice').fadeIn();
+	})
+</script>
 <?php endif ?>
 
 <?php $i = 0 ?>
-<?php // On an AJAX refresh we are updating pk-context-cms-contents-$name, ?>
+<?php // On an AJAX refresh we are updating pk-slots-$name, ?>
 <?php // so don't nest another one inside it ?>
 <?php if (!$refresh): ?>
   <?php // Wraps all of the slots in the area ?>
-  <div id="pk-context-cms-contents-<?php echo $name ?>" class="pk-context-cms-contents-all-slots">
+  <div id="pk-slots-<?php echo $name ?>" class="pk-slots">
 <?php endif ?>
 <?php // Loop through all of the slots in the area ?>
 <?php foreach ($slots as $permid => $slot): ?>
@@ -58,52 +96,104 @@
   <?php endif ?>
   <?php $outlineEditableClass = "" ?>
   <?php if ($editable && ((isset($slotOptions['outline_editable']) && $slotOptions['outline_editable']) || $slot->isOutlineEditable())): ?>
-    <?php $outlineEditableClass = "pk-context-cms-slot-has-outline" ?>
+    <?php $outlineEditableClass = "pk-slot-is-editable" ?>
   <?php endif ?>
-  <?php // Wraps an individual slot, with its controls ?>
-	<div class="pk-context-cms-slot <?php echo $outlineEditableClass ?>">
+ <?php // Generate the content of the CMS slot early and capture it to a ?>
+ <?php // Symfony slot so we can insert it at an appropriate point... and we ?>
+ <?php // will also insert its slot-specific controls via a separate ?>
+ <?php // pk-slot-controls-$name-$permid slot that the slot implementation ?>
+ <?php // provides for us ?>
+
+ <?php slot("pk-slot-content-$name-$permid") ?>
+   <?php pk_context_cms_slot_body($name, $slot->type, $permid, array_merge(array("preview" => $preview), $slotOptions), array(), false) ?>
+ <?php end_slot() ?>
+
+ <?php // Wraps an individual slot, with its controls ?>
+	<div class="pk-slot <?php echo $slot->type ?> <?php echo $outlineEditableClass ?>" id="pk-slot-<?php echo $name ?>-<?php echo $permid ?>">
+    <?php // John shouldn't we suppress this entirely if !$editable? ?>
     <?php // Controls for that individual slot ?>
     <?php if ($editable): ?>
-      <div class="pk-context-cms-slot-controls">		
-        <?php if ($infinite): ?>
-          <?php echo jq_link_to_remote("Delete Slot", 
-            array(
-              "url" => "pkContextCMS/deleteSlot?" .
-                http_build_query( 
-                  array("id" => $page->id,
-                    "name" => $name,
-                    "permid" => $permid)),
-              "update" => "pk-context-cms-contents-$name"), array('class' => 'pk-context-cms-slot-controls-delete', 'title' => 'Delete Slot', )) ?>
+		<ul class="pk-controls pk-slot-controls">		
+      <?php if ($infinite): ?>
+						<!-- <li class="drag-handle"><a href="#" class="pk-btn icon drag" title="Drag to Re-Order Slot">Drag to Re-Order Slot</a></li> -->
+						<!-- <li class="slot-history"><a href="#" class="pk-btn icon history">Slot History</a></li> -->
           <?php if ($i > 0): ?>
-            <?php echo jq_link_to_remote("Up",
-              array(
-                "url" => "pkContextCMS/moveSlot?" .
-                  http_build_query( 
-                    array("id" => $page->id,
-                      "name" => $name,
-                      "up" => 1,
-                      "permid" => $permid)),
-                "update" => "pk-context-cms-contents-$name"), array('class' => 'pk-context-cms-slot-controls-up', 'title' => 'Move Up', )) ?>
+						<li class="move-up">
+            <?php echo jq_link_to_remote("Move", array(
+                "url" => "pkContextCMS/moveSlot?" .http_build_query(array(
+									"id" => $page->id,
+									"name" => $name,
+									"up" => 1,
+									"permid" => $permid)),
+									"update" => "pk-slots-$name",
+									'complete' => 'init_pk_controls()'), 
+									array(
+										'class' => 'pk-btn icon pk-arrow-up', 
+										'title' => 'Move Up', 
+						)) ?>
+						</li>
           <?php endif ?>
+
           <?php if (($i + 1) < count($slots)): ?>
-            <?php echo jq_link_to_remote("Down",
-              array(
-                "url" => "pkContextCMS/moveSlot?" .
-                  http_build_query( 
-                    array("id" => $page->id,
-                      "name" => $name,
-                      "permid" => $permid)),
-                "update" => "pk-context-cms-contents-$name"), array('class' => 'pk-context-cms-slot-controls-down', 'title' => 'Move Down', )) ?>
-          <?php endif ?>
+						<li class="move-down">
+            <?php echo jq_link_to_remote("Move", array(
+                "url" => "pkContextCMS/moveSlot?" .http_build_query(array(
+									"id" => $page->id,
+									"name" => $name,
+									"permid" => $permid)),
+									"update" => "pk-slots-$name",
+									'complete' => 'init_pk_controls()'), 
+									array(
+										'class' => 'pk-btn icon pk-arrow-down', 
+										'title' => 'Move Down', 
+						)) ?>
+            </li>
         <?php endif ?>
-        <?php // End controls for this individual slot ?>
-      </div>
-    <?php endif ?>	
+      <?php endif ?>
+
+      <?php // Include slot-type-specific controls if the ?>
+      <?php // slot has any ?>
+      <?php include_slot("pk-slot-controls-$name-$permid") ?>
+
+			<?php if (!$infinite): ?>
+			  <?php include_slot('pk-history-controls') ?>
+				<?php include_slot('pk-cancel') ?>
+			<?php endif ?>
+
+      <?php if ($infinite): ?>
+        <li class="delete">
+          <?php echo jq_link_to_remote("Delete", array(
+            "url" => "pkContextCMS/deleteSlot?" .http_build_query(array(
+              "id" => $page->id,
+              "name" => $name,
+              "permid" => $permid)),
+              "update" => "pk-slots-$name",
+							'before' => '$(this).parents(".pk-slot").fadeOut();', 
+							'complete' => 'init_pk_controls()'), 
+              array(
+                'class' => 'pk-btn icon pk-delete', 
+                'title' => 'Delete Slot',
+								'confirm' => 'Are you sure you want to delete this slot?', )) ?>
+        </li>			
+      <?php endif ?>
+		</ul>
+		
+  <?php endif ?>
+
+		<?php // End controls for this individual slot ?>		
+		
+    <?php if ($editable): ?>
+		<!-- <ul class="pk-messages pk-slot-messages">
+			<li class="background"></li>
+			<li><span class="message">Double Click to Edit</span></li>
+		</ul> -->
+		<?php endif ?>
+		
     <?php // Wraps the actual content - edit and normal views - ?>
     <?php // for this individual slot ?>
-  	<div id="pk-context-cms-contents-<?php echo $name ?>-<?php echo $permid?>" class="pk-context-cms-contents <?php echo $slot->type ?>">
+  	<div class="pk-slot-content" id="pk-slot-content-<?php echo $name ?>-<?php echo $permid?>">
       <?php // Now we can include the slot ?>
-  		<?php pk_context_cms_slot_body($name, $slot->type, $permid, array_merge(array("preview" => $preview), $slotOptions), array(), false) ?>
+      <?php include_slot("pk-slot-content-$name-$permid") ?>
   	</div>
 	</div>
 <?php $i++; endforeach ?>
@@ -113,12 +203,5 @@
   </div>
 <?php // Closes the div wrapping all of the slots AND the area controls ?>
 </div>
-
-<!-- END SLOT -->
-  <?php if (0): ?>
-    <?php echo jq_sortable_element("#pk-context-cms-contents-$name", array(
-    	'url' => 'pkContextCMS/sortArea?' .
-        http_build_query(array('page' => $page->getId(), 'name' => $name)), 
-      'handle' => ".pk-context-slot-reorder-handle")) ?>
-  <?php endif ?>
 <?php endif ?>
+<!-- END SLOT -->

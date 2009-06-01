@@ -1,94 +1,138 @@
+<?php use_helper('editablePathComponent') ?>
+
 <?php if ($page->userHasPrivilege('edit')): ?>
-<h3 id="editing-disabled"></h3>
-<script>
-$(function() {
-  if ($.browser.msie && $.browser.version < 7)   
-  {
-    $('#editing-disabled').html("Editing is not available in Internet Explorer 6. Use IE 7+ or Firefox.");
-    $('#editing-disabled').show();
-  }
-});
+<script type="text/javascript">
+	$(function() { 
+		if ($.browser.msie && $.browser.version < 7) { $('#pk-breadcrumb').before('<h3 id="editing-disabled">Editing is not available in Internet Explorer 6. Use IE 7+ or Firefox.<\/h3>'); }
+	});
 </script>
 <?php endif ?>
-<?php use_helper('editablePathComponent') ?>
-<div id="pk-context-cms-breadcrumb">
+
+<ul id="pk-breadcrumb">
+
 <?php $first = true; ?>
 <?php $skipNext = false; ?>
 <?php $pages[] = $page; ?>
+
 <?php foreach ($pages as $p): ?>
+
   <?php if ($skipNext): ?>
     <?php $skipNext = false ?>
     <?php continue ?>
   <?php endif ?>
+
   <?php if (!$sf_user->hasCredential('cms_admin')): ?>
     <?php if ($p->template == 'grandchildren'): ?>
       <?php $skipNext = true ?>
     <?php endif ?>
   <?php endif ?>
+
   <?php if (!$first): ?>
-  <?php echo ('<span class="pk-context-cms-breadcrumb-slash">/</span>') ?>
+  <?php echo ('<li class="pk-breadcrumb-slash">/</li>') ?>
   <?php else: ?>
   <?php $first = false; ?>
   <?php endif ?>
+	
   <?php $title = $p->getTitle() ?>
   <?php if ($p->archived): ?> 
-    <?php $title = "<span class='pk-context-cms-archived'>$title</span>" ?>
+    <?php $title = "<span class='archived'>".$title."</span>" ?>
   <?php endif ?>
+
   <?php if ($page === $p): ?>
-    <?php echo('<div class="pk-context-cms-rename you-are-here" id="pk-context-cms-rename">') ?>
+   <li class="pk-breadcrumb-title current-page" id="pk-breadcrumb-title-rename">
     <?php echo editable_path_component($title, "pkContextCMS/rename", array("id" => $page->id), $p->userHasPrivilege('edit'), "epc") ?>
+   </li>
 	<?php else: ?>
-    <?php echo link_to($title, $p->getUrl()) ?>
+   <li class="pk-breadcrumb-title" id="pk-breadcrumb-title">
+		<?php echo link_to($title, $p->getUrl()) ?>
+	 </li>
 	<?php endif ?>
+	
   <?php if ($page === $p): ?>
-    <?php echo("</div>") ?>
     <?php if ($p->userHasPrivilege('edit')): ?>  
+			<li class="pk-breadcrumb-page-settings">
       <?php $id = $p->getId() ?>
-      <?php echo jq_link_to_remote("Manage This Page", 
+      <?php echo jq_link_to_remote("View Page Settings", 
         array(
           "url" => "pkContextCMS/settings?id=$id",
-          "update" => "pk-context-cms-settings",
+          "update" => "pk-page-settings",
           "script" => true,
-					"loading" => "$('.pk-context-cms-settings-button.open').addClass('loading')", 
-          "complete" => jq_visual_effect("slideDown", "#pk-context-cms-settings")."$('#pk-context-cms-settings-button-open').removeClass('loading').hide(); $('#pk-context-cms-settings-button-close').removeClass('loading').show()",
-        ),  
-        array('class' => 'pk-context-cms-settings-button open', 'id' => 'pk-context-cms-settings-button-open', 'title'=>'Manage This Page')) ?>
-				<?php echo jq_link_to_function('Close Page Settings', '$("#pk-context-cms-settings-button-close").addClass("loading").hide(); $("#pk-context-cms-settings-button-open").show(); $("#pk-context-cms-settings").slideUp();', array('class' => 'pk-context-cms-settings-button close', 'id' => 'pk-context-cms-settings-button-close',  'title' => 'Close Page Settings', )) ?>
-    <?php endif ?>		
+					"before" => "$('.pk-page-settings-button.open').hide();
+											 $('.pk-page-settings-loading').show();", 
+          "complete" => "$('#pk-page-settings').fadeIn();
+												 $('.pk-page-settings-loading').hide();
+												 $('#pk-page-settings-button-close').show();
+												var arrowPosition = parseInt($('.pk-breadcrumb-page-settings').offset().left);
+												$('#pk-page-settings .pk-chad').css('left',arrowPosition+'px');
+												 init_pk_controls('#pk-page-settings');
+												$('.pk-page-overlay').show();",
+        ), array(
+					'class' => 'pk-page-settings-button open', 
+					'id' => 'pk-page-settings-button-open', 
+					'title'=>'View Page Settings')) ?>
+			<?php echo jq_link_to_function('Close Page Settings', 
+								'$("#pk-page-settings-button-close").hide(); 
+								 $("#pk-page-settings-button-open").show(); 
+								 $("#pk-page-settings").hide();
+								 $(".pk-page-overlay").hide();', 
+								 array(
+									'class' => 'pk-page-settings-button close', 
+									'id' => 'pk-page-settings-button-close',  
+									'title' => 'Close Page Settings', )) ?>
+			<?php echo image_tag('pk-icon-page-settings-ani.gif', array('class' => 'pk-page-settings-loading', 'style' => 'display:none;',  )) ?>
+			</li>												
+    <?php endif ?>	
   <?php endif ?>
+
 <?php endforeach ?>
+
 <?php if ($p->userHasPrivilege('manage')): ?>
-	<span class="pk-context-cms-breadcrumb-slash">/</span>
-  <span id="create_form"> 
-  	<div class="you-are-here"><?php echo link_to_function("Add Page<span></span>", '$("#pk-context-add-child-form").fadeIn();' . jq_visual_effect("fadeOut", "#pk-context-add-child-button"), array("id" => "pk-context-add-child-button", 'class' => 'pk-btn add', ) ) ?>
-	  <?php echo form_tag("pkContextCMS/create", array("id" => "pk-context-add-child-form", "style" => "display: none")) ?>
+	<li class="pk-breadcrumb-slash">/</li>
+  <li class="pk-breadcrumb-create-childpage">
+		<?php echo jq_link_to_function("Add Page", 
+							'$("#pk-breadcrumb-create-childpage-form").fadeIn(250, function(){ $(".pk-breadcrumb-create-childpage-title").focus(); }); 
+							 $("#pk-breadcrumb-create-childpage-button").hide(); 
+							 $("#pk-breadcrumb-create-childpage-button").prev().hide();
+							 $(".pk-breadcrumb-create-childpage-controls a.pk-cancel").parent().show();', 
+							 array(
+								'id' => 'pk-breadcrumb-create-childpage-button', 
+								'class' => 'pk-btn icon pk-add', 
+								)) ?>
+	  <?php echo form_tag("pkContextCMS/create", array("id" => "pk-breadcrumb-create-childpage-form", 'class' => 'pk-breadcrumb-form', )) ?>
 	  <?php echo input_hidden_tag("parent", $page->slug) ?>
-	  <?php echo input_tag("title", "", array("class" => "pk-context-cms-add-page-title")) ?>
-		<div class="pk-context-cms-breadcrumb-add-controls">
-		  <?php echo submit_tag("Add", array("class" => "submit")) ?>
-			<span class="or">or</span>
-		  <?php echo link_to_function("cancel", jq_visual_effect("fadeOut", "#pk-context-add-child-form") . jq_visual_effect("fadeIn", "#pk-context-add-child-button"), array('class' => 'pk-cancel', )) ?>
-		</div>
+	  <?php echo input_tag("title", "", array("class" => "pk-breadcrumb-create-childpage-title pk-breadcrumb-input")) ?>
+		<ul class="pk-form-controls pk-breadcrumb-create-childpage-controls">
+		  <li><?php echo submit_tag("Create Page", array("class" => "pk-submit")) ?></li>
+		  <li><?php echo jq_link_to_function("cancel", 
+										'$("#pk-breadcrumb-create-childpage-form").hide(); 
+						 				 $("#pk-breadcrumb-create-childpage-button").fadeIn(); 
+						 				 $("#pk-breadcrumb-create-childpage-button").prev(".pk-i").fadeIn();', 
+										 array(
+											'class' => 'pk-btn icon pk-cancel', 
+											)) ?></li>
+		</ul>
 	  </form>
-    </div>
-  </span>
 
 	<script type="text/javascript">
+		$(document).ready(function(){
+			var actual_width = $('.epc-rename-button').width();
+			var epc_controls_width = $('.epc-rename-button-controls').width();
+			
+			if ($.browser.safari) // Safari cannot read accurate widths (^above) at Dom ready
+			{
+				actual_width = 180;
+				epc_controls_width = 115;
+			}
+			
+			$('#pk-breadcrumb .pk-breadcrumb-form').hide();
+			$('#pk-breadcrumb .epc-form input.epc-value').css('width', actual_width+5);
+			$('#pk-breadcrumb .epc-form').css('width', actual_width+epc_controls_width+11);
 
-	$(function(){
-		var actual_width = $('#epc-1-rename-button').width();
-		// if (actual_width < 240) {	actual_width = 240; } //maybe add this later, to set a minimum size that makes sense for smaller titles
-		$('#pk-context-cms-rename').css('width',actual_width+10);
-	});
+		});
+		
 	</script>
+	
+  </li>	
 <?php endif ?>
-<?php # You can use this slot to add virtual items to the breadcrumb. ?>
-<?php # Useful when a page has internal sub-structure kept in the ?>
-<?php # query string, for instance ?>
-<?php include_slot('after-breadcrumb-inline') ?>
 
-</div>
-
-<?php // You can put this anywhere ?>
-<div id="pk-context-cms-settings" class="shadow"></div>
-<br class="clear c"/>
+</ul>

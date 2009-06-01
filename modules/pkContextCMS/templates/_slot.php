@@ -2,13 +2,13 @@
 <?php if ($editable): ?>
   <?php echo jq_form_remote_tag(
       array(
-        'update' => "pk-context-cms-contents-$name-$permid",
+        'update' => "pk-slot-content-$name-$permid",
         'url' => "$type/edit",
         'script' => true),
       array(
-        "class" => "pk-context-cms-edit",
-        "name" => "form-$id",
-        "id" => "form-$id",
+        "class" => "pk-slot-form",
+        "name" => "pk-slot-form-$name-$permid",
+        "id" => "pk-slot-form-$name-$permid",
         "style" => "display: " . ($showEditor ? "block" : "none")
       )
     ); ?>
@@ -25,16 +25,17 @@
       "permid" => $permid,
       "options" => $options,
       "validationData" => $validationData)) ?>
-
-	<div class="form-row">  <?php // I HOPE YOU GUYS DON'T MIND I ADDED THIS FORM-ROW BECAUSE IT'S TOTALLY AWESOME ` rick ?>
-	  <?php echo submit_tag("Save", array("onClick" => "window.pkContextCMS.callOnSubmit('$id'); return true", "class" => "submit")) ?>
-	  <?php echo button_to_function("Cancel", "$('#form-$id').hide(); $('#content-$id').show()", array("class" => "submit")) ?>
-	</div>
-
+	<ul class="pk-controls">  
+		<?php	// JB Note: I moved the submit button javascript down to the bottom ?>
+	  <li><?php echo submit_tag("Save", array("class" => "submit pk-submit", 'id' => 'pk-slot-form-submit-'.$name.'-'.$permid, )) ?></li>
+		<?php // JB Note: I moved the cancel javascript down to the bottom  ?>
+	  <li><?php echo button_to_function("Cancel", "", array("class" => "pk-submit pk-cancel", 'id' => 'pk-slot-form-cancel-'.$name.'-'.$permid, )) ?></li>
+	</ul>
   </form>
 <?php endif ?>
-<div class="pk-context-cms-normal-view<?php echo $outlineEditable ? " pk-context-cms-editable" : "" ?>" id="content-<?php echo $id ?>" style="display: <?php echo $showEditor ? "none" : "block"?>"
->
+<?php if ($editable): ?>
+  <div class="pk-slot-content-container <?php echo $outlineEditable ? " pk-context-cms-editable" : "" ?>" id="pk-slot-content-container-<?php echo $name ?>-<?php echo $permid ?>" style="display: <?php echo $showEditor ? "none" : "block"?>">
+<?php endif ?>
 <?php include_component($normalModule, 
   "normalView", 
   array(
@@ -42,24 +43,51 @@
     "type" => $type,
     "permid" => $permid,
     "options" => $options)) ?>
-</div>
-<script>
-$(function() {
-  var normalView = $('#content-<?php echo $id ?>')[0];
-  if (normalView)
-  {
-    if (($.browser.msie) && ($.browser.version < 7))
-    {
-      // IE6 is too broken to be allowed to edit
-      $(normalView).removeClass("pk-context-cms-editable");
-    } 
-    else
-    {
-      <?php if ($outlineEditable): ?>
-      $(normalView).dblclick(function() { <?php echo $showEditorJS ?> return false});
-      <?php endif ?>
-    }
-  }
-});
-</script>
+<?php if ($editable): ?>
+  </div>
+<?php endif ?>
 
+<?php if ($editable): ?>
+  <script type="text/javascript">
+  $(document).ready(function() {
+
+    var normalView = $('#pk-slot-<?php echo $name ?>-<?php echo $permid ?>');
+
+    // if (normalView)
+    // {
+    //   if (($.browser.msie) && ($.browser.version < 7)) 
+    //   		{ // IE6 is too broken to be allowed to edit
+    //     $(normalView).removeClass("pk-context-cms-editable");
+    //   } 
+    //   else
+    //   {
+    //     <?php if ($outlineEditable): ?>
+    //   			// JB Note: $showEditorJS must be revisited later
+    //   			// $(normalView).dblclick(function() {
+    //   			// 	$(normalView).children('.pk-slot-content').children('.pk-slot-content-container').hide(); // Hide content
+    //   			// 	$(normalView).children('.pk-slot-content').children('.pk-slot-form').show();							// Show form
+    //   			// 	$(normalView).children('.pk-messages').css('visibility','hidden'); // Hide the messages
+    //   			// 	return false; 
+    //   			// });
+    //     <?php endif ?>
+    //   }
+    // }
+  	
+		// CANCEL
+		$('#pk-slot-form-cancel-<?php echo $name ?>-<?php echo $permid ?>').click(function(){
+  		$(normalView).children('.pk-slot-content').children('.pk-slot-content-container').fadeIn();
+  		$(normalView).children('.pk-slot-content').children('.pk-slot-form').hide();
+  		$(this).parents('.pk-slot').find('.pk-slot-controls .edit').removeClass('editing-now');
+ 			$(this).parents('.pk-area.singleton').find('.pk-area-controls .edit').removeClass('editing-now'); // for singletons
+  	});
+
+		// SAVE 
+  	$('#pk-slot-form-submit-<?php echo $name ?>-<?php echo $permid ?>').click(function(){
+  			$(this).parents('.pk-slot').find('.pk-slot-controls .edit').removeClass('editing-now');
+  			$(this).parents('.pk-area.singleton').find('.pk-area-controls .edit').removeClass('editing-now'); // for singletons
+  			window.pkContextCMS.callOnSubmit('<?php echo $id ?>'); 
+  			return true;
+  	});
+  });
+  </script>
+<?php endif ?>

@@ -2,11 +2,8 @@
 
 <?php slot('body_class') ?>pk-2column<?php end_slot() ?>
 
-<?php if (!pkContextCMSTools::getCurrentPage()->userHasPrivilege('edit')): ?>
-  <?php # This layout should have no breadcrumb unless you have ?>
-  <?php # editing privs on this page ?>
-  <?php slot('breadcrumb') ?>
-  <?php end_slot() ?>
+<?php if (pkContextCMSTools::getCurrentPage()->userHasPrivilege('edit')): ?>
+	<?php include_component('pkContextCMS', 'breadcrumb') # Breadcrumb Navigation ?>
 <?php endif ?>
 
 <?php pk_context_cms_area('column-one', array(
@@ -21,4 +18,4 @@
   'type_options' => array(
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
   	'pkContextCMSText' => array('multiline' => true)
-	))) ?>
+	))) ?>	

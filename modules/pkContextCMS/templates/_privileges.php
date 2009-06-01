@@ -1,14 +1,14 @@
 <?php if (isset($form[$widget])): ?>
-    <div class="pk-context-cms-form-row">
+    <div class="pk-form-row">
   
       <label><?php echo $label ?></label>
-      <div class="pk-context-cms-local-editors">
+      <div class="pk-page-settings-local-editors">
         <h4>Local</h4>
         <?php echo $form[$widget] ?>
       </div>
 
       <?php if (count($inherited) > 0): ?>
-      <div class="pk-context-cms-inherited-editors">
+      <div class="pk-page-settings-inherited-editors">
         <h4>Inherited</h4>
         <ul>
         <?php foreach($inherited as $editorName): ?>

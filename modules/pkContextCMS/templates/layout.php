@@ -13,40 +13,28 @@
 
 <body class="<?php if (has_slot('body_class')): ?><?php include_slot('body_class') ?><?php endif ?>">
 
-	<div class="wrapper">
+<?php if (pkContextCMSTools::getCurrentPage()->userHasPrivilege('edit')): ?>
+  <?php include_partial('pkContextCMS/globalTools') ?>
+<?php endif ?>
 
-	<?php include_partial('pkContextCMS/login') ?>
-		
-    <h1 id="header">
-      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 400, "height" => 200, "resizeType" => "c", "link" => "/")) ?>
-    </h1>
-    <?php # Top-level nav (tabs), if not overridden by the tabs slot ?>
-    <?php # (note that you can also just insert things before and after) ?>
-    <?php if (has_slot('tabs')): ?>
-      <?php include_slot('tabs') ?>
-    <?php else: ?>
-      <?php include_slot('before-tabs') ?>
-      <?php include_component('pkContextCMS', 'tabs') ?>
-      <?php include_slot('after-tabs') ?>
-    <?php endif ?>
-    <?php # Breadcrumb nav, if not overridden by the breadcrumb slot ?>
-    <?php # (note that you can also just insert things before and after) ?>
-    <?php if (has_slot('breadcrumb')): ?>
-      <?php include_slot('breadcrumb') ?>
-    <?php else: ?>
-      <?php include_slot('before-breadcrumb') ?>
-      <?php include_component('pkContextCMS', 'breadcrumb') ?>
-      <?php include_slot('after-breadcrumb') ?>
-    <?php endif ?>
-    <?php # Side nav, if not overridden by the subnav slot ?>
-    <?php # (note that you can also just insert things before and after) ?>
-    <?php if (has_slot('subnav')): ?>
-      <?php include_slot('subnav') ?>
-    <?php else: ?>
-      <?php include_slot('before-subnav') ?>
-      <?php include_component('pkContextCMS', 'subnav') # Side Navigation ?>
-      <?php include_slot('after-subnav') ?>
-    <?php endif ?>
+	<div id="pk-wrapper">
+		<?php // Demo requires an obvious way to test login ?>
+	  <?php include_partial("pkContextCMS/login") ?>
+
+    <div id="header">
+      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 240, "height" => 140, "resizeType" => "c", "link" => "/")) ?>
+  		<?php pk_context_cms_slot('header', 'pkContextCMSRichText', array("global" => true)) ?>
+    </div>
+
+		<?php pk_context_cms_area('pk-header', array(
+			'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSText'),
+		  'type_options' => array(
+				'pkContextCMSRichText' => array('tool' => 'Main'), 	
+		  	'pkContextCMSText' => array('multiline' => true)
+			))) ?>
+
+		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
+
 		<?php echo $sf_data->getRaw('sf_content') ?>
 
 	  <?php pk_context_cms_slot('footer', 'pkContextCMSRichText', array("global" => true)) ?>
