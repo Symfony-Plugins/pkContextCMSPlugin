@@ -479,7 +479,7 @@ ul.pk-controls .pk-history-options
 ul.pk-slideshow-controls
 { /* frontend visible slideshow controls */
 	position: absolute;
-	top: -20px;
+	top: -24px;
 	right: 0;
 	float: left;
 	display: inline;
@@ -810,6 +810,10 @@ color: #999;
 	width: 100%;
 }
 
+.pkContextCMSSlideshow
+{
+	margin-bottom: 40px;
+}
 
 /* == */
 /* == Global Toolbar */
