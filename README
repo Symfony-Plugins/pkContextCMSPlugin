@@ -1,4 +1,4 @@
-== READ THIS NOTE FIRST ==
+## READ THIS NOTE FIRST ##
 
 This is a technology preview release of pkContextCMS. Although the
 CMS already works quite well and we are close to launching a production
@@ -27,7 +27,7 @@ in the `app.yml` file.
 
 Enjoy!
 
-= pkContextCMSPlugin =
+# pkContextCMSPlugin #
 
 pkContextCMSPlugin is a CMS (Content Management System) based on the
 philosophy that editing should be done "in context" whenever possible.
@@ -52,7 +52,7 @@ makes it easy to interleave text with multimedia and other custom
 slot types without the need to develop a custom PHP template for
 every page.
 
-== Requirements ==
+## Requirements ##
 
 pkContextCMSPlugin requires:
 
@@ -79,7 +79,7 @@ To fix that, add this line to the `.profile` file in your home directory:
 Of course your production server will ultimately need to meet the
 same requirements with regard to PHP and PDO.
 
-== Installation ==
+## Installation ##
 
 For the time being, we recommend that you check out our
 sample project via Subversion:
@@ -213,7 +213,7 @@ just use this route in your routing.yml file:
       url:   /
         param: { module: pkContextCMS, action: show, slug: / }
 
-=== Enhanced Form Controls ===
+### Enhanced Form Controls ###
 
 To get the benefit of the progressively enhanced form controls
 featured in our admin tools, you'll need to add pkToolkitPlugin's
@@ -223,7 +223,7 @@ pkControls.js to your view.yml file:
       ... Other things ...
       javascripts:    [/pkToolkitPlugin/js/pkControls.js]
 
-=== Title Prefix ===
+### Title Prefix ###
 
 By default, the title element of each page will contain the title of that page.
 In many cases you'll wish to specify a prefix for the title as well.
@@ -240,7 +240,7 @@ optional internationalization:
         # OR this way for a single-culture site
         title_prefix: 'Our Company'      
 
-== Routing Rules ==
+## Routing Rules ##
 
 For compatibility reasons, by default your CMS pages will appear in the /cms "folder"
 of your site. That is, the "home page" is `http://yoursite.com/cms`. Administrative
@@ -286,7 +286,7 @@ as we've done in the `cmstest` project:
 
 Thanks to Stephen Ostrow for his analysis of this issue.
 
-== Customizing Your CMS Site ==
+## Customizing Your CMS Site ##
 
 You now have a CMS site. Access your Symfony site's URL to see the
 home page. 
@@ -295,7 +295,7 @@ Click "log in" and log in as the sfDoctrineGuard superuser
 (admin/admin) to see
 the editing controls.
 
-=== Managing Pages ===
+### Managing Pages ###
 
 When a user has appropriate privileges on a page, they are able to make
 the following changes via the breadcrumb trail, which becomes an
@@ -326,7 +326,7 @@ editing privileges can change the order of child pages listed there
 by dragging and dropping them. (If a page has no children, the side
 navigation displays its peers instead, including itself.)
 
-=== Editing Content: Editing Slots ===
+### Editing Content: Editing Slots ###
 
 What about the actual content of the page? The editable content
 of a page is stored in "CMS slots" (not the same thing as Symfony slots).
@@ -350,7 +350,7 @@ click "Preview" to redisplay that version of the slot. To revert to an old versi
 copying it to create a new version of the slot, click "Revert." Click
 "Cancel" if you decide not to switch versions.
 
-=== Editing Content: Editing Areas ===
+### Editing Content: Editing Areas ###
 
 In addition to single slots, pkContextCMSPlugin also supports
 "areas." Areas are vertical columns containing more than one slot.
@@ -369,7 +369,7 @@ You want to be able to interleave these with blocks of text without
 creating a new custom page template for each one. Areas give you that
 capability.
 
-== Creating and Managing Page Templates and Layouts ==
+## Creating and Managing Page Templates and Layouts ##
 
 Where do slots appear in a page? And how do you insert them? 
 
@@ -377,7 +377,7 @@ Slots can be inserted in two places: in your site's <tt>layout.php</tt>
 file, which decorates all pages, and in page template files, which can
 be assigned to individual pages. 
 
-=== How to Customize the Layout ===
+### How to Customize the Layout ###
 
 By default, the CMS will use the
 <tt>layout.php</tt> file bundled with it. If you wish, you can turn this
@@ -391,7 +391,7 @@ CMS pages will then use your application's default layout. One strategy
 is to copy our <tt>layout.php</tt> to your application's template folder
 and customize it there after turning off use_bundled_layout.
 
-=== Turning Off the Home Page Tab ===
+### Turning Off the Home Page Tab ###
 
 By default pkContextCMS generates navigation tabs for the direct
 children of the home page, and for the home page itself. If you don't
@@ -402,7 +402,7 @@ in `app.yml`:
       pkContextCMS:
         home_as_tab: false
 
-=== Reordering Children of the Home Page ===
+### Reordering Children of the Home Page ###
 
 pkContextCMS offers drag-and-drop reordering of the children of
 any page via the navigation links on the left-hand side. But the home
@@ -425,7 +425,7 @@ On our "TODO" list: allow the left side navigation controls to be collapsed
 by default for more convenient use on pages with a layout that doesn't
 really accommodate them.
 
-=== How to Customize the Page Templates ===
+### How to Customize the Page Templates ###
 
 The layout is a good place for global elements that should appear on
 every page. But elements specific to certain types of pages are better
@@ -476,7 +476,7 @@ new templates also appear in the dropdown menu:
           mytemplate:
             My Template
 
-=== Inserting Slots in Layouts and Templates ===
+### Inserting Slots in Layouts and Templates ###
 
 Of course, creating layouts and templates does you little good if you
 can't insert user-edited content into them. This is where the 
@@ -549,7 +549,7 @@ of the type `pkContextCMSText`. When `multiline` is true, the
 plaintext slot is rendered with `textarea_tag` rather than
 `input_tag`.
 
-=== Inserting Areas: Unlimited Slots in a Vertical Column ===
+### Inserting Areas: Unlimited Slots in a Vertical Column ###
 
 Slots are great on their own. But when you want to mix paragraphs of text with
 elements inserted by custom slots, it is necessary to create a separate
@@ -600,7 +600,7 @@ Here the `multiline` option specifies that all
 `pkContextCMSText` slots in the area should have the
 `multiline` option set.
 
-=== Inserting the Breadcrumb Trail and Side Navigation ===
+### Inserting the Breadcrumb Trail and Side Navigation ###
 
 Your layout, or possibly your page templates if you wish to handle
 it differently on some pages, will need to insert the breadcrumb
@@ -624,7 +624,7 @@ The side navigation column ("subnavigation") is inserted similarly:
 
     <?php include_component('pkContextCMS', 'subnav') ?>
 
-== Global Slots ==
+## Global Slots ##
 
 Most of the time, you want the content of a slot to be specific to a page.
 After all, if the content was the same on every page, you wouldn't need
@@ -655,7 +655,7 @@ Just name the slot appropriately. For instance, the slot name
 `chemistry-blurb` might be suitable for all pages in the
 chemistry department of an educational institution's website.
 
-== Overriding the Stylesheets ==
+## Overriding the Stylesheets ##
 
 By default, `pkContextCMSPlugin` provides two stylesheets which are
 automatically added to your pages. There's a lot happening there,
@@ -672,7 +672,7 @@ If you do keep our stylesheets and further override them, you'll
 want to specify `position: last` for the stylesheets that should
 override them.
 
-== Access Control ==
+## Access Control ##
 
 By default, a pkContextCMS site follows these security rules:
 
@@ -683,7 +683,7 @@ and add and delete pages.
 This is often sufficient for simple sites. But pkContextCMS can
 also handle more complex security needs.
 
-=== Requiring Login to Access All Pages ===
+### Requiring Login to Access All Pages ###
 
 To require that the user log in before they view any page
 in the CMS, use the following setting in `app.yml`:
@@ -692,14 +692,14 @@ in the CMS, use the following setting in `app.yml`:
       pkContextCMS:
         view_login_required: true
 
-=== Requiring Login to Access Some Pages ===
+### Requiring Login to Access Some Pages ###
 
 To require the user to log in before accessing a particular page,
 just navigate to that page as a user with editing privileges
 and click on the "lock" icon. Locked pages are only accessible
 to logged-in users.
 
-=== Requiring Special Credentials to Edit Pages ===
+### Requiring Special Credentials to Edit Pages ###
 
 Editing rights can be controlled in several ways:
 
@@ -767,7 +767,7 @@ Note that the pulldown list of possible editors can be quite long
 if there are thousands of people with accounts on your site! This
 is why we recommend setting up groups as described above.
 
-=== On/Off: Hiding Pages, by Choice and By Default ===
+### On/Off: Hiding Pages, by Choice and By Default ###
 
 pkContextCMS offers an "on/off" toggle under "manage page settings."
 Pages that are turned off are completely invisible to users who do not
@@ -784,7 +784,7 @@ change this with the following `app.yml` setting:
       pkContextCMS:
         default_on: false
 
-== Creating Custom Slot Types ==
+## Creating Custom Slot Types ##
 
 You are not limited to the two slot types provided with
 pkContextCMSPlugin! Anyone can create new slot types by taking
@@ -1098,7 +1098,7 @@ slot form into account when calling `bind()`:
 To simplify validation, `$this->form` is automatically
 provided to the `editView` component when you call `editRetry()`, 
 
-=== Beyond edit: Additional Actions ===
+### Beyond edit: Additional Actions ###
 
 Note that your actions class may contain other actions if you wish. Typically
 these are AJAX actions and other auxiliary actions that share the work
@@ -1117,7 +1117,7 @@ to `editSetup()`, except that it allows access by users who do not have
 editing privileges unless you expressly pass the value `true` for the
 `$editing` parameter. (It does check for view access.)
 
-=== Custom Validation ===
+### Custom Validation ###
 
 Sometimes `$this->form` isn't enough to meet your needs. You might
 have more than one Symfony 1.2 form in the slot (although you should
@@ -1142,7 +1142,7 @@ Note that `$this->validationData['form']` is used internally
 to store `$this->form`, if it exists in the action. So we suggest
 that you use other names for your validation data fields.
 
-=== Overriding the Outline Box and Double-Click Behavior ===
+### Overriding the Outline Box and Double-Click Behavior ###
 
 By default, when a user with editing privileges is viewing a slot,
 the slot has an outline box and can be double-clicked to display
@@ -1175,7 +1175,7 @@ by padding the `outline_editable` option to the slot helper with
 a value of `false`. Explicit settings for this option override 
 what is returned by the `isOutlineEditable` module.
 
-=== When You Don't Want an Inline Editor ===
+### When You Don't Want an Inline Editor ###
 
 Most of the time, inline editors are great. But sometimes you might be
 happier with a full-page interface which eventually redirects back
@@ -1238,7 +1238,7 @@ You'll also want to turn off the "double-click to edit" behavior that
 would otherwise open the inline editor, as explained in the
 previous section.
 
-=== When You Don't Want AJAX ===
+### When You Don't Want AJAX ###
 
 Normally pkContextCMS displays the updated contents of the slot without
 refreshing the entire page. If this is unsuitable for your purposes,
@@ -1248,13 +1248,13 @@ your edit action, with a value of 1. The edit action will then
 redirect to the updated page rather than attempting to refresh
 only the updated slot. 
 
-== Changelog ==
+## Changelog ##
 
-=== Version 0.15 ===
+### Version 0.15 ###
 
 Documentation fixes.
 
-=== Version 0.14 ===
+### Version 0.14 ###
 
 Another fix to the routing rules of the `cmstest` project. The Symfony
 default routing rule isn't really compatible with mapping the
@@ -1271,14 +1271,14 @@ for individual Symfony actions and modules that result in nicer URLs for
 those particular actions and modules. That combines well with the
 second approach.
 
-=== Version 0.13 ===
+### Version 0.13 ###
 
 Fixed routing rules of `cmstest` project. Renamed
 the `pk_context_cms_page` rule and instituted the use of 
 `@pk_context_cms_page` in the URL generation method to route to it even 
 if the default routing rule would otherwise match `pkContextCMS/show` first.
 
-=== Version 0.12 ===
+### Version 0.12 ###
 
 Default routing rules no longer try to override the root
 of the site. Instead we demonstrate how to do that in the 
