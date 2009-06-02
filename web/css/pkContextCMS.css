@@ -195,6 +195,11 @@ a.icon.pk-settings .pk-b
 background-image: url(/pkToolkitPlugin/images/pk-icon-settings.png);
 }
 
+a.icon.pk-templates .pk-b 
+{
+background-image: url(/pkToolkitPlugin/images/pk-icon-templates.png);
+}
+
 a.icon.pk-users .pk-b 
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-users.png);
@@ -1586,4 +1591,14 @@ margin-left: 120px;
 #feedback-submitted
 {
   text-align:right;
+}
+
+
+/* == */
+/* ==  PK-SUBNAV */
+/* == */
+
+#pk-subnav
+{
+	
 }
