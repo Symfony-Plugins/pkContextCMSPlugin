@@ -27,7 +27,7 @@ in the `app.yml` file.
 
 Enjoy!
 
-# pkContextCMSPlugin #
+## pkContextCMSPlugin ##
 
 pkContextCMSPlugin is a CMS (Content Management System) based on the
 philosophy that editing should be done "in context" whenever possible.
