@@ -98,11 +98,8 @@
 		    function(result)
 		    {
 					$('#pk-slots-<?php echo $name ?>').html(result);
-					$('.pk-history-preview-notice').css('display','none');				
-					$('a.pk-history').removeClass('pk-btn-disabled');
 					$('.pk-history-options').hide();
 					$(this).parents('.pk-controls').find('a.pk-cancel').parent().hide();
-					$('.pk-page-overlay').hide();
 					init_pk_controls(targetArea, 'history-revert');
 		  	}
 			);	
@@ -115,7 +112,7 @@
 		    function(result)
 		    {
 		     $('#pk-slots-<?php echo $name ?>').html(result);
-				 init_pk_controls(targetArea);
+				 init_pk_controls(targetArea, 'history-cancel');
 		  	}
 			);
 		});
