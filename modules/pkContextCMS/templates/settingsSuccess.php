@@ -36,12 +36,16 @@
 			</div>
 			<div class="pk-form-row">
 			  <label>Page Status</label>
-			  	<div class="pk-page-settings-status"><?php echo $form['view_is_secure'] ?></div>
-					<?php if (isset($form['archived'])): ?>
-			  		<?php echo $form['archived'] ?>
-					<?php else: ?>
-						<div id="pk-page-settings-note" class="pk-note">This page has subpages which are turned on (see the side navigation for a list). If you wish to turn it off, you must first turn off its subpages.</div>
-					<?php endif ?>
+			  	<div class="pk-page-settings-status">
+						<?php echo $form['view_is_secure'] ?>
+						
+						<?php if (isset($form['archived'])): ?>
+				  		<?php echo $form['archived'] ?>
+						<?php else: ?>
+							<div id="pk-page-settings-note" class="pk-note">This page has subpages which are turned on (see the side navigation for a list). If you wish to turn it off, you must first turn off its subpages.</div>
+						<?php endif ?>
+						
+					</div>
 			</div>
 		</div>
 	

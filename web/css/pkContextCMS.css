@@ -1123,6 +1123,7 @@ margin: 10px 0px 10px 0;
 float: left;
 display:inline;
 clear:both;
+width: 100%;
 }
 
 #pk-page-settings .pk-form-row label {
@@ -1194,6 +1195,7 @@ padding: 2px 1px;
 	float:left;
 	line-height:20px;
 	clear:right;
+	width: 340px;
 }
 
 #pk-page-settings-form #pk-page-settings-note
@@ -1220,6 +1222,39 @@ float: left;
 width: 100%;
 }
 
+#pk-page-settings .radio_list
+{
+	float: left;
+	width: 100%;
+	clear: both;
+}
+
+#pk-page-settings .radio_list li
+{
+	float: left;
+	position: relative;
+	width: 120px;
+/*	clear: both;*/
+	margin: 0 0 10px 0;
+}
+
+#pk-page-settings .radio_list li input
+{
+	position: relative;
+	float: left;
+	line-height: 20px;
+	margin: 3px 0 !important;
+}
+
+#pk-page-settings .radio_list li label
+{
+width: auto;
+position: absolute;
+top: 0;
+left: 20px;
+line-height: 20px;
+margin: 0;
+}
 
 #pk-page-settings .pk-page-settings-local-editors a 
 {
@@ -1381,7 +1416,7 @@ margin-left: 5px;
 #pk-login {
 	width: 220px;
 	height: 400px;
-	background: #ac3 url('/images/pk-apostrophe-login.png') no-repeat top left;
+	background: #f0f0f0 url('/images/pk-apostrophe-login.png') no-repeat top left;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -1602,3 +1637,5 @@ margin-left: 120px;
 {
 	
 }
+
+

@@ -32,7 +32,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
     $ancestors = $this->page->getAncestors();
     if (!$ancestors)
     {
-      $ancestors = array($this->page);
+      $ancestors = array($this->page);	
     }
     $home = $ancestors[0];
     $this->tabs = $home->getChildren(!$this->getUser()->getAttribute('show-archived', false, 'pk-context-cms'));
