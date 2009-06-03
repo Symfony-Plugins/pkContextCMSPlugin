@@ -44,7 +44,7 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
           'expanded' => true,
           'choices' => array(
             false => "Public",
-            true => "Hidden"
+            true => "Login Required"
           ),
           'default' => false
         )));
