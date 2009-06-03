@@ -785,6 +785,12 @@ display: block;
 	padding-top: 22px !important;
 }
 
+.pk-preview .pk-slot.pkContextCMSRichText.pk-slot-is-editable,
+.pk-preview .pk-slot.pkContextCMSText.pk-slot-is-editable
+{
+	padding-top: 0 !important;
+}
+
 .pk-slot.pkContextCMSRichText h3,
 .pk-slot.pkContextCMSRichText h4,
 .pk-slot.pkContextCMSRichText h5,
