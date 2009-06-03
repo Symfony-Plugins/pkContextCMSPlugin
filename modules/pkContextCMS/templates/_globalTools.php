@@ -36,7 +36,6 @@ TODO: allow the separate plugins involved to populate these dynamically.
 </li>
 
 </ul>
-<br style="clear:both;"/>
 
 <script type="text/javascript">
 var apostropheOpenState = 0;
