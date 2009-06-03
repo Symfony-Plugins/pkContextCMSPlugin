@@ -116,7 +116,7 @@ text-decoration: none !important;
 	width:100%;
 	height:20px;
 	display:block;
-	background-color:#000;
+	background-color:#ac3;
 	float: left;
 	margin: 0;
 }
@@ -785,8 +785,15 @@ display: block;
 	padding-top: 22px !important;
 }
 
+.pk-slot.pkContextCMSRichText h3,
+.pk-slot.pkContextCMSRichText h4,
+.pk-slot.pkContextCMSRichText h5,
+.pk-slot.pkContextCMSRichText h6,
 .pk-slot.pkContextCMSRichText p
 {
+	float: left;
+	width: 100%;
+	clear: both;
 	margin: 0 0 10px 0;
 }
 
@@ -817,6 +824,7 @@ color: #999;
 
 .pkContextCMSSlideshow
 {
+	margin-top: 24px; /* Space for the Arrow Controls*/
 	margin-bottom: 40px;
 }
 

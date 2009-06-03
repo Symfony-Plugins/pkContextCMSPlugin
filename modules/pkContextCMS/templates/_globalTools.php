@@ -57,21 +57,21 @@ function apostropheClose()
 }
 
 $(document).ready(function(){
-	$('#the-apostrophe').click(function(){
-		if (!apostropheOpenState)
-		{
-		  apostropheOpen();
-		}
-		else
-		{
-		  apostropheClose();
-		}
-	});
-	$('.pk-global-toolbar-buttons .pk-cancel').click(function(){
-		$(this).parent().parent().hide();
-		$(this).parent().parent().parent().siblings().fadeIn();
-		apostropheOpenState = 0;
-	});			
+	// $('#the-apostrophe').click(function(){
+	// 	if (!apostropheOpenState)
+	// 	{
+	// 	  apostropheOpen();
+	// 	}
+	// 	else
+	// 	{
+	// 	  apostropheClose();
+	// 	}
+	// });
+	// $('.pk-global-toolbar-buttons .pk-cancel').click(function(){
+	// 	$(this).parent().parent().hide();
+	// 	$(this).parent().parent().parent().siblings().fadeIn();
+	// 	apostropheOpenState = 0;
+	// });			
 });
 </script>
 
