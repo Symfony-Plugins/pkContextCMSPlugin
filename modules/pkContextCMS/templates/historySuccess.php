@@ -2,9 +2,11 @@
 
 <?php $n=0; foreach ($versions as $version => $data): ?>
 <tr class="pk-history-item" id="pk-history-item-<?php echo $n ?>">
-	<td class="id">
-		ID#
-	</td>
+	<?php if (0): ?>
+	  <td class="id">
+		  ID#
+	  </td>
+	<?php endif ?>
 	<td class="date">
 		<?php echo date("j M Y - g:iA", strtotime($data['created_at'])); ?>
 	</td>
