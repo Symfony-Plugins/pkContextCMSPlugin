@@ -26,8 +26,8 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
         array(
           'expanded' => true,
           'choices' => array(
-            false => "On",
-            true => "Off"
+            false => "Published",
+            true => "Unpublished"
           ),
           'default' => false
         )));
