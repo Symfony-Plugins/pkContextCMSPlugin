@@ -121,6 +121,11 @@ text-decoration: none !important;
 	margin: 0;
 }
 
+#pk-login .pk-i
+{
+	background-color: #666;
+}
+
 a.pk-btn .pk-b
 {
 	position: relative;
