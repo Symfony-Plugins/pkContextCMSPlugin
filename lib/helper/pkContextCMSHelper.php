@@ -114,7 +114,7 @@ function _pk_context_cms_navcolumn_body(
   $adminPrivileges = $page->userHasPrivilege('edit');
   if ($admin)
   {
-    $sortHandle = "<div class='pk-context-cms-drag-handle'></div>";
+    $sortHandle = "<div class='pk-btn icon pk-drag pk-controls'></div>";
   }
   $result = "";
   if ($adminPrivileges && 
@@ -184,7 +184,7 @@ function _pk_context_cms_navcolumn_body(
   }
   if ($toplevel)
   {
-    $result = '<ul id="pk-context-cms-navcolumn">';
+    $result = '<ul id="pk-navcolumn" class="pk-navcolumn">';
   }
   if ($page->hasChildren($livingOnly))
   {
@@ -209,11 +209,11 @@ function _pk_context_cms_navcolumn_body(
         $class = "self_item";
       }
       // Specific format to please jQuery.sortable
-      $result .= "<li id=\"pk-context-cms-navcolumn_" . $child->id . "\" class=\"$class\">\n";
+      $result .= "<li id=\"pk-navcolumn_" . $child->id . "\" class=\"$class\">\n";
       $title = $child->getTitle();
       if ($child->getArchived())
       {
-        $title = "<span class='pk-context-cms-archived'>$title</span>";
+        $title = "<span class='pk-archived'>$title</span>";
       }
       if ($sortHandle !== false)
       {
@@ -229,7 +229,7 @@ function _pk_context_cms_navcolumn_body(
   }
   if ($admin)
   {
-    $result .= jq_sortable_element('#pk-context-cms-navcolumn', array('url' => 'pkContextCMS/sort?page=' . $page->getId()));    
+    $result .= jq_sortable_element('#pk-navcolumn', array('url' => 'pkContextCMS/sort?page=' . $page->getId()));    
   }
   return $result;
 }

@@ -225,14 +225,32 @@ a.icon.pk-edit .pk-b
 background-image: url(/pkToolkitPlugin/images/pk-icon-edit.png);
 }
 
-a.icon.pk-drag .pk-b 
+a.icon.pk-drag .pk-b,
+div.icon.pk-drag .pk-b
 {
 background-image: url(/pkToolkitPlugin/images/pk-icon-drag.png);
 background-position: center center;
+background-repeat: no-repeat;
 text-indent: -9999px;
 width: 20px;
+height: 20px;
 padding: 0;
 cursor: move;
+position: relative;
+}
+
+div.icon.pk-drag .pk-b,
+div.icon.pk-drag .pk-i
+{
+	height: 20px;
+	width: 20px;
+	float: left;
+	display: block;
+}
+
+div.icon.pk-drag:hover .pk-b
+{
+	background-color:#888;
 }
 
 a.icon.pk-arrow-up .pk-b 
@@ -1588,22 +1606,6 @@ background-position: 0 -20px;
 cursor: pointer;
 }
 
-/* == SEARCH BOX Adjustments for Subnav sidebar == */
-
-.subnav .pk-search-form {
-width: 178px;
-margin-bottom: 20px;
-float: left;
-}
-
-.subnav .pk-search-form span.pk-search-field {
-background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
-width: 178px;
-}
-
-.subnav .pk-search-form input.pk-search-field {
-width: 150px;
-}
 
 /* [START] pk-feedback-form */
 
@@ -1657,4 +1659,34 @@ margin-left: 120px;
 	
 }
 
+/* == Subnav Search == */
 
+#pk-subnav .pk-search-form {
+width: 178px;
+margin-bottom: 20px;
+float: left;
+}
+
+#pk-subnav .pk-search-form span.pk-search-field {
+background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
+width: 178px;
+}
+
+#pk-subnav .pk-search-form input.pk-search-field {
+width: 150px;
+}
+
+#pk-subnav .pk-navcolumn li
+{
+	position: relative;
+	line-height: 20px;
+	margin-bottom: 5px;
+}
+
+#pk-subnav .pk-navcolumn li .pk-drag
+{
+	float: right;
+	position: relative;
+	margin-left: 10px;
+/*	left: 20px;*/
+}
