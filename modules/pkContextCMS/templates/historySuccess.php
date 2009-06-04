@@ -2,7 +2,7 @@
 
 <?php $n=0; foreach ($versions as $version => $data): ?>
 <tr class="pk-history-item" id="pk-history-item-<?php echo $n ?>">
-	<?php if (0): ?>
+  <?php if (0): ?>
 	  <td class="id">
 		  ID#
 	  </td>

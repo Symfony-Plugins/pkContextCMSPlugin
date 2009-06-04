@@ -102,7 +102,7 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeSort(sfRequest $request)
   {
-    return $this->sortBodyWrapper('pk-context-cms-navcolumn');
+    return $this->sortBodyWrapper('pk-navcolumn');
   }
   
   public function executeSortTabs(sfRequest $request)
