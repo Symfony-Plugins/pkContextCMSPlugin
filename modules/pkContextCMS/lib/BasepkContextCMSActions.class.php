@@ -263,7 +263,7 @@ class BasepkContextCMSActions extends sfActions
     // including slots that are not current etc.
     $page = $this->retrievePageForEditingById();
     $name = $this->getRequestParameter('name');
-    $this->versions = $page->getAreaVersions($name);
+    $this->versions = $page->getAreaVersions($name, false);
     $this->id = $page->id;
     $this->version = $page->getAreaCurrentVersion($name);
     $this->name = $name;
