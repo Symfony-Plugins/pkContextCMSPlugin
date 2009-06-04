@@ -96,6 +96,4 @@
 	<?php //                    betweenLinks: " " }                       ?>
 	pkRadioSelect('.pk-radio-select', { });
 	$('#pk-page-settings').show();
-
-	init_shadows();
 	</script>
