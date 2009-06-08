@@ -5,223 +5,224 @@
 .pk-area
 {
 /*	z-index:599;*/
-	position: relative;
-	float: left;
-	width: 100%;
-	margin: 10px 0;	
+position: relative;
+float: left;
+width: 100%;
+margin: 10px 0;
 }
 
 .pk-slots
 {
-	position: relative;
-	float: left;
-	width: 100%;
+position: relative;
+float: left;
+width: 100%;
 }
 
-ul.pk-controls{
-	float:left;
-	visibility: hidden;
+ul.pk-controls
+{
+float: left;
+visibility: hidden;
 }
 
 ul.pk-controls li
-{ /* All buttons on the site are wrapped in a list. This LI often contains (constrains) the .pk-i element  */
-	float: left;
-	display: inline;
-	position: relative;
-	margin-right: 1px;
-	width: auto;
-	height: auto;
-	height: 20px;
-	border: none;
+{/* All buttons on the site are wrapped in a list. This LI often contains (constrains) the .pk-i element  */
+float: left;
+display: inline;
+position: relative;
+margin-right: 1px;
+width: auto;
+height: auto;
+height: 20px;
+border: none;
 }
 
 ul.pk-controls li a
-{ /* Make sure anchor is above .pk-i element */
+{/* Make sure anchor is above .pk-i element */
 z-index: 1;
 }
 
 ul.pk-controls .pk-controls-item.cancel
-{ /* Hide All Cancel Buttons */
-	display: none;
+{/* Hide All Cancel Buttons */
+display: none;
 }
 
 .pk-media ul.pk-controls.pk-media-upload-form-footer a.pk-cancel,
 .pk-media ul.pk-controls.pk-media-edit-footer a.pk-cancel
 {
-	display: block;
+display: block;
 }
 
 ul.pk-controls.pk-area-controls
-{ /* Area Controls - Sit ABOVE all slots */
-	position: relative;
-	z-index:899;
-	float: left;
-	width: 100%;
-	padding-bottom: 10px;
+{/* Area Controls - Sit ABOVE all slots */
+position: relative;
+z-index: 899;
+float: left;
+width: 100%;
+padding-bottom: 10px;
 }
 
 .browsing-history ul.pk-controls.pk-area-controls
 {
-z-index: 999;	
+z-index: 999;
 }
 
 .pk-area.singleton ul.pk-controls.pk-area-controls
 {
-	position: absolute;
-	top: 0;
-	left: 0;
+position: absolute;
+top: 0;
+left: 0;
 }
 
 
 ul.pk-controls.pk-slot-controls,
 ul.pk-controls.pk-media-edit-links,
 ul.pk-controls.pk-media-multiple-list-controls
-{ /* Slot Controls - Sit ON TOP of associated slot */
-	position: absolute;
-	z-index:799;
-	top: 0;
-	left: 0;
+{/* Slot Controls - Sit ON TOP of associated slot */
+position: absolute;
+z-index: 799;
+top: 0;
+left: 0;
 }
 
 .pk-area.browsing-history ul.pk-controls.pk-slot-controls
 {
-	z-index:899;
+z-index: 899;
 }
 
 ul.pk-controls ul.pk-controls-item
-{ /* Control Subsets */
-	position: relative;
+{/* Control Subsets */
+position: relative;
 }
 
 ul.pk-controls ul.pk-controls-item.history
-{ /* This doesn't solve the z-index issue, probably need to move to jquery solution */
-	z-index:899;
+{/* This doesn't solve the z-index issue, probably need to move to jquery solution */
+z-index:899;
 }
 
 .pk-history-options
 {
-	float: left;
-	display: inline;
+float: left;
+display: inline;
 padding-left: 1px;
 }
 
 ul.pk-area-controls li .pk-area-options,
 ul.pk-controls .pk-history-options
 {
-	display: none;
+display: none;
 }
 
 /*.addslot-now a.pk-btn .pk-b,*/
 .editing-now a.pk-btn .pk-b,
 .browsing-history a.pk-btn.pk-history .pk-b
 {
-	background-color: #eee !important;
-	color: #000 !important;
-	cursor: default !important;
+background-color: #eee !important;
+color: #000 !important;
+cursor: default !important;
 }
 
 .pk-area.previewing-history a.pk-btn.pk-history .pk-b
 {
-	background-color: transparent !important;
-	color:#fff !important;
-	cursor: pointer !important;
+background-color: transparent !important;
+color: #fff !important;
+cursor: pointer !important;
 }
 
 .pk-area.previewing-history .pk-slots .pk-controls
 {
-	display: none !important;
+display: none !important;
 }
 .pk-area.previewing-history .pk-slots .pk-slot.singleton .pk-controls
 {
-	display: block !important;
+display: block !important;
 }
 
 ul.pk-slideshow-controls
-{ /* frontend visible slideshow controls */
+{/* frontend visible slideshow controls */
 	position: absolute;
-	top: -24px;
-	right: 0;
-	float: left;
-	display: inline;
-	margin-right: 1px;
-	width: auto;
-	height: auto;
-	height: 20px;
-	border: none;	
+top: -24px;
+right: 0;
+float: left;
+display: inline;
+margin-right: 1px;
+width: auto;
+height: auto;
+height: 20px;
+border: none;
 }
 
 ul.pk-slideshow-controls li
 {
-	float: left;
+float: left;
 }
 
 ul.pk-slideshow-controls a
 {
-z-index: 1;	
+z-index: 1;
 }
 
 .pkContextCMSSlideshow .pk-slideshow-item
 {
-	display: none;
+display: none;
 }
 
 ul.pk-controls li.last,
 ul.pk-slideshow-controls li.last,
 ul.pk-controls.pk-area-controls li .last
-{ /* .last option has no margin */
+{/* .last option has no margin */
 	margin: 0;
 }
 
 /* Area History Table */
 
 .pk-history-browser
-{ /*This positions history vertically inside the browser */
+{/*This positions history vertically inside the browser */
 	position: absolute;
-	top: 0px; /* This changes with history button offset*/
+top: 0px; /* This changes with history button offset*/
 	left: 50%;
-	margin-left: -480px;
-	float: left;
-	width: 960px;
-	clear: both;
-	z-index: 999;
-	overflow: hidden;
-	display: none;
-	border-top: 10px solid #eee;
-	border-bottom: 40px solid transparent;
+margin-left: -480px;
+float: left;
+width: 960px;
+clear: both;
+z-index: 999;
+overflow: hidden;
+display: none;
+border-top: 10px solid #eee;
+border-bottom: 40px solid transparent;
 }
 
 .pk-history-browser h3
 {
-	font-size: 16px;
-	color: #666;
-	float: left;
+font-size: 16px;
+color: #666;
+float: left;
 /*	width: 100%;*/
 	width: 920px;
-	padding: 10px;
-	clear: both;
-	border: 10px solid #eee;
-	border-top: 0;
-	border-bottom: 0;
-	background-color: #fff;
+padding: 10px;
+clear: both;
+border: 10px solid #eee;
+border-top: 0;
+border-bottom: 0;
+background-color: #fff;
 }
 
 a.pk-history-browser-view-more
 {
-	float: left;
-	width: 100%;
-	height: 100%;
-	display: inline;
-	padding: 8px;
+float: left;
+width: 100%;
+height: 100%;
+display: inline;
+padding: 8px;
 }
 
 a.pk-history-browser-all:hover
 {
-	background-color: #eee;
+background-color: #eee;
 }
 
 .pk-history-browser-crop
-{ /*This CAN make history a scrollable box, sets width to be width of site */
-width: 940px; 
+{/*This CAN make history a scrollable box, sets width to be width of site */
+width: 940px;
 margin: 0;
 border: 10px solid #eee;
 border-top: 1px solid #eee;
@@ -231,104 +232,104 @@ clear: both;
 
 .pk-history-browser table
 {
-	width: 100%;
-	table-layout: fixed;
-	border-bottom: 1px solid #eee;
-	font-size: 11px;
-	color: #333;
-	background-color: #fff;	
+width: 100%;
+table-layout: fixed;
+border-bottom: 1px solid #eee;
+font-size: 11px;
+color: #333;
+background-color: #fff;
 }
 
 .pk-history-browser thead th
 {
-	font-weight: bold;
-	padding: 8px 4px;
-	border-bottom: 1px solid #eee;
+font-weight: bold;
+padding: 8px 4px;
+border-bottom: 1px solid #eee;
 }
 
 .pk-history-browser tbody tr:hover
 {
-	background-color: #f0f0f0;
+background-color: #f0f0f0;
 }
 
 .pk-history-browser tbody td
 {
-	overflow:hidden;
-	white-space: nowrap;
-	height: 30px;
-	vertical-align: middle;
-	padding: 0 4px;
+overflow: hidden;
+white-space: nowrap;
+height: 30px;
+vertical-align: middle;
+padding: 0 4px;
 }
 
 .pk-history-browser tfoot td
 {
-	border-top: 1px solid #eee;
+border-top: 1px solid #eee;
 /*	padding: 8px 4px;*/
 }
 
 .pk-history-browser .id
 {
-	width: 10%;
+width: 10%;
 }
 
 .pk-history-browser .date
 {
-	width: 15%;
+width: 15%;
 }
 
 .pk-history-browser .editor
 {
-	width: 15%;
+width: 15%;
 }
 
 .pk-history-browser .preview
 {
-	width: 60%;
+width: 60%;
 }
 
 .pk-history-preview-notice
 {
-display:none;
-position:absolute;
-top:0px;
-left:0px;
-width:100%;
-z-index:999;
-background:#fff;
-color:#d4c;
+display: none;
+position: absolute;
+top: 0px;
+left: 0px;
+width: 100%;
+z-index: 999;
+background: #fff;
+color: #d4c;
 border-bottom: 1px solid #eee;
 }
 
 .pk-history-preview-notice div
 {
-	float: left;
-	margin: 10px;
+float: left;
+margin: 10px;
 }
 
 .pk-page-overlay /*This will inherently have issues with IE7 that will need to be resolved later. */
 {
-	z-index: 998;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 100%;
-	width: 100%;
-	display: none;
-	background-color:#fff;
+z-index: 998;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+height: 100%;
+width: 100%;
+display: none;
+background-color: #fff;
 }
 /* == */
 /* == SLOT STYLES == */
 /* == */
 
 .pk-slot
-{ /* .pk-slot is the class for ALL Slots */
+{/* .pk-slot is the class for ALL Slots */
 	position: relative;
-	float: left;
-	width: 100%;
-	min-height: 20px;
-	margin-bottom: 10px;
+float: left;
+width: 100%;
+min-height: 20px;
+margin-bottom: 10px;
 }
 
 
@@ -339,7 +340,7 @@ border-bottom: 1px solid #eee;
 
 .pk-messages .background .pk-i
 {
-	display:none;
+display: none;
 }
 
 /* Temporarily Hide pk-messages for slot types that aren't using them */
@@ -348,53 +349,53 @@ border-bottom: 1px solid #eee;
 .pkContextCMSImage .pk-messages,
 .pkContextCMSText .pk-messages
 {
-	display: none;
+display: none;
 }
 
 /* Rich Text Slots Use the .pk-messages structure */
 .pkContextCMSRichText .pk-slot-messages
-{ /*This is the double-click-to-edit thing */
+{/*This is the double-click-to-edit thing */
 	float: left;
-	display: none;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 100%;
-	width: 100%;
-	z-index:1;
-	cursor: pointer;
+display: none;
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+height: 100%;
+width: 100%;
+z-index: 1;
+cursor: pointer;
 }
 
 .pkContextCMSRichText .pk-slot-messages li
 {
-	height: 20px;
-	width: 200px;
-	position: absolute;
-	top:50%;
-	left: 50%;
-	margin-top: -10px;
-	margin-left: -100px;
-	line-height: 20px;
-	text-align: center;
-	font-size: 12px;
-	color: #fff;
+height: 20px;
+width: 200px;
+position: absolute;
+top: 50%;
+left: 50%;
+margin-top: -10px;
+margin-left: -100px;
+line-height: 20px;
+text-align: center;
+font-size: 12px;
+color: #fff;
 }
 
 
 .pkContextCMSRichText .pk-slot-messages .background
-{ /* Content Fade-Out Overlay */
+{/* Content Fade-Out Overlay */
 position: absolute;
-top:0;
-right:0;
-left:0;
-bottom:0;
-background:#fff;
-margin:0;
-padding:0;
-height:auto;
-width:auto;
+top: 0;
+right: 0;
+left: 0;
+bottom: 0;
+background: #fff;
+margin: 0;
+padding: 0;
+height: auto;
+width: auto;
 }
 
 .pkContextCMSRichText .pk-slot-messages .message
@@ -406,27 +407,27 @@ z-index: 1;
 .pkContextCMSRichText b,
 .pkContextCMSRichText strong
 {
-	font-weight: bold;
+font-weight: bold;
 }
 
 .pkContextCMSRichText h3
 {
-	font-size: 150%;
+font-size: 150%;
 }
 
 .pkContextCMSRichText h4
 {
-	font-size: 125%;
+font-size: 125%;
 }
 
 .pkContextCMSRichText ol
 {
-	list-style: inside decimal;
+list-style: inside decimal;
 }
 
 .pkContextCMSRichText ul
 {
-	list-style: inside disc;
+list-style: inside disc;
 }
 
 .pk-slot-is-editable.pkContextCMSRichText:hover .pk-slot-messages
@@ -436,14 +437,14 @@ display: block;
 
 .pk-slot.pkContextCMSRichText.pk-slot-is-editable,
 .pk-slot.pkContextCMSText.pk-slot-is-editable
-{ /* Creates space for buttons to sit on top of rich text slots when logged-in-editing */
+{/* Creates space for buttons to sit on top of rich text slots when logged-in-editing */
 	padding-top: 22px !important;
 }
 
 .pk-preview .pk-slot.pkContextCMSRichText.pk-slot-is-editable,
 .pk-preview .pk-slot.pkContextCMSText.pk-slot-is-editable
 {
-	padding-top: 0 !important;
+padding-top: 0 !important;
 }
 
 .pk-slot.pkContextCMSRichText h3,
@@ -452,10 +453,10 @@ display: block;
 .pk-slot.pkContextCMSRichText h6,
 .pk-slot.pkContextCMSRichText p
 {
-	float: left;
-	width: 100%;
-	clear: both;
-	margin: 0 0 10px 0;
+float: left;
+width: 100%;
+clear: both;
+margin: 0 0 10px 0;
 }
 
 .pk-slot.pkContextCMSRichText.pk-edit-view
@@ -464,7 +465,7 @@ display: block;
 
 .pk-slot.pkContextCMSRichText.pk-edit-view .pk-controls
 {
-	display: none;
+display: none;
 }
 
 .pk-slot.pkContextCMSRichText.pk-edit-view:hover
@@ -475,17 +476,17 @@ color: #999;
 .pk-slot.pkContextCMSRichText.pk-edit-view:hover .pk-controls,
 .pk-slot.pkContextCMSRichText.pk-edit-view:hover .pk-messages
 {
-	display: block;
+display: block;
 }
 
 .pk-slot .pkContextCMSTextSlot
 {
-	width: 100%;
+width: 100%;
 }
 
 .pkContextCMSSlideshow
 {
-	margin-top: 24px; /* Space for the Arrow Controls*/
+margin-top: 24px; /* Space for the Arrow Controls*/
 	margin-bottom: 40px;
 }
 
@@ -495,41 +496,41 @@ color: #999;
 
 #pk-global-toolbar
 {
-	position: relative;
-	display: inline;
-	float: left;
-	width: 100%;
-	border-bottom: 1px solid #eee;
-	padding: 5px 0 2px 0;
-	margin-bottom: 5px;
-	clear: both;
-	z-index: 999;
+position: relative;
+display: inline;
+float: left;
+width: 100%;
+border-bottom: 1px solid #eee;
+padding: 5px 0 2px 0;
+margin-bottom: 5px;
+clear: both;
+z-index: 999;
 }
 
 #pk-global-toolbar li
 {
-	display: inline;
-	float: left;
-	position: relative;
-	height: 24px;
+display: inline;
+float: left;
+position: relative;
+height: 24px;
 }
 
 #pk-global-toolbar #the-apostrophe
 {
-	float: left;
-	height: 20px;
-	width: 20px;
-	text-indent: -9999px;
-	background: #ac9 url(/pkToolkitPlugin/images/apostrophe_logo_20px.png) center center no-repeat;
-	overflow: hidden;
-	margin: 2px;
+float: left;
+height: 20px;
+width: 20px;
+text-indent: -9999px;
+background: #ac9 url(/pkToolkitPlugin/images/apostrophe_logo_20px.png) center center no-repeat;
+overflow: hidden;
+margin: 2px;
 }
 
 #pk-global-toolbar .pk-global-toolbar-buttons
 {
-	display:none;
-	float: left;
-	margin-right: 5px;
+display: none;
+float: left;
+margin-right: 5px;
 }
 
 
@@ -537,7 +538,8 @@ color: #999;
 /* Apostrophe BREADCRUMB =========================== */
 /* == */
 
-#pk-breadcrumb {
+#pk-breadcrumb
+{
 position: relative;
 width: auto;
 float: left;
@@ -546,32 +548,35 @@ line-height: 20px;
 height: 20px;
 }
 
-#pk-breadcrumb a {
+#pk-breadcrumb a
+{
 color: #13A0BC;
 text-decoration: none;
 float: left;
-display:  inline;
+display: inline;
 }
 
-#pk-breadcrumb a:hover {
+#pk-breadcrumb a:hover
+{
 text-decoration: underline;
 }
 
-#pk-breadcrumb form {
+#pk-breadcrumb form
+{
 display: inline;
 float: left;
 width: auto;
-z-index:2;
+z-index: 2;
 }
 
-#pk-breadcrumb h2 
+#pk-breadcrumb h2
 {
-	font-size: 18px;
+font-size: 18px;
 }
 
 #pk-breadcrumb li
 {
-	margin-right: 5px;
+margin-right: 5px;
 }
 
 #pk-breadcrumb .pk-breadcrumb-title
@@ -582,7 +587,8 @@ width: auto;
 line-height: 24px;
 }
 
-#pk-breadcrumb .pk-breadcrumb-title.current-page {
+#pk-breadcrumb .pk-breadcrumb-title.current-page
+{
 font-size: 18px;
 line-height: 20px;
 height: 20px;
@@ -595,11 +601,12 @@ margin-right: 0px;
 
 #pk-breadcrumb .current-page .epc-rename-button
 {
-	padding: 0px 3px 0 3px;
-	white-space: nowrap;
+padding: 0px 3px 0 3px;
+white-space: nowrap;
 }
 
-#pk-breadcrumb .pk-breadcrumb-slash {
+#pk-breadcrumb .pk-breadcrumb-slash
+{
 float: left;
 display: inline;
 width: auto;
@@ -610,47 +617,54 @@ font-size: 14px;
 color: #333;
 }
 
-#pk-breadcrumb a.epc-rename-button:hover {
+#pk-breadcrumb a.epc-rename-button:hover
+{
 background-color: #eee;
 text-decoration: none;
 /*border-bottom: 1px solid #eee;*/
 }
 
-#pk-breadcrumb .epc-form {
+#pk-breadcrumb .epc-form
+{
 background: #fff;
 float: left;
 /* Width set with JQuery in _breadcrumb.php */
 }
 
 #pk-breadcrumb .epc-form a,
-#pk-breadcrumb .epc-form input {
+#pk-breadcrumb .epc-form input
+{
 float: left;
 display: inline;
 font-size: 12px;
 /*margin: 0 2px;*/
 }
 
-#pk-breadcrumb .epc-form #id {
+#pk-breadcrumb .epc-form #id
+{
 display: none;
 }
 
 #pk-breadcrumb .epc-form span,
-#pk-breadcrumb .epc-form-cancel {
+#pk-breadcrumb .epc-form-cancel
+{
 font-size: 12px;
 letter-spacing: 0 !important;
 line-height: 20px;
 }
 
-#pk-breadcrumb .epc-form-cancel {
+#pk-breadcrumb .epc-form-cancel
+{
 color: #15A1BD !important;
 text-transform: lowercase; /* LOL @ Rick */
 }
 
-#pk-breadcrumb .epc-form-cancel:hover {
+#pk-breadcrumb .epc-form-cancel:hover
+{
 text-decoration: underline;
 }
 
-#pk-breadcrumb .pk-form-controls 
+#pk-breadcrumb .pk-form-controls
 {
 background-color: #fff;
 padding-left: 1px;
@@ -674,7 +688,8 @@ margin-right: 1px;
 margin: auto;
 }
 
-#pk-breadcrumb input.pk-breadcrumb-input {
+#pk-breadcrumb input.pk-breadcrumb-input
+{
 position: relative;
 top: -1px;
 background: #fff;
@@ -692,10 +707,11 @@ clear: right;
 
 #pk-breadcrumb input.pk-breadcrumb-create-childpage-title
 {
-	width: 180px;
+width: 180px;
 }
 
-#pk-breadcrumb a.pk-page-settings-button {
+#pk-breadcrumb a.pk-page-settings-button
+{
 float: left;
 display: inline;
 height: 20px;
@@ -708,16 +724,19 @@ background: url(/pkToolkitPlugin/images/pk-icon-page-settings.png) no-repeat 0 0
 position: relative;
 }
 
-#pk-breadcrumb a.pk-page-settings-button:hover {
+#pk-breadcrumb a.pk-page-settings-button:hover
+{
 background-position: 0 -40px;
 }
 
-#pk-breadcrumb a.pk-page-settings-button.close {
+#pk-breadcrumb a.pk-page-settings-button.close
+{
 display: none;
 background-position: 0 -20px;
 }
 
-#pk-breadcrumb .pk-context-cms-breadcrumb-add-controls {
+#pk-breadcrumb .pk-context-cms-breadcrumb-add-controls
+{
 display: inline;
 float: left;
 width: 110px;
@@ -725,7 +744,8 @@ width: 110px;
 
 #pk-breadcrumb .pk-context-cms-breadcrumb-add-controls input,
 #pk-breadcrumb .pk-context-cms-breadcrumb-add-controls span,
-#pk-breadcrumb .pk-context-cms-breadcrumb-add-controls a {
+#pk-breadcrumb .pk-context-cms-breadcrumb-add-controls a
+{
 float: left;
 line-height: 20px;
 vertical-align: baseline;
@@ -738,24 +758,25 @@ vertical-align: baseline;
 
 #pk-global-toolbar li.pk-page-settings-container
 {
-	position: absolute;
-	top: 29px;
-	left: 0;
-	background-color: #fff;
-	float: left;
-	display: inline;
-	width: 100%;
-	height: auto;
-	z-index: 999;
+position: absolute;
+top: 29px;
+left: 0;
+background-color: #fff;
+float: left;
+display: inline;
+width: 100%;
+height: auto;
+z-index: 999;
 }
 
-#pk-page-settings #pk-page-settings-shadow img 
+#pk-page-settings #pk-page-settings-shadow img
 {
-height:11px;
-width:100%;
+height: 11px;
+width: 100%;
 }
 
-#pk-page-settings {
+#pk-page-settings
+{
 position: relative;
 display: none;
 float: left;
@@ -769,45 +790,50 @@ border-bottom: solid 10px #eee;
 
 #pk-page-settings-form
 {
-	width: auto;
-	float: left;
-	display: inline;
-	margin: 0 28px;
-	padding-bottom: 20px;
+width: auto;
+float: left;
+display: inline;
+margin: 0 28px;
+padding-bottom: 20px;
 }
 
-#pk-page-settings #pk-page-settings-heading {
+#pk-page-settings #pk-page-settings-heading
+{
 margin: 20px 0 0 0;
 font-size: 16px;
 }
 
-#pk-page-settings h4 {
+#pk-page-settings h4
+{
 font-size: 12px;
 font-weight: bold;
 margin: 0 0 10px 0;
 }
 
-#pk-page-settings .pk-form-row {
+#pk-page-settings .pk-form-row
+{
 margin: 10px 0px 10px 0;
 float: left;
-display:inline;
-clear:both;
+display: inline;
+clear: both;
 width: 100%;
 }
 
-#pk-page-settings .pk-form-row label {
+#pk-page-settings .pk-form-row label
+{
 /*position: relative;
 top: 1em;
 left: -120px;
 display: block;
 width: 120px;*/
 float:left;
-width:120px;
-line-height:20px;
+width: 120px;
+line-height: 20px;
 }
 
 #pk-page-settings-left,
-#pk-page-settings-right {
+#pk-page-settings-right
+{
 float: left;
 width: 460px;
 margin: 10px 0 0 0;
@@ -815,43 +841,44 @@ margin: 10px 0 0 0;
 
 #pk-page-settings-left
 {
-	margin-right: 20px;
+margin-right: 20px;
 }
 
 #pk-page-settings-right h4
 {
-	margin-top:10px;
-	line-height:20px;
+margin-top: 10px;
+line-height: 20px;
 }
 
-#pk-page-settings-footer {
+#pk-page-settings-footer
+{
 float: left;
 margin-top: 10px;
 padding-top: 10px;
-width:100%;
+width: 100%;
 }
 
 #pk-page-settings-footer li
 {
-	height: auto;
-	padding: 0;
-	line-height: 24px;
+height: auto;
+padding: 0;
+line-height: 24px;
 }
 
 #pk-page-settings-footer li.last
 /* float the delete button all the way right*/
 {
-	float:right;
+float: right;
 }
 
-#pk-page-settings-form #settings_slug 
+#pk-page-settings-form #settings_slug
 {
 width: 240px;
 }
 
 #pk-page-settings-form .pk-form-row input,
 #pk-page-settings-form .pk-form-row select,
-#pk-page-settings-form .pk-form-row textarea 
+#pk-page-settings-form .pk-form-row textarea
 {
 font-size: 12px;
 font-family: arial, sans-serif;
@@ -861,30 +888,30 @@ padding: 2px 1px;
 
 #pk-page-settings-form .pk-page-settings-status
 {
-	float:left;
-	line-height:20px;
-	clear:right;
-	width: 340px;
+float: left;
+line-height: 20px;
+clear: right;
+width: 340px;
 }
 
 #pk-page-settings-form #pk-page-settings-note
 {
-	float:left;
-	clear:both;
-	width:360px;
-	font-size:11px;
-	color:#999;
-	margin-top:10px;
+float: left;
+clear: both;
+width: 360px;
+font-size: 11px;
+color: #999;
+margin-top: 10px;
 }
 
 #pk-page-settings #pk-page-settings-right .pk-page-settings-inherited-editors,
-#pk-page-settings #pk-page-settings-right .pk-page-settings-local-editors 
+#pk-page-settings #pk-page-settings-right .pk-page-settings-local-editors
 {
 width: 170px;
 float: left;
 }
 
-#pk-page-settings .pk-radio-select-container 
+#pk-page-settings .pk-radio-select-container
 {
 display: block;
 float: left;
@@ -893,26 +920,26 @@ width: 100%;
 
 #pk-page-settings .radio_list
 {
-	float: left;
-	width: 100%;
-	clear: both;
+float: left;
+width: 100%;
+clear: both;
 }
 
 #pk-page-settings .radio_list li
 {
-	float: left;
-	position: relative;
-	width: 120px;
+float: left;
+position: relative;
+width: 120px;
 /*	clear: both;*/
 	margin: 0 0 10px 0;
 }
 
 #pk-page-settings .radio_list li input
 {
-	position: relative;
-	float: left;
-	line-height: 20px;
-	margin: 3px 0 !important;
+position: relative;
+float: left;
+line-height: 20px;
+margin: 3px 0 !important;
 }
 
 #pk-page-settings .radio_list li label
@@ -925,7 +952,7 @@ line-height: 20px;
 margin: 0;
 }
 
-#pk-page-settings .pk-page-settings-local-editors a 
+#pk-page-settings .pk-page-settings-local-editors a
 {
 color: #13A0BC;
 }
@@ -948,7 +975,8 @@ line-height: 20px;
 }
 
 #pk-page-settings .pk-page-settings-local-editors a span,
-a.pk-multiple-select-remove span {
+a.pk-multiple-select-remove span
+{
 display: inline;
 position: absolute;
 float: left;
@@ -959,13 +987,15 @@ overflow: hidden;
 background: url(/pkToolkitPlugin/images/pk-icon-close-small.png) 0 0 no-repeat;
 }
 
-#pk-page-settings .pk-page-settings-local-editors a:hover {
+#pk-page-settings .pk-page-settings-local-editors a:hover
+{
 text-decoration: none;
 color: #333;
 }
 
 #pk-page-settings .pk-page-settings-local-editors a:hover span,
-a.pk-multiple-select-remove:hover span {
+a.pk-multiple-select-remove:hover span
+{
 background-position: 0 -20px;
 }
 
@@ -975,7 +1005,8 @@ background-position: 0 -20px;
 /* == pk_pager_navigation == */
 /* == */
 
-.pk_pager_navigation {
+.pk_pager_navigation
+{
 float: left;
 display: inline;
 overflow: hidden;
@@ -985,27 +1016,32 @@ width: 100%;
 }
 
 .pk_pager_navigation a,
-.pk_pager_navigation span {
+.pk_pager_navigation span
+{
 display: inline;
 float: left;
 height: 20px;
 line-height: 20px;
 }
 
-.pk_pager_navigation .pk_page_navigation_number {
+.pk_pager_navigation .pk_page_navigation_number
+{
 padding: 0 6px;
 }
 
-.pk_pager_navigation span.pk_page_navigation_number.pk_pager_navigation_disabled {
+.pk_pager_navigation span.pk_page_navigation_number.pk_pager_navigation_disabled
+{
 background-color: #e2e2e2;
 }
 
-.pk_pager_navigation a.pk_page_navigation_number:hover {
+.pk_pager_navigation a.pk_page_navigation_number:hover
+{
 color: #000;
 background-color: #e2e2e2;
 }
 
-.pk_pager_navigation .pk_pager_navigation_image {
+.pk_pager_navigation .pk_pager_navigation_image
+{
 background: url(/pkToolkitPlugin/images/pk-page-arrows.png) no-repeat;
 display: inline;
 float: left;
@@ -1014,48 +1050,59 @@ height: 20px;
 text-indent: -9999px;
 }
 
-.pk_pager_navigation a.pk_pager_navigation_image.disabled {
+.pk_pager_navigation a.pk_pager_navigation_image.disabled
+{
 cursor: default;
 }
 
-.pk_pager_navigation a.pk_pager_navigation_first {
+.pk_pager_navigation a.pk_pager_navigation_first
+{
 background: url(/pkToolkitPlugin/images/pk-page-arrows.png) no-repeat top left;
 }
 
-.pk_pager_navigation a.pk_pager_navigation_first:hover {
+.pk_pager_navigation a.pk_pager_navigation_first:hover
+{
 background: url(/pkToolkitPlugin/images/pk-page-arrows.png) no-repeat 0px -20px;
 }
-.pk_pager_navigation a.pk_pager_navigation_previous {
+.pk_pager_navigation a.pk_pager_navigation_previous
+{
 background-position: -22px 0;
 width: 19px;
 margin-right: 5px;
 }
-.pk_pager_navigation a.pk_pager_navigation_previous:hover {
+.pk_pager_navigation a.pk_pager_navigation_previous:hover
+{
 background-position: -22px -40px !important;
 }
-.pk_pager_navigation a.pk_pager_navigation_next {
+.pk_pager_navigation a.pk_pager_navigation_next
+{
 background-position: -41px 0;
 width: 19px;
 margin-left: 5px;
 }
-.pk_pager_navigation a.pk_pager_navigation_next:hover {
+.pk_pager_navigation a.pk_pager_navigation_next:hover
+{
 background-position: -41px -60px;
 }
-.pk_pager_navigation a.pk_pager_navigation_last {
+.pk_pager_navigation a.pk_pager_navigation_last
+{
 background-position: -60px 0;
 }
-.pk_pager_navigation a.pk_pager_navigation_last:hover {
+.pk_pager_navigation a.pk_pager_navigation_last:hover
+{
 background-position: -60px -80px;
 }
 
-.pk_pager_navigation span.pk_pager_navigation_first.pk_pager_navigation_disabled {
+.pk_pager_navigation span.pk_pager_navigation_first.pk_pager_navigation_disabled
+{
 background: url(/pkToolkitPlugin/images/pk-page-arrows.png) no-repeat 0px -20px;
 text-indent: -999px;
 overflow: hidden;
 width: 22px;
 }
 
-.pk_pager_navigation span.pk_pager_navigation_previous.pk_pager_navigation_disabled {
+.pk_pager_navigation span.pk_pager_navigation_previous.pk_pager_navigation_disabled
+{
 background: url(/pkToolkitPlugin/images/pk-page-arrows.png) no-repeat -22px -40px;
 text-indent: -999px;
 overflow: hidden;
@@ -1063,14 +1110,16 @@ width: 19px;
 margin-right: 5px;
 }
 
-.pk_pager_navigation span.pk_pager_navigation_last.pk_pager_navigation_disabled {
+.pk_pager_navigation span.pk_pager_navigation_last.pk_pager_navigation_disabled
+{
 background: url(/pkToolkitPlugin/images/pk-page-arrows.png) no-repeat -60px -80px;
 text-indent: -999px;
 overflow: hidden;
 width: 22px;
 }
 
-.pk_pager_navigation span.pk_pager_navigation_next.pk_pager_navigation_disabled {
+.pk_pager_navigation span.pk_pager_navigation_next.pk_pager_navigation_disabled
+{
 background: url(/pkToolkitPlugin/images/pk-page-arrows.png) no-repeat -41px -60px;
 text-indent: -999px;
 overflow: hidden;
@@ -1082,93 +1131,94 @@ margin-left: 5px;
 /* == PK-LOGIN FORM */
 /* == */
 
-#pk-login {
-	width: 220px;
-	height: 400px;
-	background: #f0f0f0 url('/images/pk-apostrophe-login.png') no-repeat top left;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-left: -110px;
-	margin-top: -200px;
-	font-size: 16px;
-	text-transform: lowercase;
+#pk-login
+{
+width: 220px;
+height: 400px;
+background: #f0f0f0 url('/images/pk-apostrophe-login.png') no-repeat top left;
+position: absolute;
+top: 50%;
+left: 50%;
+margin-left: -110px;
+margin-top: -200px;
+font-size: 16px;
+text-transform: lowercase;
 }
 
 #pk-login table
 {
-	width: 100%;
-	margin-bottom: 10px;
+width: 100%;
+margin-bottom: 10px;
 }
 
 #pk-login h1
 {
-	color: #fff;
-	margin: 15px 0 5px 0;
+color: #fff;
+margin: 15px 0 5px 0;
 }
 
 #pk-login th,
 #pk-login td
 {
-	width: 100%;
-	float: left;
-	display: inline;
-	clear: both;
-	padding-left:20px;
+width: 100%;
+float: left;
+display: inline;
+clear: both;
+padding-left: 20px;
 }
 
 #pk-login td input
 {
-	width: 175px;
-	border: 0px;
-	font-size: 12px;
-	padding: 3px 2px;
-	margin: 2px 0 8px;
-	font-family: arial;
+width: 175px;
+border: 0px;
+font-size: 12px;
+padding: 3px 2px;
+margin: 2px 0 8px;
+font-family: arial;
 }
 
 #pk-login .remember th,
 #pk-login .remember td
 {
-	width: 80px;
-	clear: none;
+width: 80px;
+clear: none;
 }
 #pk-login .remember td
 {
-	padding: 0;
+padding: 0;
 }
 
 #pk-login .remember td input
 {
-	width: auto;
-	margin: 2px;
+width: auto;
+margin: 2px;
 }
 
 #pk-login .pk-controls
 {
-	width: 178px;
-	margin: 0 22px
+width: 178px;
+margin: 0 22px
 }
 
 #pk-login .pk-controls li
 {
-	float: right;
+float: right;
 }
 
 #pk-login .pk-controls li.last
 {
-	float: left;
+float: left;
 }
 
 #pk-login .pk-reset-password
 {
-	font-size: 11px;
-	color: #333;
+font-size: 11px;
+color: #333;
 }
 
 #pk-login .pk-reset-password:hover
 {
-	color: #fff;
+color: #fff;
 }
 
 
@@ -1180,7 +1230,8 @@ margin-left: 5px;
 
 /* == SEARCH BOX == */
 
-.pk-search-form {
+.pk-search-form
+{
 position: relative;
 height: 20px;  /* JB: I restored this, who turned it off, why? /* this might need to be restored, but for now...*/
 width: 240px;
@@ -1188,10 +1239,11 @@ width: 240px;
 
 .pk-search-form.media
 {
-	height: auto;
+height: auto;
 }
 
-.pk-search-form span.pk-search-field {
+.pk-search-form span.pk-search-field
+{
 position: absolute;
 top: 0;
 left: 0;
@@ -1200,7 +1252,8 @@ width: 240px;
 height: 20px;
 }
 
-.pk-search-form span.pk-search-field input {
+.pk-search-form span.pk-search-field input
+{
 position: absolute;
 top: 0;
 left: 9px;
@@ -1211,7 +1264,8 @@ width: 210px;
 background: transparent;
 }
 
-.pk-search-form span.pk-search-submit {
+.pk-search-form span.pk-search-submit
+{
 position: absolute;
 right: 0;
 top: 0;
@@ -1222,7 +1276,8 @@ border: none !important;
 z-index: 2;
 }
 
-.pk-search-form input.pk-search-submit {
+.pk-search-form input.pk-search-submit
+{
 padding: 0;
 width: 29px;
 height: 20px;
@@ -1233,7 +1288,8 @@ right: 0;
 background: url(/pkContextCMSPlugin/images/pk-search-submit.png) no-repeat 0 0;
 }
 
-.pk-search-form input.pk-search-submit:hover {
+.pk-search-form input.pk-search-submit:hover
+{
 background-position: 0 -20px;
 cursor: pointer;
 }
@@ -1241,22 +1297,25 @@ cursor: pointer;
 
 /* [START] pk-feedback-form */
 
-#feedback-form-container {
-  display: none;
-	position:absolute;
-	right:0;
-	bottom:0;
-	z-index:999;
-	background: #fff;
-	padding: 10px;
-	border: 1px solid #ddd;
+#feedback-form-container
+{
+display: none;
+position: absolute;
+right: 0;
+bottom: 0;
+z-index: 999;
+background: #fff;
+padding: 10px;
+border: 1px solid #ddd;
 }
 
-#pk-feedback-form {
+#pk-feedback-form
+{
 margin: 10px 0;
 }
 
-#pk-feedback-form .form-row label {
+#pk-feedback-form .form-row label
+{
 display: block;
 float: left;
 text-align: left;
@@ -1266,19 +1325,20 @@ font-weight: normal !important;
 text-transform: capitalize;
 }
 
-#pk-feedback-form .form-row.submit {
+#pk-feedback-form .form-row.submit
+{
 margin-left: 120px;
 }
 
 #feedback-link
 {
-	text-align:right;
-	text-transform: capitalize;
+text-align: right;
+text-transform: capitalize;
 }
 
 #feedback-submitted
 {
-  text-align:right;
+text-align: right;
 }
 
 
@@ -1288,37 +1348,39 @@ margin-left: 120px;
 
 #pk-subnav
 {
-	
 }
 
 /* == Subnav Search == */
 
-#pk-subnav .pk-search-form {
+#pk-subnav .pk-search-form
+{
 width: 178px;
 margin-bottom: 20px;
 float: left;
 }
 
-#pk-subnav .pk-search-form span.pk-search-field {
+#pk-subnav .pk-search-form span.pk-search-field
+{
 background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
 width: 178px;
 }
 
-#pk-subnav .pk-search-form input.pk-search-field {
+#pk-subnav .pk-search-form input.pk-search-field
+{
 width: 150px;
 }
 
 #pk-subnav .pk-navcolumn li
 {
-	position: relative;
-	line-height: 20px;
-	margin-bottom: 5px;
+position: relative;
+line-height: 20px;
+margin-bottom: 5px;
 }
 
 #pk-subnav .pk-navcolumn li .pk-drag
 {
-	float: right;
-	position: relative;
-	margin-left: 10px;
+float: right;
+position: relative;
+margin-left: 10px;
 /*	left: 20px;*/
 }
