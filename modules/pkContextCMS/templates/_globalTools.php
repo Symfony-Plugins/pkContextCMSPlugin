@@ -19,7 +19,7 @@ TODO: allow the separate plugins involved to populate these dynamically.
 	<ul class="pk-global-toolbar-buttons pk-controls">
 		<?php $buttons = pkContextCMSTools::getGlobalButtons() ?>
 		<?php foreach ($buttons as $button): ?>
-		  <li><?php echo link_to($button['label'], $button['link'], array('class' => 'pk-btn icon ' . $button['class'])) ?></li>
+		  <li><?php echo link_to($button->getLabel(), $button->getLink(), array('class' => 'pk-btn icon ' . $button->getCssClass())) ?></li>
 		<?php endforeach ?>
 		<li><?php echo jq_link_to_function('Cancel','',array('class' => 'pk-btn icon pk-cancel', )) ?></li>					
 	</ul>
@@ -57,21 +57,21 @@ function apostropheClose()
 }
 
 $(document).ready(function(){
-	// $('#the-apostrophe').click(function(){
-	// 	if (!apostropheOpenState)
-	// 	{
-	// 	  apostropheOpen();
-	// 	}
-	// 	else
-	// 	{
-	// 	  apostropheClose();
-	// 	}
-	// });
-	// $('.pk-global-toolbar-buttons .pk-cancel').click(function(){
-	// 	$(this).parent().parent().hide();
-	// 	$(this).parent().parent().parent().siblings().fadeIn();
-	// 	apostropheOpenState = 0;
-	// });			
+  // $('#the-apostrophe').click(function(){
+  //  if (!apostropheOpenState)
+  //  {
+  //    apostropheOpen();
+  //  }
+  //  else
+  //  {
+  //    apostropheClose();
+  //  }
+  // });
+  // $('.pk-global-toolbar-buttons .pk-cancel').click(function(){
+  //  $(this).parent().parent().hide();
+  //  $(this).parent().parent().parent().siblings().fadeIn();
+  //  apostropheOpenState = 0;
+  // });      
 });
 </script>
 

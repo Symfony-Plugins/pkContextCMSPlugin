@@ -193,15 +193,67 @@ class pkContextCMSTools
     return $default; 
   }
   
-  static private $globalButtons = array();
-  
-  static public function addGlobalButton($label, $link, $class)
+  static public function getExtensionClasses()
   {
-    self::$globalButtons[] = array("label" => $label, "link" => $link, "class" => $class);
+    $classes = array();
+    $plugins = sfContext::getInstance()->getConfiguration()->getPlugins();
+    foreach ($plugins as $plugin)
+    {
+      $class = $plugin . "PkContextCMSExtension";
+      if (class_exists($class, true))
+      {
+        $classes[] = $class;
+      }
+    }
+    if (class_exists("ProjectPkContextCMSExtension"))
+    {
+      $classes[] = "ProjectPKContextCMSExtension";
+    }
+    return $classes;
   }
+  
+  static protected $globalButtons = false;
   
   static public function getGlobalButtons()
   {
-    return self::$globalButtons;
+    if (self::$globalButtons !== false)
+    {
+      return self::$globalButtons;
+    }
+    $buttonsOrder = sfConfig::get('app_pkContextCMS_global_button_order', false);
+    $classes = self::getExtensionClasses();
+    $globalButtons = array();
+    foreach ($classes as $class)
+    {
+      if (method_exists($class, 'getGlobalButtons'))
+      {
+        $buttons = call_user_func("$class::getGlobalButtons");
+        $globalButtons = array_merge($buttons, $globalButtons);
+      }
+    }
+    $buttonsByLabel = array();
+    foreach ($globalButtons as $button)
+    {
+      $buttonsByLabel[$button->getLabel()] = $button;
+    }
+    if ($buttonsOrder === false)
+    {
+      ksort($buttonsByLabel);
+      $orderedButtons = array_values($buttonsByLabel);
+    }
+    else
+    {
+      $orderedButtons = array();
+      foreach ($buttonsOrder as $label)
+      {
+        if (isset($buttonsByLabel[$label]))
+        {
+          $orderedButtons[] = $buttonsByLabel[$label];
+        }
+      }
+    }
+    
+    self::$globalButtons = $orderedButtons;
+    return $orderedButtons;
   }
 }
