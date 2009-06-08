@@ -66,7 +66,6 @@ class BasepkContextCMSActions extends sfActions
     if (sfConfig::get('app_pkContextCMS_use_bundled_stylesheet', true))
     {
       $this->getResponse()->addStylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'last');
-      $this->getResponse()->addStylesheet('/pkContextCMSPlugin/css/pkContextCMSButtons.css', 'last');
     }
     return 'Template';
   }
