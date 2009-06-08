@@ -187,6 +187,13 @@ other modules as well based on your application's needs:
 
     enabled_modules:        [pkContextCMS, pkContextCMSText, pkContextCMSRichText, sfGuardAuth]
 
+pkContextCMS edits rich text content via the FCK editor. A recent version of FCK is
+included in downloads of pkToolkitPlugin, which is among the requirements already stated
+above. However you'll need to enable FCK in your settings.yml file, as follows:
+
+    all:
+      rich_text_fck_js_dir:   pkToolkitPlugin/js/fckeditor
+
 Load the fixtures for the "stub" site. Every site begins with a home
 page with all other pages being added as descendants of the home page:
 
