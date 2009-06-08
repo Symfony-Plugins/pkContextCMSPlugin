@@ -79,7 +79,7 @@
 									'class' => 'pk-page-settings-button close', 
 									'id' => 'pk-page-settings-button-close',  
 									'title' => 'Close Page Settings', )) ?>
-			<?php echo image_tag('pk-icon-page-settings-ani.gif', array('class' => 'pk-page-settings-loading', 'style' => 'display:none;',  )) ?>
+			<?php echo image_tag('/pkToolkitPlugin/images/pk-icon-page-settings-ani.gif', array('class' => 'pk-page-settings-loading', 'style' => 'display:none;',  )) ?>
 			</li>												
     <?php endif ?>	
   <?php endif ?>

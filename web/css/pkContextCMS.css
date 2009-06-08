@@ -550,7 +550,7 @@ height: 20px;
 
 #pk-breadcrumb a
 {
-color: #13A0BC;
+color: #333;
 text-decoration: none;
 float: left;
 display: inline;
@@ -655,8 +655,8 @@ line-height: 20px;
 
 #pk-breadcrumb .epc-form-cancel
 {
-color: #15A1BD !important;
-text-transform: lowercase; /* LOL @ Rick */
+color: #333;
+text-transfsorm: lowercase; /* LOL @ Rick */
 }
 
 #pk-breadcrumb .epc-form-cancel:hover
@@ -954,7 +954,12 @@ margin: 0;
 
 #pk-page-settings .pk-page-settings-local-editors a
 {
-color: #13A0BC;
+color: #333;
+}
+
+#pk-page-settings .pk-page-settings-local-editors a:hover
+{
+	text-decoration: underline;
 }
 
 #pk-page-settings .pk-page-settings-local-editors li

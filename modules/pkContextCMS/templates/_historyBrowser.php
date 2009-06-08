@@ -26,7 +26,7 @@
 				<?php if (0): ?>
 				  <td class="id"></td>
 				<?php endif ?>
-				<td class="date"><img src="/images/pk-icon-loader-ani.gif"></td>
+				<td class="date"><img src="/pkToolkitPlugin/images/pk-icon-loader-ani.gif"></td>
 				<td class="editor"></td>
 				<td class="preview"></td>
 			</tr>
