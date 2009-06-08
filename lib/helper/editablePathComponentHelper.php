@@ -1,4 +1,10 @@
+<!-- OVERRIDING EPC -->
 <?php
+
+/* JB Note: Overriding helper from pkContextCMSPlugin */
+/* JB Note: Overriding helper from pkContextCMSPlugin */
+/* JB Note: Overriding helper from pkContextCMSPlugin */
+/* JB Note: Overriding helper from pkContextCMSPlugin */
 
 use_helper('jQuery', 'Form');
 
@@ -6,43 +12,64 @@ global $epcn;
 
 function _next_epcn()
 {
-  if (!isset($epcn))
-  {
-    $epcn = 0;
-  }
+  if (!isset($epcn)) { $epcn = 0; }
   $epcn++;
   return "epc-$epcn";
 }
 
-function editable_path_component($value, $renameAction, 
-  $params = false, $edit = false, $classStem = "epc")
+function editable_path_component(
+	$value, 
+	$renameAction, 
+  $params = false, 
+	$edit = false, 
+	$classStem = "epc")
 {
   $epcn = _next_epcn();
-  if ($params === false)
+  
+	if ($params === false)
   {
     $params = array();
   }
-  $result = "";
-  if ($edit)
+  
+	$result = "";
+  
+	if ($edit)
   {
-    $result .= link_to_function(
-      $value, jq_visual_effect("fadeIn", "#$epcn-rename-form") . 
-        "$('.pk-context-cms-rename').addClass('editing');sizeBreadcrumbInput()", 
-        array("id" => "$epcn-rename-button", "class" => "$classStem-rename-button"));
+
+    $result .= jq_link_to_function($value, 
+							 "$('#$epcn-rename-form').fadeIn(250, function(){ $('#$epcn-rename-form .epc-value').focus(); }); 
+							  $('#$epcn-rename-button').hide(); 
+							  $('#pk-breadcrumb-title-rename').addClass('editing');
+								$('.epc-rename-button-controls .pk-cancel').parent().show();", 
+				        array(
+									"id" => "$epcn-rename-button", 
+									"class" => "$classStem-rename-button",
+								));
+								
     $result .= form_tag($renameAction, 
-      array("id" => "$epcn-rename-form", "style" => "display: none",
-        'class' => "$classStem-form")); 
+      array(
+				"id" => "$epcn-rename-form", 
+        'class' => "$classStem-form pk-breadcrumb-form",	
+			)); 
+			
     foreach ($params as $key => $val)
     {
       $result .= input_hidden_tag($key, $val);
     }
-    $result .= input_tag("title", html_entity_decode(strip_tags($value)), array("class" => "$classStem-value"));
-    $result .= '<div class="epc-rename-button-controls">'.submit_tag("Rename", array("class" => "submit"));
-    $result .= "<span class='or'>or</span>";
-    $result .= link_to_function("<span class='cancel'>cancel</span>", '$("#'.$epcn.'-rename-form").fadeOut(250, function (){ $(".pk-context-cms-rename").removeClass("editing"); });'.jq_visual_effect("fadeIn", "#$epcn-rename-button"), array('class' => 'epc-form-cancel', ));
-    $result .= "</div></form>";
 
+    $result .= input_tag("title", html_entity_decode(strip_tags($value)), array("class" => "$classStem-value pk-breadcrumb-input"));
 
+    $result .= '<ul class="pk-form-controls epc-rename-button-controls"><li>'.submit_tag("Rename", array("class" => "pk-submit")).'</li>';
+
+    $result .= '<li>'.link_to_function("cancel",
+								'$("#'.$epcn.'-rename-form").hide(); 
+								 $("#pk-breadcrumb-title-rename").removeClass("editing"); 
+								 $("#'.$epcn.'-rename-button").fadeIn();', 
+								 array(
+									'class' => 'pk-btn icon pk-cancel', 
+								 )).'</li>';
+
+    $result .= "</ul></form>";
   }
   else
   {
@@ -71,9 +98,9 @@ function actionable_path_component($label, $action, $params = false, $classStem 
   unset($params['labelConfirm']);
   $result .= button_to($labelConfirm, $action, array("query_string" => http_build_query($params)));
   $result .= "<span class='$classStem-action-cancel' id='$epcn-action-cancel'>";
-  $result .= "<span class="or">or</span>" . link_to_function("cancel", 
+  $result .= link_to_function("cancelllllllllll", 
     jq_visual_effect("fadeOut", "#$epcn-action-form") . 
-    jq_visual_effect("fadeIn", "#$epcn-action-initial")) .
+    jq_visual_effect("fadeIn", "#$epcn-action-initial"), array('class' => 'pk-btn icon cancel', )) .
     "</span></span>";
   return $result;
 }
