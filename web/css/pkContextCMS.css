@@ -681,6 +681,7 @@ float: left;
 #pk-breadcrumb .pk-form-controls li
 {
 margin-right: 1px;
+position: relative;
 }
 
 #pk-breadcrumb .pk-form-controls .pk-i
@@ -733,6 +734,12 @@ background-position: 0 -40px;
 {
 display: none;
 background-position: 0 -20px;
+}
+
+#pk-breadcrumb .pk-page-settings-loading
+{
+	float: left;
+	display: inline;
 }
 
 #pk-breadcrumb .pk-context-cms-breadcrumb-add-controls
