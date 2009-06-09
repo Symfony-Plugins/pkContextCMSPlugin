@@ -193,26 +193,23 @@ class pkContextCMSTools
     return $default; 
   }
   
-  static public function getExtensionClasses()
+  static public function getGlobalButtonsInternal(sfEvent $event)
   {
-    $classes = array();
-    $plugins = sfContext::getInstance()->getConfiguration()->getPlugins();
-    foreach ($plugins as $plugin)
-    {
-      $class = $plugin . "PkContextCMSExtension";
-      if (class_exists($class, true))
-      {
-        $classes[] = $class;
-      }
-    }
-    if (class_exists("ProjectPkContextCMSExtension"))
-    {
-      $classes[] = "ProjectPKContextCMSExtension";
-    }
-    return $classes;
+    // If we needed a context object we could get it from $event->getSubject(),
+    // but this is a simple static thing
+
+    pkContextCMSTools::addGlobalButtons(array(
+      new pkContextCMSGlobalButton('Settings', 'pkContextCMS/globalSettings', 'pk-settings'),
+      new pkContextCMSGlobalButton('Users', 'sfGuardUser/index', 'pk-users')));
   }
   
   static protected $globalButtons = false;
+
+  // To be called only in response to a pkContextCMS.getGlobalButtons event 
+  static public function addGlobalButtons($array)
+  {
+    self::$globalButtons = array_merge(self::$globalButtons, $array);
+  }
   
   static public function getGlobalButtons()
   {
@@ -221,18 +218,13 @@ class pkContextCMSTools
       return self::$globalButtons;
     }
     $buttonsOrder = sfConfig::get('app_pkContextCMS_global_button_order', false);
-    $classes = self::getExtensionClasses();
-    $globalButtons = array();
-    foreach ($classes as $class)
-    {
-      if (method_exists($class, 'getGlobalButtons'))
-      {
-        $buttons = call_user_func("$class::getGlobalButtons");
-        $globalButtons = array_merge($buttons, $globalButtons);
-      }
-    }
+    self::$globalButtons = array();
+    // We could pass parameters here but it's a simple static thing in this case 
+    // so the recipients just call back to addGlobalButtons
+    sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent(null, 'pkContextCMS.getGlobalButtons', array()));
+    
     $buttonsByLabel = array();
-    foreach ($globalButtons as $button)
+    foreach (self::$globalButtons as $button)
     {
       $buttonsByLabel[$button->getLabel()] = $button;
     }
