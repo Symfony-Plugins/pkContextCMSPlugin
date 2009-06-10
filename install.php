@@ -99,6 +99,11 @@ function standalone()
   }
   e("Alias /sf $aliasPath");
   e("");
+  e("If you get a 404 error when you click the Login link on the home page,");
+  e("you probably need to uncomment this line in $path/web/.htaccess:");
+  e("");
+  e("#RewriteBase /");
+  e("");
   e("Thanks for installing pkContextCMS!");
 }
 
