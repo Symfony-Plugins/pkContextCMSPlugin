@@ -1,0 +1,16 @@
+# Special case for the home page
+
+homepage:
+  url:  /
+  param: { module: pkContextCMS, action: show, slug: / }
+
+# The non-CMS actions of your project, and the admin actions of the CMS
+pk_context_cms_action:
+  url:   /cms/:module/:action
+
+# Must be the LAST rule
+pk_context_cms_page:
+  url:   /:slug
+  param: { module: pkContextCMS, action: show }
+  requirements: { slug: .* }
+

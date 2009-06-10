@@ -67,7 +67,9 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   protected function userHasPrivilegeBody($privilege, $user)
   {
     // Rule 1: admin can do anything
-    if ($user->hasCredential('cms_admin'))
+    // Work around a bug in some releases of sfDoctrineGuard: users sometimes
+    // still have credentials even though they are not logged in
+    if ($user->isAuthenticated() && $user->hasCredential('cms_admin'))
     {
       return true;
     }
