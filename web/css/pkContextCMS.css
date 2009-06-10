@@ -1050,11 +1050,13 @@ background-position: 0 -20px;
 	text-align: center;	
 }
 
+#pk-tab-navigation .pk-tab-nav-item.pk-current-page a,
 #pk-tab-navigation .pk-tab-nav-item a:hover
 {
 	background-color: #eee;
 	color:#000;
 }
+
 /* == */
 /* == pk_pager_navigation == */
 /* == */
