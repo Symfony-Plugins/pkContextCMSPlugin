@@ -1032,7 +1032,6 @@ background-position: 0 -20px;
 	border: 1px solid #eee;
 	border-bottom: 0;
 	border-right: 0;
-	text-align: center;
 }
 
 #pk-tab-navigation .pk-tab-nav-item.last
@@ -1048,6 +1047,7 @@ background-position: 0 -20px;
 	height: 100%;
 	text-decoration: none;
 	color: #333;
+	text-align: center;	
 }
 
 #pk-tab-navigation .pk-tab-nav-item a:hover
