@@ -72,7 +72,7 @@ class BasepkContextCMSActions extends sfActions
 		//JB 6.8.09 These are both necessary 100% of the time, so I added them here at this level.
     $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');
     $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkControls.js');
-    $this->getResponse()->addJavascript('/pkContextCMSPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI
+    $this->getResponse()->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI
 
     return 'Template';
   }

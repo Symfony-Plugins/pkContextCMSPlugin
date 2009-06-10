@@ -1155,32 +1155,32 @@ text-align: right;
 
 /* == Subnav Search == */
 
-#pk-subnav .pk-search-form
+.subnav .pk-search-form
 {
 width: 178px;
 margin-bottom: 20px;
 float: left;
 }
 
-#pk-subnav .pk-search-form span.pk-search-field
+.subnav .pk-search-form span.pk-search-field
 {
 background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
 width: 178px;
 }
 
-#pk-subnav .pk-search-form input.pk-search-field
+.subnav .pk-search-form input.pk-search-field
 {
 width: 150px;
 }
 
-#pk-subnav .pk-navcolumn li
+.subnav .pk-navcolumn li
 {
 position: relative;
 line-height: 20px;
 margin-bottom: 5px;
 }
 
-#pk-subnav .pk-navcolumn li .pk-drag
+.subnav .pk-navcolumn li .pk-drag
 {
 float: right;
 position: relative;
