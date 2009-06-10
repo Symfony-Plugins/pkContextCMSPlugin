@@ -1,4 +1,4 @@
-<ul id="pk-context-cms-site-navigation" >
+<ul id="pk-tab-navigation" >
 <?php // TBB: Let's stop pretending this makes sense in shorthand syntax. ?>
 <?php // When there's more logic than HTML, it's time to write real PHP. ?>
 
@@ -9,33 +9,37 @@ foreach ($tabs as $tab)
 {
 
 	if ($tabcount == 0) {
-		$tabclass = "first";
+		$tabclass = "pk-tab-nav-item first";
 	}
 	elseif ($tabcount == count($tabs)-1) {
-		$tabclass = "last";
+		$tabclass = "pk-tab-nav-item last";
 	} 
 	else
 	{
-		$tabclass = "";
+		$tabclass = "pk-tab-nav-item";
 	}
 	
   if (is_array($tab))
   {
     // Foreign tab implemented by a non-CMS page
     echo("<li");
+
     echo (fnmatch(isset($tab['pattern']) ? 
-       $tab['pattern'] : $tab['url'], 
-      $sf_params->get('module') . '/' .
-    $sf_params->get('action')) ? "class='current'" : "") ;
+       	$tab['pattern'] : $tab['url'], 
+      	$sf_params->get('module') . '/' .
+    		$sf_params->get('action')) ? "class='current'" : "") ;
+
     echo link_to(
-      $tab['name'], $tab['url'], 
-      array('class' => 'pk-context-cms-page-navigation'));
+      	$tab['name'], $tab['url'], 
+      	array('class' => 'pk-tab-nav-item'));
+
     echo("</li>");
+
   }
   else
   {
     $id = $tab->getId();
-    echo("<li id='pk-context-cms-site-navigation-$id'");
+    echo("<li id='pk-tab-nav-item-$id'");
     $classes = '';
     if ($page)
     {
@@ -43,24 +47,23 @@ foreach ($tabs as $tab)
       {
         if ($page->getNode()->isDescendantOf($tab))
         {
-          $classes .= "pk-context-cms-current-page ";
+          $classes .= "pk-current-page ";
         }
       } 
       if ($page->isEqualTo($tab))
       {
-        $classes .= "pk-context-cms-current-page ";
+        $classes .= "pk-current-page ";
       }
     }  
     if ($tab->getArchived())
     {
-      $classes .= "pk-context-cms-archived ";
+      $classes .= "pk-archived-page ";
     }
     echo("class='$classes $tabclass'>");
     echo link_to(
       $tab->__toString(), 
       $tab->getUrl(),
-      array('class' => 'pk-context-cms-page-navigation', 
-        'target' => '_top'));
+      array('target' => '_top'));
     echo("</li>\n");
   }
 
@@ -70,5 +73,31 @@ foreach ($tabs as $tab)
 ?>
 </ul>
 <?php if ($draggable): ?>
-  <?php echo jq_sortable_element('#pk-context-cms-site-navigation', array('url' =>   'pkContextCMS/sortTabs?page=' . $page->getId())) ?>
+
+	<?php jq_add_plugins_by_name(array("ui")); ?>
+	
+	<script type="text/javascript">
+	//<![CDATA[
+	$(document).ready(
+	  function() 
+	  {
+	    $("#pk-tab-navigation").sortable(
+	    { 
+	      update: function(e, ui) 
+	      { 
+	        var serial = jQuery("#pk-tab-navigation").sortable('serialize', {});
+	        var options = {"url":<?php echo json_encode(url_for('pkContextCMS/sortTabs').'?page=' . $page->getId()); ?>,"type":"POST"};
+	        options['data'] = serial;
+	        $.ajax(options);
+
+					// This makes the tab borders display properly after re-positioning
+					$('.pk-tab-nav-item').removeClass('last');
+					$('.pk-tab-nav-item').removeClass('first');
+					$('.pk-tab-nav-item:first').addClass('first');
+					$('.pk-tab-nav-item:last').addClass('last');					
+	      }
+	    });
+	  });
+	//]]>
+	</script>
 <?php endif ?>
