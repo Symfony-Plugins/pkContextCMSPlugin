@@ -19,19 +19,14 @@
 
 	<div id="pk-wrapper">
 		<?php // Demo requires an obvious way to test login ?>
-	  <?php include_partial("pkContextCMS/login") ?>
+		<div id="login">
+	  	<?php include_partial("pkContextCMS/login") ?>
+		</div>
 
     <div id="header">
       <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 240, "height" => 140, "resizeType" => "c", "link" => "/")) ?>
   		<?php pk_context_cms_slot('header', 'pkContextCMSRichText', array("global" => true)) ?>
     </div>
-
-		<?php pk_context_cms_area('pk-header', array(
-			'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSText'),
-		  'type_options' => array(
-				'pkContextCMSRichText' => array('tool' => 'Main'), 	
-		  	'pkContextCMSText' => array('multiline' => true)
-			))) ?>
 
 		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
 
