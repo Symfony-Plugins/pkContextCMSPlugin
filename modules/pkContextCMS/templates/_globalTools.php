@@ -26,9 +26,11 @@ TODO: allow the separate plugins involved to populate these dynamically.
 </li>
 
 <?php //Breadcrumb ?>
+<?php if (pkContextCMSTools::getCurrentPage()): ?>
 <li>
 	<?php include_component('pkContextCMS', 'breadcrumb') # Breadcrumb Navigation ?>
 </li>
+<?php endif ?>
 
 <li class="pk-page-settings-container">
 <?php // TB Says: You can put this anywhere ?>
@@ -141,6 +143,8 @@ setInterval(
   }, 20);
 </script>
 
-<?php include_partial('pkContextCMS/historyBrowser') ?>
+<?php if (pkContextCMSTools::getCurrentPage()): ?>
+	<?php include_partial('pkContextCMS/historyBrowser') ?>
+<?php endif ?>
 
 <div class="pk-page-overlay"></div>

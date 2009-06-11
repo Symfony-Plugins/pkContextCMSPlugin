@@ -266,6 +266,16 @@ font-size: 150%;
 font-size: 125%;
 }
 
+.pkContextCMSRichText h5
+{
+font-size: 90%;
+}
+
+.pkContextCMSRichText h6
+{
+font-size: 90%;
+}
+
 .pkContextCMSRichText ol
 {
 list-style: inside decimal;
@@ -873,7 +883,7 @@ background-position: 0 -20px;
 {
 	float: left;
 	display: inline;
-	width: 120px;
+	width: 118px;
 	height: 20px;
 	line-height: 20px;
 	border: 1px solid #eee;
@@ -1144,7 +1154,6 @@ text-transform: capitalize;
 text-align: right;
 }
 
-
 /* == */
 /* ==  PK-SUBNAV */
 /* == */
@@ -1152,8 +1161,6 @@ text-align: right;
 #pk-subnav
 {
 }
-
-/* == Subnav Search == */
 
 .subnav .pk-search-form
 {
@@ -1186,4 +1193,41 @@ float: right;
 position: relative;
 margin-left: 10px;
 /*	left: 20px;*/
+}
+
+
+/* == */
+/* ==  style for bundled layout.php */
+/* == */
+
+#pk-wrapper
+{
+	width: 960px;
+	margin: 0 auto;
+}
+
+#pk-header,
+#pk-content
+{
+	float: left;
+	display: inline;
+	position: relative;
+	width: 100%;
+}
+
+#pk-login
+{
+	float: right;
+	display: inline;
+	width: 100%;
+	clear: both;
+}
+
+#pk-content #pk-subnav
+{
+	width: 200px;
+	margin:40px 40px 0 0;
+	float:left;
+	display:inline;
+	position:relative;
 }

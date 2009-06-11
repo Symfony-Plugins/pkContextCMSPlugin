@@ -13,26 +13,31 @@
 
 <body class="<?php if (has_slot('body_class')): ?><?php include_slot('body_class') ?><?php endif ?>">
 
-<?php if (pkContextCMSTools::getCurrentPage()->userHasPrivilege('edit')): ?>
-  <?php include_partial('pkContextCMS/globalTools') ?>
-<?php endif ?>
+	<?php if (pkContextCMSTools::getCurrentPage()): ?>
+		<?php if (pkContextCMSTools::getCurrentPage()->userHasPrivilege('edit')): ?>
+		  <?php include_partial('pkContextCMS/globalTools') ?>
+		<?php endif ?>
+	<?php endif ?>
 
 	<div id="pk-wrapper">
 		<?php // Demo requires an obvious way to test login ?>
-		<div id="login">
-	  	<?php include_partial("pkContextCMS/login") ?>
-		</div>
 
-    <div id="header">
-      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 240, "height" => 140, "resizeType" => "c", "link" => "/")) ?>
+    <div id="pk-header">
+      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 125, "height" => 200, "resizeType" => "s", "link" => "/")) ?>
   		<?php pk_context_cms_slot('header', 'pkContextCMSRichText', array("global" => true)) ?>
     </div>
 
 		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
 
-		<?php echo $sf_data->getRaw('sf_content') ?>
+		<div id="pk-content">
+			<?php echo $sf_data->getRaw('sf_content') ?>
+		</div>
 
 	  <?php pk_context_cms_slot('footer', 'pkContextCMSRichText', array("global" => true)) ?>
+
+		<div id="pk-login">
+	  	<?php include_partial("pkContextCMS/login") ?>
+		</div>
 
 	</div>
 
