@@ -11,6 +11,7 @@
 		
 </head>
 
+<?php // body_class allows you to set a class for the body element from a template ?>
 <body class="<?php if (has_slot('body_class')): ?><?php include_slot('body_class') ?><?php endif ?>">
 
 	<?php if (pkContextCMSTools::getCurrentPage()): ?>
@@ -22,12 +23,22 @@
 	<div id="pk-wrapper">
 		<?php // Demo requires an obvious way to test login ?>
 
+    <?php // You can easily suppress the logo by setting the pk-login Symfony slot ?>
+    <?php // in a template (but if you do, think about how the user can still get home) ?>
+
     <div id="pk-header">
-      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 125, "height" => 200, "resizeType" => "s", "link" => "/")) ?>
+      <?php pk_context_cms_slot("logo", 'pkContextCMSImage', array("global" => true, "width" => 125, "height" => 200, "resizeType" => "s", "link" => "/", "defaultImage" => "/pkContextCMSPlugin/images/cmstest-sample-logo.png")) ?>
   		<?php pk_context_cms_slot('header', 'pkContextCMSRichText', array("global" => true)) ?>
     </div>
 
-		<?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
+    <?php // You can easily suppress the tabs by setting the pk-login Symfony slot ?>
+    <?php // in a template ?>
+
+    <?php if (has_slot('pk-tabs')): ?>
+      <?php include_slot('pk-tabs') ?>
+    <?php else: ?>
+		  <?php include_component('pkContextCMS', 'tabs') # Top Level Navigation ?>
+		<?php endif ?>
 
 		<div id="pk-content">
 			<?php echo $sf_data->getRaw('sf_content') ?>
@@ -35,10 +46,15 @@
 
 	  <?php pk_context_cms_slot('footer', 'pkContextCMSRichText', array("global" => true)) ?>
 
-		<div id="pk-login">
-	  	<?php include_partial("pkContextCMS/login") ?>
-		</div>
-
+    <?php // You can easily suppress this login prompt by setting the pk-login Symfony slot ?>
+    <?php // in a template ?>
+    <?php if (has_slot('pk-login')): ?>
+      <?php include_slot('pk-login') ?>
+    <?php else: ?>
+  		<div id="pk-login">
+  	  	<?php include_partial("pkContextCMS/login") ?>
+  		</div>
+    <?php endif ?>
 	</div>
 
 </body>

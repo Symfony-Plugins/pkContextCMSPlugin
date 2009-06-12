@@ -199,8 +199,11 @@ class pkContextCMSTools
     // but this is a simple static thing
 
     pkContextCMSTools::addGlobalButtons(array(
-      new pkContextCMSGlobalButton('Settings', 'pkContextCMS/globalSettings', 'pk-settings'),
       new pkContextCMSGlobalButton('Users', 'sfGuardUser/index', 'pk-users')));
+
+    // Has to be implemented first
+    // new pkContextCMSGlobalButton('Settings', 'pkContextCMS/globalSettings', 'pk-settings'),
+
   }
   
   static protected $globalButtons = false;
@@ -247,5 +250,17 @@ class pkContextCMSTools
     
     self::$globalButtons = $orderedButtons;
     return $orderedButtons;
+  }
+  
+  static public function globalToolsPrivilege()
+  {
+    // if you can edit the page, there are tools for you in the apostrophe
+    if (self::getCurrentPage() && self::getCurrentPage()->userHasPrivilege('edit'))
+    {
+      return true;
+    }
+    // if you are the site admin, there are ALWAYS tools for you in the apostrophe
+    $user = sfContext::getInstance()->getUser();
+    return $user->hasCredential('cms_admin');
   }
 }

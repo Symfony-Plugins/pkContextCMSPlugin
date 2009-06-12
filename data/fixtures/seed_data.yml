@@ -29,8 +29,36 @@ pkContextCMSPage:
                 permid: 1
                 Slot:
                   type: pkContextCMSRichText 
-                  value: "This slot is in the <i>body</i> of the page."
-    # Make sure it is recognized as a root node
-    children: { }
-
-
+                  value: "Welcome to the home page of your pkContextCMS site. You can edit this text by clicking the Edit button. You can also add additional slots to this area, such as video and slideshow slots, via the Add Slot button."
+    children:
+      about:
+        slug: "/about"
+        template: default
+        is_published: true
+        Areas:
+          home_en_title:
+            name: title
+            culture: en
+            latest_version: 1
+            AreaVersions:
+              about_en_title_version_1:
+                version: 1
+                AreaVersionSlots:
+                  about_en_title_version_1_permid_1:
+                    permid: 1
+                    Slot:
+                      type: pkContextCMSText 
+                      value: "About"
+          about_en_body:
+            name: body 
+            culture: en
+            latest_version: 1
+            AreaVersions:
+              about_en_body_version_1:
+                version: 1
+                AreaVersionSlots:
+                  about_en_body_version_1_permid_1:
+                    permid: 1
+                    Slot:
+                      type: pkContextCMSRichText 
+                      value: "This page is a child of the home page, so it appears as a tab."

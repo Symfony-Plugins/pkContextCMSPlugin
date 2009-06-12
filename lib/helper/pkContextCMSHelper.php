@@ -2,6 +2,16 @@
 
 use_helper("Form", "jQuery", "I18N");
 
+// Loading of the pkContextCMS stylesheets is now triggered here rather than
+// in the show action because we need them in other places too when global
+// slots are used, or the pkContextCMS layout is used as the sitewide layout.
+
+if (sfConfig::get('app_pkContextCMS_use_bundled_stylesheet', true))
+{
+  sfContext::getInstance()->getResponse()->addStylesheet('/pkToolkitPlugin/css/pkToolkit.css', 'first');
+  sfContext::getInstance()->getResponse()->addStylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first');
+}
+
 sfContext::getInstance()->getResponse()->addJavascript(
   sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
   '/js/pkContextCMS.js');

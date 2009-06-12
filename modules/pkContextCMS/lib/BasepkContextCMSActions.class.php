@@ -63,11 +63,6 @@ class BasepkContextCMSActions extends sfActions
     {
       $this->setLayout(sfContext::getInstance()->getConfiguration()->getTemplateDir('pkContextCMS', 'layout.php').'/layout');
     }
-    if (sfConfig::get('app_pkContextCMS_use_bundled_stylesheet', true))
-    {
-      $this->getResponse()->addStylesheet('/pkToolkitPlugin/css/pkToolkit.css', 'first');
-      $this->getResponse()->addStylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first');
-    }
 
 		//JB 6.8.09 These are both necessary 100% of the time, so I added them here at this level.
     $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');
