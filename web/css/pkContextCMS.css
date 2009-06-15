@@ -1162,32 +1162,32 @@ text-align: right;
 {
 }
 
-.subnav .pk-search-form
+#pk-subnav .pk-search-form
 {
 width: 178px;
 margin-bottom: 20px;
 float: left;
 }
 
-.subnav .pk-search-form span.pk-search-field
+#pk-subnav .pk-search-form span.pk-search-field
 {
 background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
 width: 178px;
 }
 
-.subnav .pk-search-form input.pk-search-field
+#pk-subnav .pk-search-form input.pk-search-field
 {
 width: 150px;
 }
 
-.subnav .pk-navcolumn li
+#pk-subnav .pk-navcolumn li
 {
 position: relative;
 line-height: 20px;
 margin-bottom: 5px;
 }
 
-.subnav .pk-navcolumn li .pk-drag
+#pk-subnav .pk-navcolumn li .pk-drag
 {
 float: right;
 position: relative;
@@ -1223,7 +1223,7 @@ margin-left: 10px;
 	clear: both;
 }
 
-#pk-content #pk-subnav
+#pk-subnav
 {
 	width: 200px;
 	margin:40px 40px 0 0;
