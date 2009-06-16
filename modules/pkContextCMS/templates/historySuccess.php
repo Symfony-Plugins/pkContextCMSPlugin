@@ -87,7 +87,7 @@
 				$(targetArea+' .pk-controls-item.cancel').addClass('cancel-history');				
 				$(targetArea+' .pk-history-options').css('display','inline');
 				$('.pk-page-overlay').hide();
-				init_pk_controls(targetArea,'history-preview');
+				pkUI(targetArea,'history-preview');
 	    }
 	  );
 
@@ -102,7 +102,7 @@
 					$('#pk-slots-<?php echo $name ?>').html(result);
 					$('.pk-history-options').hide();
 					$(this).parents('.pk-controls').find('a.pk-cancel').parent().hide();
-					init_pk_controls(targetArea, 'history-revert');
+					pkUI(targetArea, 'history-revert');
 		  	}
 			);	
 		});
@@ -114,7 +114,7 @@
 		    function(result)
 		    {
 		     $('#pk-slots-<?php echo $name ?>').html(result);
-				 init_pk_controls(targetArea, 'history-cancel');
+				 pkUI(targetArea, 'history-cancel');
 		  	}
 			);
 		});

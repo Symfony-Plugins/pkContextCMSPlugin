@@ -126,7 +126,7 @@
 									"up" => 1,
 									"permid" => $permid)),
 									"update" => "pk-slots-$name",
-									'complete' => 'init_pk_controls()'), 
+									'complete' => 'pkUI()'), 
 									array(
 										'class' => 'pk-btn icon pk-arrow-up', 
 										'title' => 'Move Up', 
@@ -142,7 +142,7 @@
 									"name" => $name,
 									"permid" => $permid)),
 									"update" => "pk-slots-$name",
-									'complete' => 'init_pk_controls()'), 
+									'complete' => 'pkUI()'), 
 									array(
 										'class' => 'pk-btn icon pk-arrow-down', 
 										'title' => 'Move Down', 
@@ -169,7 +169,7 @@
               "permid" => $permid)),
               "update" => "pk-slots-$name",
 							'before' => '$(this).parents(".pk-slot").fadeOut();', 
-							'complete' => 'init_pk_controls()'), 
+							'complete' => 'pkUI()'), 
               array(
                 'class' => 'pk-btn icon pk-delete', 
                 'title' => 'Delete Slot',

@@ -64,7 +64,7 @@
 												 $('#pk-page-settings-button-close').show();
 												var arrowPosition = parseInt($('.pk-breadcrumb-page-settings').offset().left);
 												$('#pk-page-settings .pk-chad').css('left',arrowPosition+'px');
-												 init_pk_controls('#pk-page-settings');
+												 pkUI('#pk-page-settings');
 												$('.pk-page-overlay').show();",
         ), array(
 					'class' => 'pk-page-settings-button open', 

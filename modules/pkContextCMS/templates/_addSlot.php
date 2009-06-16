@@ -7,7 +7,7 @@ foreach ($slotoptions as $option => $label) {
 		"url" => "pkContextCMS/addSlot?" . http_build_query(array('name' => $name, 'id' => $id, 'type' => $option, )),
 		"update" => "pk-slots-$name",
 		'script' => true,
-		'complete' => 'init_pk_controls();', 
+		'complete' => 'pkUI("#pk-area-'.$name.'","add-slot");', 
 		), 
 		array(
 			'class' => 'pk-btn icon '.str_replace('pkcontextcms','pk-', strtolower($option)).' slot', 
