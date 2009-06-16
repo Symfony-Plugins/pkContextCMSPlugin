@@ -1,4 +1,4 @@
-<ul class="pk-controls" style="float:right;">
+<ul class="pk-controls">
 <?php if ($sf_user->isAuthenticated()): ?>
   <li><?php echo link_to("Log Out", sfConfig::get('app_pkContextCMS_actions_logout', 'sfGuardAuth/signout'), array('class' => 'pk-btn', )) ?></li>
 <?php else: ?>
