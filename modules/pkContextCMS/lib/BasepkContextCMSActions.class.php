@@ -446,6 +446,8 @@ class BasepkContextCMSActions extends sfActions
       $query->andWhere($query->getRootAlias() . ".view_is_secure is null or " .
         $query->getRootAlias() . ".view_is_secure = false");
     }
+    // Don't include faux "pages" like the 'global' page that contains global slots
+    $query->andWhere("SUBSTRING(" . $query->getRootAlias() . ".slug, 1, 1) = '/'");
     $this->pager = new sfDoctrinePager(
       'pkContextCMSPage',
       sfConfig::get('app_pkContextCMS_search_results_per_page', 10));

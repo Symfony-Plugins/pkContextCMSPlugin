@@ -55,13 +55,22 @@ to you (see the sample config files in plugins/pkContextCMSPlugin).
 This is the right choice if you are a Symfony developer who wishes to 
 use the CMS as part of a larger site.
 
-If you answer yes to the following question, this script will prompt
+If you pick option 1, this script will prompt
 you for additional information and create a new CMS site. If you
-answer no, this script will just install the pkContextCMS plugin
+pick option 2, this script will just install the pkContextCMS plugin
 and its related plugins (you should already be in a Symfony
 project directory before doing this).
+
+Choose an Option:
+
+1. Standalone CMS Site
+
+2. Install CMS plugins in existing Symfony project
+
+3. Quit
 ");
-if (c("Do you want to create a standalone CMS site?"))
+$choice = p("Your Selection:");
+
 {
   standalone();
   
