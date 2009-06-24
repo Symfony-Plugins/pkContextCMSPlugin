@@ -459,6 +459,8 @@ class BasepkContextCMSActions extends sfActions
     $this->results = $this->pager->getResults();
     $this->pagerUrl = "pkContextCMS/search?" .
             http_build_query(array("q" => $q));
+    // setTitle takes care of escaping things
+    $this->getResponse()->setTitle(pkContextCMSTools::getOptionI18n('title_prefix') . 'Search for ' . $q);            
   }
   
   public function executePageTree(sfRequest $request)
