@@ -63,8 +63,7 @@ function pk_context_cms_slot_get_options($options)
   return $options;
 }
 
-function pk_context_cms_slot_body($name, $type, $permid, $options, 
-  $validationData, $editorOpen)
+function pk_context_cms_slot_body($name, $type, $permid, $options, $validationData, $editorOpen)
 {
   $page = pkContextCMSTools::getCurrentPage();
   $slot = $page->getSlot($name);
@@ -108,8 +107,7 @@ function pk_context_cms_navcolumn_grandchildren($page)
   return _pk_context_cms_navcolumn_body($page, true, true);
 }
 
-function _pk_context_cms_navcolumn_body(
-  $page, $toplevel, $grandchildren = false, $editable = true)
+function _pk_context_cms_navcolumn_body($page, $toplevel, $grandchildren = false, $editable = true)
 {
   $sortHandle = "";
   $sf_user = sfContext::getInstance()->getUser();
@@ -244,8 +242,7 @@ function _pk_context_cms_navcolumn_body(
   return $result;
 }
 
-function pk_context_cms_alpha_select_navcolumn($page,
-  $defaultText)
+function pk_context_cms_alpha_select_navcolumn($page, $defaultText)
 {
   $query = pkContextCMSPageTable::queryWithTitles();
   $treeObject = Doctrine::getTable('pkContextCMSPage')->getTree();
@@ -290,5 +287,4 @@ if (value)
 EOM
 ));
 }
-
 
