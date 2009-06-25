@@ -263,4 +263,25 @@ class pkContextCMSTools
     $user = sfContext::getInstance()->getUser();
     return $user->hasCredential('cms_admin');
   }
+  
+  // These methods allow slot editing to be turned off even for people with
+  // full and appropriate privileges.
+  
+  // Most of the time being able to edit a global slot on a non-CMS page is a
+  // good thing, especially if that's the only place the global slot appears.
+  // But sometimes, as in the case where you're editing other types of data,
+  // it's just a source of confusion to have those buttons displayed. 
+  
+  // (Suppressing editing of slots on normal CMS pages is of course a bad idea,
+  // because how else would you ever edit them?)
+  
+  static private $allowSlotEditing = true;
+  static public function setAllowSlotEditing($value)
+  {
+    self::$allowSlotEditing = $value;
+  }
+  static public function getAllowSlotEditing()
+  {
+    return self::$allowSlotEditing;
+  }
 }

@@ -13,7 +13,14 @@ class pkContextCMSBaseComponents extends sfComponents
     {
       $this->slot = $this->page->createSlot($this->type);
     }
-    $this->editable = $this->page->userHasPrivilege('edit');
+    if (pkContextCMSTools::getAllowSlotEditing())
+    {
+      $this->editable = $this->page->userHasPrivilege('edit');
+    }
+    else
+    {
+      $this->editable = false;
+    }
     if ($this->getOption('preview'))
     {
       $this->editable = false;
