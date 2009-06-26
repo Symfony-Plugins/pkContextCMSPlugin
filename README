@@ -1255,6 +1255,41 @@ your edit action, with a value of 1. The edit action will then
 redirect to the updated page rather than attempting to refresh
 only the updated slot. 
 
+## Adding New Global Admin Buttons to the Top Bar ##
+
+When a user with admin privileges is logged in, a bar appears at the top of each page offering links to useful facilities such as the sfGuardUser admin module. Other plugins such as `pkMediaCMSSlotsPlugin` extend this button bar with additional links. You can add links of your own.
+
+First provide a static method in a class belonging to your own plugin or application-level code which invokes `pkContextCMSTools::addGlobalButtons` to add one or more buttons to the bar:
+
+    class pkMediaCMSSlotsTools
+    {
+      // You too can do this in a plugin dependent on pkContextCMS, see 
+      // the provided stylesheetfor how to correctly specify an icon to go 
+      // with your button. See thepkMediaCMSSlotsPluginConfiguration class for the 
+      // registration of the event listener.
+      static public function getGlobalButtons()
+      {
+        pkContextCMSTools::addGlobalButtons(array(
+          new pkContextCMSGlobalButton('Media', 'pkMedia/index', 'pk-media')));
+      }
+    }
+
+The first argument to the `pkContextCMSGlobalButton` constructor is the label of the button. The second
+is the action (in your own code, typically). And the third is a CMS class to be added to the button,
+which is typically used to supply your own icon and a left offset for the image to
+reside in.
+
+Now, in your plugin or project's `config/config.php` or in the initialize method of your plugin or project's configuration class, make the following call to register interest in the event:
+
+    // Register an event so we can add our buttons to the set of global 
+    // CMS back end admin buttons that appear when the apostrophe is clicked. 
+    $this->dispatcher->connect('pkContextCMS.getGlobalButtons', 
+      array('pkMediaCMSSlotsTools', 'getGlobalButtons'));
+
+The bar at the top of each page will now feature your additional button or buttons.
+
+*Note:* you should not add large numbers of buttons to the bar. Usually no more than one per plugin is advisable. It's important that the bar remain manageable and convenient for site admins.
+
 ## Changelog ##
 
 ### Version 0.15 ###
