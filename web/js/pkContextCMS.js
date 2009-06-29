@@ -26,3 +26,23 @@ function pkContextCMSConstructor()
 
 pkContextCMS = new pkContextCMSConstructor();
 
+
+/* This handles search inputs sidewide */
+$(document).ready(function() {
+	
+	if ($('input.pk-search-field').attr('value') == '') {
+		$('input.pk-search-field').attr('value' , 'Search');
+	}
+		
+	$('input.pk-search-field').focus(function(){
+		if ($(this).attr('value') == 'Search') {
+			$(this).attr('value' , '');
+		}
+	});
+
+	$('input.pk-search-field').blur(function(){
+		if ($(this).attr('value') == '') {
+			$(this).attr('value' , 'Search');
+		}
+	});
+});

@@ -1213,6 +1213,7 @@ margin-left: 10px;
 	float: left;
 	display: inline;
 	position: relative;
+	clear: both;
 	width: 100%;
 }
 
