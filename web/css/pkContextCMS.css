@@ -293,7 +293,8 @@ display: block;
 
 .pk-slot.pkContextCMSRichText.pk-slot-is-editable,
 .pk-slot.pkContextCMSText.pk-slot-is-editable,
-.pkContextCMSBlogPost.pk-slot-is-editable
+.pkContextCMSBlogPost.pk-slot-is-editable,
+.pkContextCMSCalendar.pk-slot-is-editable
 {/* Creates space for buttons to sit on top of rich text slots when logged-in-editing */
 	padding-top: 22px !important;
 }
