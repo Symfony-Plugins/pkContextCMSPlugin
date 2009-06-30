@@ -595,7 +595,10 @@ class BasepkContextCMSActions extends sfActions
       // a redundant setting is needed
       setcookie($cookie, "", time() - 3600, sfConfig::get('app_pkToolkit_cleanLogin_cookie_domain', '/'));
     }
-    $url = sfContext::getInstance()->getController()->genUrl('sfGuardAuth/signin', true);
+    // Push the user back to the home page rather than the login prompt. Otherwise
+    // we can find ourselves in an infinite loop if the login prompt helpfully
+    // sends them back to an action they are not allowed to carry out
+    $url = sfContext::getInstance()->getController()->genUrl('@homepage');
     header("Location: $url");
     exit(0);
   }
