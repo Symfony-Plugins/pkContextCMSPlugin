@@ -11,30 +11,33 @@ These are mostly links to independent modules.
 
 <ul id="pk-global-toolbar">
 
-<?php //Apostrophe ?>
-<li>
-	<?php echo jq_link_to_function('Apostrophe Now','',array('id' => 'the-apostrophe', )) ?>
-	<ul class="pk-global-toolbar-buttons pk-controls">
-		<?php $buttons = pkContextCMSTools::getGlobalButtons() ?>
-		<?php foreach ($buttons as $button): ?>
-		  <li><?php echo link_to($button->getLabel(), $button->getLink(), array('class' => 'pk-btn icon ' . $button->getCssClass())) ?></li>
-		<?php endforeach ?>
-		<li><?php echo jq_link_to_function('Cancel','',array('class' => 'pk-btn icon pk-cancel', )) ?></li>					
-	</ul>
-</li>
+	<?php //The Apostrophe ?>
+	<li>
+		<?php echo jq_link_to_function('Apostrophe Now','',array('id' => 'the-apostrophe', )) ?>
+		<ul class="pk-global-toolbar-buttons pk-controls">
+			<?php $buttons = pkContextCMSTools::getGlobalButtons() ?>
+			<?php foreach ($buttons as $button): ?>
+			  <li><?php echo link_to($button->getLabel(), $button->getLink(), array('class' => 'pk-btn icon ' . $button->getCssClass())) ?></li>
+			<?php endforeach ?>
+			<li><?php echo jq_link_to_function('Cancel','',array('class' => 'pk-btn icon pk-cancel', )) ?></li>					
+		</ul>
+	</li>
 
-<?php //Breadcrumb ?>
-<?php if (pkContextCMSTools::getCurrentPage()): ?>
-<li>
-	<?php include_component('pkContextCMS', 'breadcrumb') # Breadcrumb Navigation ?>
-</li>
-<?php endif ?>
+	<?php //Breadcrumb ?>
+	<?php if (pkContextCMSTools::getCurrentPage()): ?>
+	<li>
+		<?php include_component('pkContextCMS', 'breadcrumb') # Breadcrumb Navigation ?>
+	</li>
+	<?php endif ?>
 
-<li class="pk-page-settings-container">
-<?php // TB Says: You can put this anywhere ?>
-	<div id="pk-page-settings"></div>
-</li>
-
+	<li class="pk-page-settings-container">
+		<div id="pk-page-settings"></div>
+	</li>
+	
+	<?php //log out button ?>
+	<li class="pk-login">
+		<?php include_partial("pkContextCMS/login") ?>
+	</li>
 </ul>
 
 <script type="text/javascript">

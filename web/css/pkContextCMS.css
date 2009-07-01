@@ -392,6 +392,12 @@ float: left;
 margin-right: 5px;
 }
 
+#pk-global-toolbar .pk-login
+{
+	float: right;
+	display: inline;
+	margin-right:5px;
+}
 
 /* == */
 /* Apostrophe BREADCRUMB =========================== */
@@ -1217,14 +1223,6 @@ margin-left: 10px;
 	position: relative;
 	clear: both;
 	width: 100%;
-}
-
-#pk-login
-{
-	float: right;
-	display: inline;
-	width: 100%;
-	clear: both;
 }
 
 #pk-subnav
