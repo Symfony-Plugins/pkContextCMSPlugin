@@ -26,7 +26,7 @@
       "permid" => $permid,
       "options" => $options,
       "validationData" => $validationData)) ?>
-	<ul class="pk-controls">  
+	<ul class="pk-controls pk-slot-save-cancel-controls">  
 		<?php	// JB Note: I moved the submit button javascript down to the bottom ?>
 	  <li><?php echo submit_tag("Save", array("class" => "submit pk-submit", 'id' => 'pk-slot-form-submit-'.$name.'-'.$permid, )) ?></li>
 		<?php // JB Note: I moved the cancel javascript down to the bottom  ?>
