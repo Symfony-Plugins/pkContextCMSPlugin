@@ -6,8 +6,6 @@ This will be the top bar across the site when logged in.
 It will contain global admin buttons like Users, Page Settings, and the Breadcrumb.
 
 These are mostly links to independent modules. 
-
-TODO: allow the separate plugins involved to populate these dynamically.
 */
 ?>
 
