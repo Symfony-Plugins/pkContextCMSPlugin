@@ -16,7 +16,7 @@
 			$(this).parent().addClass('editing-now');
 			$(editSlot).children('.pk-slot-content').children('.pk-slot-content-container').hide(); // Hide content
 			$(editSlot).children('.pk-slot-content').children('.pk-slot-form').fadeIn();							// Show form
-			// $(editSlot).children('.pk-messages').css('visibility','hidden'); // Hide the messages
+			pkUI($(this).parents('.pk-slot').attr('id'));
 			return false;
 		});
 	})

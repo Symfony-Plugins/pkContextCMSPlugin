@@ -15,9 +15,8 @@
 		editBtn.click(function(event){
 			$(this).parent().addClass('editing-now');
 			$(editSlot).children('.pk-slot-content').children('.pk-slot-content-container').hide(); // Hide content
-			$(editSlot).children('.pk-slot-content').children('.pk-slot-form').fadeIn();	// I changed this to fadeIn from show() -- this seemed to help with the stroke re-draw bug we were experiencing.
+			$(editSlot).children('.pk-slot-content').children('.pk-slot-form').fadeIn();							// Show form
 			pkUI($(this).parents('.pk-slot').attr('id'));
-			// $(editSlot).children('.pk-messages').css('visibility','hidden'); // Hide the messages
 			return false;
 		});
 	})
