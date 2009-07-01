@@ -4,6 +4,7 @@
       array(
         'update' => "pk-slot-content-$name-$permid",
         'url' => "$type/edit",
+				'complete' => 'pkUI("#pk-slot-'.$name.'-'.$permid.'");', 
         'script' => true),
       array(
         "class" => "pk-slot-form",
@@ -53,26 +54,6 @@
 
     var normalView = $('#pk-slot-<?php echo $name ?>-<?php echo $permid ?>');
 
-    // if (normalView)
-    // {
-    //   if (($.browser.msie) && ($.browser.version < 7)) 
-    //   		{ // IE6 is too broken to be allowed to edit
-    //     $(normalView).removeClass("pk-context-cms-editable");
-    //   } 
-    //   else
-    //   {
-    //     <?php if ($outlineEditable): ?>
-    //   			// JB Note: $showEditorJS must be revisited later
-    //   			// $(normalView).dblclick(function() {
-    //   			// 	$(normalView).children('.pk-slot-content').children('.pk-slot-content-container').hide(); // Hide content
-    //   			// 	$(normalView).children('.pk-slot-content').children('.pk-slot-form').show();							// Show form
-    //   			// 	$(normalView).children('.pk-messages').css('visibility','hidden'); // Hide the messages
-    //   			// 	return false; 
-    //   			// });
-    //     <?php endif ?>
-    //   }
-    // }
-  	
 		// CANCEL
 		$('#pk-slot-form-cancel-<?php echo $name ?>-<?php echo $permid ?>').click(function(){
   		$(normalView).children('.pk-slot-content').children('.pk-slot-content-container').fadeIn();
@@ -85,7 +66,7 @@
   	$('#pk-slot-form-submit-<?php echo $name ?>-<?php echo $permid ?>').click(function(){
   			$(this).parents('.pk-slot').find('.pk-slot-controls .edit').removeClass('editing-now');
   			$(this).parents('.pk-area.singleton').find('.pk-area-controls .edit').removeClass('editing-now'); // for singletons
-  			window.pkContextCMS.callOnSubmit('<?php echo $id ?>'); 
+  			window.pkContextCMS.callOnSubmit('<?php echo $id ?>');
   			return true;
   	});
   });
