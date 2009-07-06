@@ -18,7 +18,7 @@ class pkContextCMSRichTextActions extends pkContextCMSBaseActions
     // be permitted as a paragraph equivalent.
 
     // We do more than call strip_tags here. Specifically, we
-    //remove all attributes except href on an "a" element. 
+    //remove all attributes except href and name on an "a" element. 
     // We also remove any javascript: href. If you enable img, then "src" 
     // will be permitted on that (but again, no javascript: src).
     // See pkToolkitPlugin and its pkHtml class.

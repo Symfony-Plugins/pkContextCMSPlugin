@@ -64,8 +64,32 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
   }
 
-  protected function userHasPrivilegeBody($privilege, $user)
+  protected function userHasPrivilegeBody($privilege, $user, $debug = false)
   {
+    // Some privileges can be defined in terms of other privileges on certain ancestor pages
+    if ($privilege === 'move-up')
+    {
+      $parent = $this->getParent();
+      if (!$parent)
+      {
+        return false;
+      }
+      $grandparent = $parent->getParent();
+      if (!$grandparent)
+      {
+        return false;
+      }
+      return $grandparent->userHasPrivilegeBody('manage', $user, true);
+    }
+    if ($privilege === 'move-down')
+    {
+      $parent = $this->getParent();
+      if (!$parent)
+      {
+        return false;
+      }
+      return $parent->userHasPrivilegeBody('manage', $user, true);
+    }
     // Rule 1: admin can do anything
     // Work around a bug in some releases of sfDoctrineGuard: users sometimes
     // still have credentials even though they are not logged in
@@ -799,5 +823,25 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   public function setCulture($culture)
   {
     $this->culture = $culture;
+  }
+  
+  public function getPeersAsOptionsArray()
+  {
+    $peers = array();
+    $parent = $this->getParent();
+    if (!$parent)
+    {
+      return $peers;
+    }
+    $children = $parent->getChildren();
+    foreach ($children as $child)
+    {
+      if ($child->id === $this->id)
+      {
+        continue;
+      }
+      $peers[$child->id] = $child->getTitle();
+    }
+    return $peers;
   }
 }

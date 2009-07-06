@@ -95,8 +95,6 @@ class BasepkContextCMSActions extends sfActions
 
   protected function validAndEditable($page, $privilege = 'edit|manage')
   {
-    $this->logMessage("ZZ page is " . $page->id);
-    $this->logMessage("ZZ privilege is " . $page->userHasPrivilege($privilege));
     $this->flunkUnless($page);
     $this->flunkUnless($page->userHasPrivilege($privilege));
   }
@@ -437,6 +435,17 @@ class BasepkContextCMSActions extends sfActions
   public function executeSearch(sfRequest $request)
   {
     $q = $request->getParameter('q');
+    
+    // Support for replacing certain searches with others. Used to deal with
+    // frequent searches for which lucene does the wrong thing on a particular site
+    $key = strtolower(trim($q));
+    $key = preg_replace('/\s+/', ' ', $key);
+    $replacements = sfConfig::get('app_pkContextCMS_search_refinements', array());
+    if (isset($replacements[$key]))
+    {
+      $q = $replacements[$key];
+    }
+    
     $query = pkContextCMSPageTable::queryWithSlots();
     $query = Doctrine::getTable('pkContextCMSPage')->addSearchQuery($query, $q);
     $user = $this->getUser();
@@ -529,6 +538,33 @@ class BasepkContextCMSActions extends sfActions
     }
     $this->tree = $tree;
     $this->pageInfos = $pageInfos;
+  }
+
+  
+  public function executeMoveUp($request)
+  {
+    $page = $this->retrievePageForEditingById('id', 'manage');
+    $this->forward404Unless($page->userHasPrivilege('move-up'));
+    $parent = $page->getParent();
+    $this->forward404Unless($parent);
+    $grandparent = $parent->getParent();
+    $this->forward404Unless($grandparent);
+    $page->getNode()->moveAsLastChildOf($grandparent);
+    return $this->redirect($page->getUrl());
+  }
+
+  public function executeMoveDown($request)
+  {
+    $page = $this->retrievePageForEditingById('id', 'manage');
+    $peer = $this->retrievePageForEditingById('peer', 'manage');
+    $this->forward404Unless($page->userHasPrivilege('move-down'));
+    // Make sure they have the same parent, no monkey business to escape privs checks
+    if ($page->getParent()->id !== $peer->getParent()->id)
+    {
+      $this->forward404();
+    }
+    $page->getNode()->moveAsLastChildOf($peer);
+    return $this->redirect($page->getUrl());
   }
   
   protected function getParentClasses($parents)
