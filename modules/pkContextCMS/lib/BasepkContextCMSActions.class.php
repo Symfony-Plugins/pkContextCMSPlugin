@@ -424,6 +424,11 @@ class BasepkContextCMSActions extends sfActions
   {
     $page = $this->retrievePageForEditingById('id', 'manage');
     $parent = $page->getParent();
+    if (!$parent)
+    {
+      // You can't delete the home page, I don't care who you are; creates a chicken and egg problem
+      return $this->redirect('@homepage');
+    }
     // tom@punkave.com: we must delete via the nested set
     // node or we'll corrupt the tree. Nasty detail, that.
     // Note that this implicitly calls $page->delete()
