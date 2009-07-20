@@ -102,6 +102,9 @@ pkContextCMSAreaVersion:
       foreign: id
       local: author_id
       type: one
+      # Note that this means history display code must allow for the
+      # possibility of deleted users
+      onDelete: SET NULL
 
 pkContextCMSAreaVersionSlot:
   tableName: pk_context_cms_area_version_slot
