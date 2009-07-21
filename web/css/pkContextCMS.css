@@ -1059,10 +1059,12 @@ height: 20px;  /* JB: I restored this, who turned it off, why? /* this might nee
 width: 240px;
 }
 
-.pk-search-form.media
+/*.pk-search-form.media
 {
 height: auto;
 }
+rb: I turned this off, it was breaking the media search, not sure where it came from
+*/
 
 .pk-search-form span.pk-search-field
 {
@@ -1173,18 +1175,18 @@ text-align: right;
 
 #pk-subnav .pk-search-form
 {
-width: 178px;
 margin-bottom: 20px;
 float: left;
+display:inline;
 }
 
-#pk-subnav .pk-search-form span.pk-search-field
+#pk-subnav .pk-search-form
 {
 background: url(/pkContextCMSPlugin/images/pk-search-bg-180.png) no-repeat 0 0;
-width: 178px;
+width: 180px;
 }
 
-#pk-subnav .pk-search-form input.pk-search-field
+#pk-subnav .pk-search-form .pk-search-field
 {
 width: 150px;
 }
@@ -1201,7 +1203,6 @@ margin-bottom: 5px;
 float: right;
 position: relative;
 margin-left: 10px;
-/*	left: 20px;*/
 }
 
 
