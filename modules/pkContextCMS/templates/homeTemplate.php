@@ -7,5 +7,5 @@
   'type_options' => array(
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
   	'pkContextCMSText' => array('multiline' => true),
-		'pkContextCMSSlideshow' => array("width" => 960, 'height' => 320, 'resizeType' => 'c',  )
+		'pkContextCMSSlideshow' => array('width' => 960, 'height' => 320, 'resizeType' => 'c')
 	))) ?>
