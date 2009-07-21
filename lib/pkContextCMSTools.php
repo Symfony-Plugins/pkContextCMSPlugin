@@ -198,9 +198,15 @@ class pkContextCMSTools
     // If we needed a context object we could get it from $event->getSubject(),
     // but this is a simple static thing
 
-    pkContextCMSTools::addGlobalButtons(array(
-      new pkContextCMSGlobalButton('Users', 'sfGuardUser/index', 'pk-users')));
-
+    // Add the users button only if the user has the admin credential.
+    // This is typically only given to admins and superadmins
+    $user = sfContext::getInstance()->getUser();
+    if ($user->hasCredential('admin'))
+    {
+      pkContextCMSTools::addGlobalButtons(array(
+        new pkContextCMSGlobalButton('Users', 'sfGuardUser/index', 'pk-users')));
+    }
+    
     // Has to be implemented first
     // new pkContextCMSGlobalButton('Settings', 'pkContextCMS/globalSettings', 'pk-settings'),
 

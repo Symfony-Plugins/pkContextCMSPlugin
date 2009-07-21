@@ -10,30 +10,38 @@ These are mostly links to independent modules.
 ?>
 
 <ul id="pk-global-toolbar">
+  <?php // All logged in users, including guests with no admin abilities, need access to the ?>
+  <?php // logout button. But if you have no legitimate admin roles, you shouldn't see the ?>
+  <?php // apostrophe or the global buttons ?>
+  <?php $buttons = pkContextCMSTools::getGlobalButtons() ?>
+  <?php $page = pkContextCMSTools::getCurrentPage() ?>
+  <?php $pageEdit = $page && $page->userHasPrivilege('edit') ?>
+  <?php $cmsAdmin = $sf_user->hasCredential('cms_admin') ?>
+  <?php if ($cmsAdmin || count($buttons) || $pageEdit): ?>
 
-	<?php //The Apostrophe ?>
-	<li>
-		<?php echo jq_link_to_function('Apostrophe Now','',array('id' => 'the-apostrophe', )) ?>
-		<ul class="pk-global-toolbar-buttons pk-controls">
-			<?php $buttons = pkContextCMSTools::getGlobalButtons() ?>
-			<?php foreach ($buttons as $button): ?>
-			  <li><?php echo link_to($button->getLabel(), $button->getLink(), array('class' => 'pk-btn icon ' . $button->getCssClass())) ?></li>
-			<?php endforeach ?>
-			<li><?php echo jq_link_to_function('Cancel','',array('class' => 'pk-btn icon pk-cancel', )) ?></li>					
-		</ul>
-	</li>
+  	<?php //The Apostrophe ?>
+  	<li>
+  		<?php echo jq_link_to_function('Apostrophe Now','',array('id' => 'the-apostrophe', )) ?>
+  		<ul class="pk-global-toolbar-buttons pk-controls">
+  			<?php $buttons = pkContextCMSTools::getGlobalButtons() ?>
+  			<?php foreach ($buttons as $button): ?>
+  			  <li><?php echo link_to($button->getLabel(), $button->getLink(), array('class' => 'pk-btn icon ' . $button->getCssClass())) ?></li>
+  			<?php endforeach ?>
+  			<li><?php echo jq_link_to_function('Cancel','',array('class' => 'pk-btn icon pk-cancel', )) ?></li>					
+  		</ul>
+  	</li>
 
-	<?php //Breadcrumb ?>
-	<?php if (pkContextCMSTools::getCurrentPage()): ?>
-	<li>
-		<?php include_component('pkContextCMS', 'breadcrumb') # Breadcrumb Navigation ?>
-	</li>
+  	<?php //Breadcrumb ?>
+  	<?php if (pkContextCMSTools::getCurrentPage()): ?>
+  	<li>
+  		<?php include_component('pkContextCMS', 'breadcrumb') # Breadcrumb Navigation ?>
+  	</li>
+  	<?php endif ?>
+
+  	<li class="pk-page-settings-container">
+  		<div id="pk-page-settings"></div>
+  	</li>
 	<?php endif ?>
-
-	<li class="pk-page-settings-container">
-		<div id="pk-page-settings"></div>
-	</li>
-	
 	<?php //log out button ?>
 	<li class="pk-login">
 		<?php include_partial("pkContextCMS/login") ?>
