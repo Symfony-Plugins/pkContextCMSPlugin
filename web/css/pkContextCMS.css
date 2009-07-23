@@ -349,6 +349,11 @@ margin-top: 24px; /* Space for the Arrow Controls*/
 	margin-bottom: 40px;
 }
 
+.pkContextCMSSlideshow .pk-slideshow-description
+{
+	font-size: 11px;
+}
+
 /* == */
 /* == Global Toolbar */
 /* == */
