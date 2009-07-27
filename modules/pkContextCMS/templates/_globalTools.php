@@ -87,7 +87,8 @@ $(document).ready(function(){
 </script>
 
 <?php // TODO: Rewrite this with jQuery so it's lighter! ?>
-
+<?php if (0): ?>
+  
 <script type="text/javascript">
 var prevColorRed = randomInteger(256);
 var prevColorGreen = 256;
@@ -151,6 +152,7 @@ setInterval(
     }
   }, 20);
 </script>
+<?php endif ?>
 
 <?php if (pkContextCMSTools::getCurrentPage()): ?>
 	<?php include_partial('pkContextCMS/historyBrowser') ?>
