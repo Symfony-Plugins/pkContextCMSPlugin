@@ -91,8 +91,8 @@ $(document).ready(function(){
   
 <script type="text/javascript">
 var prevColorRed = randomInteger(256);
-var prevColorGreen = 256;
-var prevColorBlue = 256;
+var prevColorGreen = randomInteger(256);
+var prevColorBlue = randomInteger(256);
 setNextColor();
 var nextColorRed = prevColorRed;
 var nextColorGreen = prevColorGreen;
