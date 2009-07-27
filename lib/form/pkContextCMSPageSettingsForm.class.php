@@ -9,81 +9,69 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
 {
   public function configure()
   {
-    unset($this['author_id'], $this['deleter_id'], $this['Accesses'],
-      $this['created_at'], $this['updated_at'], $this['view_credentials'],
-      $this['edit_credentials'], $this['lft'], $this['rgt'], $this['level']);
+    unset(
+      $this['author_id'],
+      $this['deleter_id'],
+      $this['Accesses'],
+      $this['created_at'],
+      $this['updated_at'],
+      $this['view_credentials'],
+      $this['edit_credentials'],
+      $this['lft'],
+      $this['rgt'],
+      $this['level']
+    );
 
-    $this->setWidget(
-      'template', 
-      new sfWidgetFormSelect(
-        array('choices' => pkContextCMSTools::getTemplates())));
+    $this->setWidget('template', new sfWidgetFormSelect(array('choices' => pkContextCMSTools::getTemplates())));
      
-    $this->setWidget(
-      'engine',
-      new sfWidgetFormSelect(
-        array('choices' => pkContextCMSTools::getEngines())));
+    $this->setWidget('engine', new sfWidgetFormSelect(array('choices' => pkContextCMSTools::getEngines())));
 
     // On vs. off makes more sense to end users, but when we first
     // designed this feature we had an 'archived vs. unarchived'
     // approach in mind
-    $this->setWidget(
-      'archived',
-      new sfWidgetFormChoice(
-        array(
-          'expanded' => true,
-          'choices' => array(
-            false => "Published",
-            true => "Unpublished"
-          ),
-          'default' => false
-        )));
+    $this->setWidget('archived', new sfWidgetFormChoice(array(
+      'expanded' => true,
+      'choices' => array(false => "Published", true => "Unpublished"),
+      'default' => false
+    )));
 
     if ($this->getObject()->hasChildren())
     {
       unset($this['archived']);
     }
 
-    $this->setWidget(
-      'view_is_secure',
-      new sfWidgetFormChoice(
-        array(
-          'expanded' => true,
-          'choices' => array(
-            false => "Public",
-            true => "Login Required"
-          ),
-          'default' => false
-        )));
+    $this->setWidget('view_is_secure', new sfWidgetFormChoice(array(
+      'expanded' => true,
+      'choices' => array(
+        false => "Public",
+        true => "Login Required"
+      ),
+      'default' => false
+    )));
 
     $this->addPrivilegeWidget('edit', 'editors');
     $this->addPrivilegeWidget('manage', 'managers');
 
-    $this->setValidator(
-      'slug',
-      new sfValidatorAnd(
-        array(
-          new sfValidatorRegex(
-            array(
-              'pattern' => '/^\/[\w\/\-\+]+$/',
-              'required' => 'The slug cannot be empty.',
-            ),
-            array(
-              'invalid' => 'The slug must contain only slashes, letters, digits, dashes, plus signs and underscores. Also, you cannot change a slug to conflict with the home page slug.')
-        ))));
-    $this->setValidator(
-      'template',
-      new sfValidatorChoice(
-        array('required' => true,
-          'choices' => array_keys(pkContextCMSTools::getTemplates()))));
+    $this->setValidator('slug', new sfValidatorAnd(array(
+      new sfValidatorRegex(array(
+        'pattern' => '/^\/[\w\/\-\+]+$/',
+        'required' => 'The slug cannot be empty.',
+      ), array(
+        'invalid' => 'The slug must contain only slashes, letters, digits, dashes, plus signs and underscores. Also, you cannot change a slug to conflict with the home page slug.'
+      ))
+    )));
+
+    $this->setValidator('template', new sfValidatorChoice(array(
+      'required' => true,
+      'choices' => array_keys(pkContextCMSTools::getTemplates())
+    )));
 
     // Making the empty string one of the choices doesn't seem to be good enough
     // unless we expressly clear 'required'
-    $this->setValidator(
-      'engine',
-      new sfValidatorChoice(
-        array('required' => false,
-          'choices' => array_keys(pkContextCMSTools::getEngines()))));   
-
+    $this->setValidator('engine', new sfValidatorChoice(array(
+      'required' => false,
+      'choices' => array_keys(pkContextCMSTools::getEngines())
+    )));   
 
     // The slug of the home page cannot change (chicken and egg problems)
     if ($this->getObject()->getSlug() === '/')
@@ -92,12 +80,12 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     }
     else
     {
-      $this->validatorSchema->setPostValidator(
-        new sfValidatorDoctrineUnique(
-          array('model' => 'pkContextCMSPage',
-            'column' => 'slug'),
-          array('invalid' => 'There is already a page with that slug.')));
+      $this->validatorSchema->setPostValidator(new sfValidatorDoctrineUnique(array(
+        'model' => 'pkContextCMSPage',
+        'column' => 'slug'
+      ), array('invalid' => 'There is already a page with that slug.')));
     }
+    
     $this->widgetSchema->setIdFormat('pk_context_cms_settings_%s');
     $this->widgetSchema->setNameFormat('settings[%s]');
     $this->widgetSchema->setFormFormatterName('list');
@@ -110,39 +98,41 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
       unset($this['slug']);
     } 
   }
+  
   protected function addPrivilegeWidget($privilege, $widgetName)
   {
-    list($all, $selected, $inherited, $sufficient) = 
-      $this->getObject()->getAccessesById($privilege);
+    list($all, $selected, $inherited, $sufficient) = $this->getObject()->getAccessesById($privilege);
+
     foreach ($inherited as $userId)
     {
       unset($all[$userId]);
     }
+
     foreach ($sufficient as $userId)
     {
       unset($all[$userId]);
     }
-    $this->setWidget(
-      $widgetName,
-      new sfWidgetFormSelect(
-        array(
-          // + operator is correct: we don't want renumbering when
-          // ids are numeric
-          'choices' => 
-            array("" => "Choose a User to Add") + $all,
-          'multiple' => true,
-          'default' => $selected)));
-    $this->setValidator(
-      $widgetName,
-      new sfValidatorChoice(
-        array('required' => false, 
-          'multiple' => true,
-          'choices' => array_keys($all))));
+
+    $this->setWidget($widgetName, new sfWidgetFormSelect(array(
+      // + operator is correct: we don't want renumbering when
+      // ids are numeric
+      'choices' => 
+        array("" => "Choose a User to Add") + $all,
+      'multiple' => true,
+      'default' => $selected
+    )));
+
+    $this->setValidator($widgetName, new sfValidatorChoice(array(
+      'required' => false, 
+      'multiple' => true,
+      'choices' => array_keys($all)
+    )));
   }
 
   public function updateObject($values = null)
   {
     $object = parent::updateObject($values);
+    
     // This part isn't validation, it's just normalization.
     $slug = $object->slug;
     $slug = trim($slug);
@@ -156,11 +146,13 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     }
     $this->savePrivileges($object, 'edit', 'editors');
     $this->savePrivileges($object, 'manage', 'managers');
+    
     // Has to be done on shutdown so it comes after the in-memory cache of
     // sfFileCache copies itself back to disk, which otherwise overwrites
     // our attempt to invalidate the routing cache [groan]
     register_shutdown_function(array($this, 'invalidateRoutingCache'));
   }
+  
   public function invalidateRoutingCache()
   {
     // Clear the routing cache on page settings changes. TODO:
@@ -187,6 +179,7 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
       sfContext::getInstance()->getLogger()->info("QZ no routing");
     }
   }
+  
   protected function savePrivileges($object, $privilege, $widgetName)
   {
     if (isset($this[$widgetName]))
