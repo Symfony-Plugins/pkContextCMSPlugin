@@ -30,6 +30,11 @@
 			  </div>
 			<?php endif ?>
 			<div class="pk-form-row">
+			  <label>Page Engine</label>
+			  <?php echo $form['engine']->render(array('onClick' => 'pkUpdateEngineAndTemplate()')) ?>
+			  <?php echo $form['engine']->renderError() ?>
+			</div>
+			<div class="pk-form-row" id="pk-page-template">
 			  <label>Page Template</label>
 			  <?php echo $form['template'] ?>
 			  <?php echo $form['template']->renderError() ?>
@@ -119,6 +124,18 @@
   <?php endif ?>
 <?php endif ?>
 	<script>
+	function pkUpdateEngineAndTemplate()
+	{
+	  if (!$('#settings_engine').val().length)
+	  {
+	    $('#settings_template').show();
+	  }
+	  else
+	  {
+	    $('#settings_template').hide();
+	  }
+	}
+	pkUpdateEngineAndTemplate();
 	<?php // you can do this: { remove: 'custom html for remove button' } ?>
 	pkMultipleSelect('#pk-page-settings', { });
 

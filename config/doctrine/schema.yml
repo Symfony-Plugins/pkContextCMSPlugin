@@ -27,6 +27,8 @@ pkContextCMSPage:
       type: integer(4)
     deleter_id:
       type: integer(4)
+    engine:
+      type: string(255)
   indexes:
     slugindex:
       fields: [slug]

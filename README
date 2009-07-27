@@ -1290,38 +1290,90 @@ The bar at the top of each page will now feature your additional button or butto
 
 *Note:* you should not add large numbers of buttons to the bar. Usually no more than one per plugin is advisable. It's important that the bar remain manageable and convenient for site admins.
 
-## Changelog ##
+## Engines: Grafting Symfony Modules Into the CMS Page Tree ##
 
-### Version 0.15 ###
+Suitably coded Symfony modules can now be grafted into the page tree at any point in a flexible way that allows admins to switch any page from operating as a normal template page to operating as an engine page, with all URLs beginning with that page slug remapped to the actions of the engine module. When the engine page is moved within the site, all of the virtual "pages" associated with the actions of the module move as well.
 
-Documentation fixes.
+A single engine may be grafted into the site in multiple locations.
 
-### Version 0.14 ###
+Engine modules are written using normal actions and templates and otherwise-normal routes of the pkContextCMSRoute class.
 
-Another fix to the routing rules of the `cmstest` project. The Symfony
-default routing rule isn't really compatible with mapping the
-CMS to the root of the site: it breaks all grandchild pages. We deal
-with this by prefixing the default routing rule with /admin. So 
-for a simple routing system without a lot of explicit rules for
-individual actions and modules, either the (a) CMS pages or (b) everything else
-must be distinguished by a prefix in the URL. The default rules
-prepended by the plugin take the former approach, while the cmstest
-project demonstrates the latter. 
+This is a very powerful way to integrate non-CMS pages into your site. The media browser of pkMediaPlugin will soon be rewritten to take advantage of it.
 
-You can of course write explicit routing rules
-for individual Symfony actions and modules that result in nicer URLs for
-those particular actions and modules. That combines well with the
-second approach.
+Engines should always be used when you find yourself wishing to create a tree of "virtual pages" beginning at a point somewhere within the CMS page tree. 
 
-### Version 0.13 ###
+To create a pkContextCMS engine, begin by creating an ordinary Symfony module. Feel free to test its functionality normally at this point. Then change the parent class from `sfActions` to `pkContextCMSEngineActions`. 
 
-Fixed routing rules of `cmstest` project. Renamed
-the `pk_context_cms_page` rule and instituted the use of 
-`@pk_context_cms_page` in the URL generation method to route to it even 
-if the default routing rule would otherwise match `pkContextCMS/show` first.
+Now, create routes for all of the actions of your module, or a catch-all route for all of them. Make sure you give these routes the `pkContextCMSRoute` class in `routing.yml`. The following are sample routes for a module called `enginetest`:
 
-### Version 0.12 ###
+    # Engine rules must precede any catch-all rules
 
-Default routing rules no longer try to override the root
-of the site. Instead we demonstrate how to do that in the 
-`routing.yml` file of the `cmstest` project.
+    enginetest_index:
+      url:  /
+      param: { module: enginetest, action: index }
+      class: pkContextCMSRoute
+
+    enginetest_foo:
+      url:  /foo
+      param: { module: enginetest, action: foo }
+      class: pkContextCMSRoute
+
+    enginetest_bar:
+      url:  /bar
+      param: { module: enginetest, action: bar }
+      class: pkContextCMSRoute
+
+    enginetest_baz:
+      url:  /baz
+      param: { module: enginetest, action: baz }
+      class: pkContextCMSRoute
+
+You can also use more complex rules to avoid writing a separate rule for each action, exactly as you would for a normal Symfony module. This example could replace the `foo`, `bar`, and `baz` rules above:
+
+    enginetest_action:
+      url: /:action
+      param: { module: enginetest }
+      class: pkContextCMSRoute
+
+In general, you may use all of the usual features available to Symfony routes.
+
+Note that the URLs for these rules are very short and appear to be at the root of the site. `pkContextCMSRoute` will automatically remap these routes based on the portion of the URL that follows the slug of the "engine page" in question. 
+
+That is, if an engine page is located here:
+
+    /test1
+
+And the user requests the following URL:
+
+/test1/foo
+
+The `pkContextCMSRoute` class will automatically locate the engine page in the stem of the URL, remove the slug from the beginning of the URL, and match the remaining part:
+
+    /foo
+
+To the appropriate rule.
+
+As a special case, when the engine page is accessed with no additional components in the URL, `pkContextCMSRoute` will match it to the rule with the URL `/`. 
+
+Note that as a natural consequence of this design, engine pages cannot have subpages in the CMS. In general, it is appropriate to use engines only when you wish to implement "virtual pages" below the level of the CMS page. If you simply wish to customize the behavior of just part of a page, a custom page template or custom slot will better suit your needs.
+
+Once you have established your routes, you can create subnavigation between the actions of your module by writing normal `link_to` and `url_for` calls:
+
+    echo link_to('Bar', 'enginetest/bar')
+    
+To make the user interface aware of your engine, add the following to `app.yml`:
+
+    all:
+      pkContextCMS:
+        engines:
+          '': 'Template-Based'
+          enginetest: 'Engine Test'
+  
+Substitute the name of your module for `enginetest`. Be sure to keep the "template-based" entry in place, as otherwise normal CMS pages are not permitted on your site.
+
+After executing a `symfony cc`, you will begin to see your new engine module as a choice in the new "Page Engine" dropdown menu in the page settings form. Select your engine and save your changes. The page will refresh and display your engine.  
+
+Note that engine pages can be moved about the site using the normal drag and drop interface.
+
+You can create your own subnavigation within your engine page. We suggest overriding appropriate portions of your page layout via Symfony slots.
+  

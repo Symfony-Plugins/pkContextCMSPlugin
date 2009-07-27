@@ -27,51 +27,16 @@ class BasepkContextCMSActions extends sfActions
       $slug = "/$slug";
     }
     $page = pkContextCMSPageTable::retrieveBySlugWithSlots($slug);
-    $this->forward404Unless($page);
-    if (!$page->userHasPrivilege('view'))
-    {
-      // forward rather than login because referrers don't always
-      // work. Hopefully the login action will capture the original
-      // URI to bring the user back here afterwards.
-
-      if ($this->getUser()->isAuthenticated())
-      {
-        return $this->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
-      }
-      else
-      {
-        return $this->forward(sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action'));
-
-      }
-    }
-    if ($page->archived && (!$page->userHasPrivilege('edit|manage')))
-    {
-      $this->forward404();
-    }
-    // Title is pre-escaped as valid HTML
-    $prefix = pkContextCMSTools::getOptionI18n('title_prefix');
-    $this->getResponse()->setTitle($prefix . $page->getTitle(), false);
+    pkContextCMSTools::validatePageAccess($this, $page);
+    pkContextCMSTools::setPageEnvironment($this, $page);
     $this->page = $page;
-    // Necessary to allow the use of
-    // pkContextCMSTools::getCurrentPage() in the layout.
-    // In Symfony 1.1+, you can't see $this->page from
-    // the layout.
-    pkContextCMSTools::setCurrentPage($page);
     $this->setTemplate($page->template);
-    // Borrowed from sfSimpleCMS
-    if(sfConfig::get('app_pkContextCMS_use_bundled_layout', true))
-    {
-      $this->setLayout(sfContext::getInstance()->getConfiguration()->getTemplateDir('pkContextCMS', 'layout.php').'/layout');
-    }
-
-		//JB 6.8.09 These are both necessary 100% of the time, so I added them here at this level.
-    $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');
-    $this->getResponse()->addJavascript('/pkToolkitPlugin/js/pkControls.js');
-    $this->getResponse()->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI
 
     return 'Template';
   }
 
+
+  
   // Note that these fetch based on the id or slug found in the
   // named parameter of the request
 
@@ -384,6 +349,7 @@ class BasepkContextCMSActions extends sfActions
       $from = 'settings[id]';
     }
     $this->page = $this->retrievePageForEditingById($from);
+    
     $this->form = new pkContextCMSPageSettingsForm($this->page);
     if ($from === 'settings[id]')
     {

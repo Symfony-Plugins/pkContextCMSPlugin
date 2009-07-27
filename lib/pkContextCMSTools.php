@@ -38,18 +38,25 @@ class pkContextCMSTools
     }
     return $culture;
   }
-  static public function urlForPage($slug)
+  static public function urlForPage($slug, $absolute = true)
   {
     // sfSimpleCMS found a nice workaround for this
     // By using @pk_context_cms_page we can skip to a shorter URL form
     // and not get tripped up by the default routing rule which could
     // match first if we wrote pkContextCMS/show 
-    $routed_url = sfContext::getInstance()->getController()->genUrl('@pk_context_cms_page?slug=-PLACEHOLDER-', true);
+    $routed_url = sfContext::getInstance()->getController()->genUrl('@pk_context_cms_page?slug=-PLACEHOLDER-', $absolute);
     $routed_url = str_replace('-PLACEHOLDER-', $slug, $routed_url);
     // We tend to get double slashes because slugs begin with slashes
     // and the routing engine wants to helpfully add one too. Fix that,
     // but don't break http://
-    $routed_url = preg_replace('/([^:])\/\//', '$1/', $routed_url);
+    if ($absolute)
+    {
+      $routed_url = preg_replace('/([^:])\/\//', '$1/', $routed_url);
+    }
+    else
+    {
+      $routed_url = preg_replace('/^\/\//', '/', $routed_url);
+    }
     return $routed_url;
   }
   // We need a separate flag so that even a non-CMS page can
@@ -161,6 +168,7 @@ class pkContextCMSTools
     }
     return $options;
   }
+  
   static public function getTemplates()
   {
     if (sfConfig::get('app_pkContextCMS_get_templates_method'))
@@ -173,6 +181,19 @@ class pkContextCMSTools
       'default' => 'Default Page',
       'home' => 'Home Page'));
   }
+  
+  static public function getEngines()
+  {
+    if (sfConfig::get('app_pkContextCMS_get_engines_method'))
+    {
+      $method = sfConfig::get('app_pkContextCMS_get_engines_method');
+
+      return call_user_func($method);
+    }
+    return sfConfig::get('app_pkContextCMS_engines', array(
+      '' => 'Template-Based'));
+  }
+  
   // Fetch an internationalized option from app.yml. Example:
   // all:
   //   pkContextCMS:
@@ -296,5 +317,60 @@ class pkContextCMSTools
   static public function getAllowSlotEditing()
   {
     return self::$allowSlotEditing;
+  }
+  
+  // Kick the user out to appropriate places if they don't have the proper 
+  // privileges to be here. pkContextCMS::executeShow and pkContextCMSEngineActions::preExecute
+  // both use this 
+  
+  static public function validatePageAccess(sfAction $action, $page)
+  {
+    $action->forward404Unless($page);
+    if (!$page->userHasPrivilege('view'))
+    {
+      // forward rather than login because referrers don't always
+      // work. Hopefully the login action will capture the original
+      // URI to bring the user back here afterwards.
+
+      if ($action->getUser()->isAuthenticated())
+      {
+        return $action->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
+      }
+      else
+      {
+        return $action->forward(sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action'));
+
+      }
+    }
+    if ($page->archived && (!$page->userHasPrivilege('edit|manage')))
+    {
+      $action->forward404();
+    }    
+  }
+
+  // Establish the page title, set the layout, and add the javascripts that are
+  // necessary to manage pages. pkContextCMS::executeShow and pkContextCMSEngineActions::preExecute
+  // both use this
+  
+  static public function setPageEnvironment(sfAction $action, pkContextCMSPage $page)
+  {
+    // Title is pre-escaped as valid HTML
+    $prefix = pkContextCMSTools::getOptionI18n('title_prefix');
+    $action->getResponse()->setTitle($prefix . $page->getTitle(), false);
+    // Necessary to allow the use of
+    // pkContextCMSTools::getCurrentPage() in the layout.
+    // In Symfony 1.1+, you can't see $action->page from
+    // the layout.
+    pkContextCMSTools::setCurrentPage($page);
+    // Borrowed from sfSimpleCMS
+    if(sfConfig::get('app_pkContextCMS_use_bundled_layout', true))
+    {
+      $action->setLayout(sfContext::getInstance()->getConfiguration()->getTemplateDir('pkContextCMS', 'layout.php').'/layout');
+    }
+
+		//JB 6.8.09 These are both necessary 100% of the time, so I added them here at this level.
+    $action->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');
+    $action->getResponse()->addJavascript('/pkToolkitPlugin/js/pkControls.js');
+    $action->getResponse()->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI
   }
 }

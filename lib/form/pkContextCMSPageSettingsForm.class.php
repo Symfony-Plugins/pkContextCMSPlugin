@@ -17,6 +17,12 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
       'template', 
       new sfWidgetFormSelect(
         array('choices' => pkContextCMSTools::getTemplates())));
+     
+    $this->setWidget(
+      'engine',
+      new sfWidgetFormSelect(
+        array('choices' => pkContextCMSTools::getEngines())));
+
     // On vs. off makes more sense to end users, but when we first
     // designed this feature we had an 'archived vs. unarchived'
     // approach in mind
@@ -69,6 +75,15 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
       new sfValidatorChoice(
         array('required' => true,
           'choices' => array_keys(pkContextCMSTools::getTemplates()))));
+
+    // Making the empty string one of the choices doesn't seem to be good enough
+    // unless we expressly clear 'required'
+    $this->setValidator(
+      'engine',
+      new sfValidatorChoice(
+        array('required' => false,
+          'choices' => array_keys(pkContextCMSTools::getEngines()))));   
+
 
     // The slug of the home page cannot change (chicken and egg problems)
     if ($this->getObject()->getSlug() === '/')
@@ -134,9 +149,43 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
     $slug = preg_replace("/\/+/", "/", $slug);
     $slug = preg_match("/^(\/.*?)\/*$/", $slug, $matches);
     $object->slug = $matches[1];
-
+    if (isset($object->engine) && (!strlen($object->engine)))
+    {
+      // Store it as null for plain ol' executeShow page templating
+      $object->engine = null;
+    }
     $this->savePrivileges($object, 'edit', 'editors');
     $this->savePrivileges($object, 'manage', 'managers');
+    // Has to be done on shutdown so it comes after the in-memory cache of
+    // sfFileCache copies itself back to disk, which otherwise overwrites
+    // our attempt to invalidate the routing cache [groan]
+    register_shutdown_function(array($this, 'invalidateRoutingCache'));
+  }
+  public function invalidateRoutingCache()
+  {
+    // Clear the routing cache on page settings changes. TODO:
+    // finesse this to happen only when the engine is changed,
+    // and then perhaps further to clear only cache entries
+    // relating to this page
+    $routing = sfContext::getInstance()->getRouting();
+    if ($routing)
+    {
+      $cache = $routing->getCache();
+      if ($cache)
+      {
+        sfContext::getInstance()->getLogger()->info("QZ got cache");
+        $cache->clean();
+        sfContext::getInstance()->getLogger()->info("QZ cleared cache");
+      }
+      else
+      {
+        sfContext::getInstance()->getLogger()->info("QZ no cache");
+      }
+    }
+    else
+    {
+      sfContext::getInstance()->getLogger()->info("QZ no routing");
+    }
   }
   protected function savePrivileges($object, $privilege, $widgetName)
   {
@@ -148,6 +197,7 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
       {
         $editorIds = array();
       }
+      
       $object->setAccessesById($privilege, $editorIds);
     }
   }

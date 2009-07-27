@@ -460,9 +460,9 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return (count($this->getChildren($livingOnly)) != 0);
   }
 
-  public function getUrl()
+  public function getUrl($absolute = true)
   {
-    return pkContextCMSTools::urlForPage($this->getSlug());
+    return pkContextCMSTools::urlForPage($this->getSlug(), $absolute);
   }
 
   private $ancestorsCache = false;

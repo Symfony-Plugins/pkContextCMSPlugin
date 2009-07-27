@@ -1,5 +1,14 @@
 Upgrade Notes
 
+2009-07-27:
+
+ALTER TABLE pk_context_cms_page ADD COLUMN engine VARCHAR(255);
+
+This statement is necessary to accommodate the new "engine" feature, which greatly
+improves the extensibility of the CMS. Symfony modules can now be grafted into the
+page tree at any point, using normal actions and templates and otherwise-normal routes
+of the pkContextCMSRoute class. See README for details.
+
 2009-05-10:
 
 The slot/area version control feature now displays a very brief 

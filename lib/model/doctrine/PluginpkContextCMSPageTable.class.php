@@ -217,4 +217,57 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
   {
     return pkZendSearch::searchLuceneWithScores($this, $query, $culture);
   }
+
+  // Returns engine page with the longest matching path.
+  // We use a cache so that we don't wind up making separate queries
+  // for every engine route in the application
+  
+  protected static $engineCacheUrl = false;
+  protected static $engineCachePage = false;
+  protected static $engineCacheRemainder = false;
+  
+  static public function getMatchingEnginePage($url, &$remainder)
+  {
+    if ($url === self::$engineCacheUrl)
+    {
+      $remainder = self::$engineCacheRemainder;
+      return self::$engineCachePage;
+    }
+    $urls = array();
+    $twig = $url;
+    while (true)
+    {
+      if (($twig === '/') || (!strlen($twig)))
+      {
+        // Either we've been called for the home page, or we just
+        // stripped the first slash and are now considering the home page
+        $urls[] = '/';
+        break;
+      }
+      $urls[] = $twig;
+      if (!preg_match('/^(.*)\/[^\/]+$/', $twig, $matches))
+      {
+        break;
+      }
+      $twig = $matches[1];
+    }
+    $page = Doctrine_Query::create()->
+      select('p.*, length(p.slug) as len')->
+      from('pkContextCMSPage p')->
+      whereIn('p.slug', $urls)->
+      andWhere('p.engine IS NOT NULL')->
+      orderBy('len desc')->
+      limit(1)->
+      fetchOne();
+    self::$engineCachePage = $page;
+    self::$engineCacheUrl = $url;
+    self::$engineCacheRemainder = false;
+    if ($page)
+    {
+      $remainder = substr($url, strlen($page->slug));
+      self::$engineCacheRemainder = $remainder;
+      return $page;
+    }
+    return false;
+  }
 }
