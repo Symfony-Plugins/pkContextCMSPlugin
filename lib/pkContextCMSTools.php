@@ -49,11 +49,11 @@ class pkContextCMSTools
     // We tend to get double slashes because slugs begin with slashes
     // and the routing engine wants to helpfully add one too. Fix that,
     // but don't break http://
-    if ($absolute)
-    {
-      $routed_url = preg_replace('/([^:])\/\//', '$1/', $routed_url);
-    }
-    else
+    $matches = array();
+    // This is good both for dev controllers and for absolute URLs
+    $routed_url = preg_replace('/([^:])\/\//', '$1/', $routed_url);
+    // For non-absolute URLs without a controller
+    if (!$absolute) 
     {
       $routed_url = preg_replace('/^\/\//', '/', $routed_url);
     }
