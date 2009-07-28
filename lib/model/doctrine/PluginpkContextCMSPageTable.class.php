@@ -270,4 +270,16 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     }
     return false;
   }
+  
+  // Used when generating an engine link from a page other than the engine page itself.
+  // Many engines are only placed in one location per site, so this is often reasonable
+  static public function getFirstEnginePage($engine)
+  {
+    $page = Doctrine_Query::create()->
+     from('pkContextCMSPage p')->
+     where('p.engine = ?', array($engine))->
+     limit(1)->
+     fetchOne();
+    return $page;
+  }
 }

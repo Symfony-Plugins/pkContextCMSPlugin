@@ -52,12 +52,17 @@ class pkContextCMSRouteTools
    * @return string The generated URL
    */
   
-  static public function addPageToUrl($url, $absolute)
+  static public function addPageToUrl(sfRoute $route, $url, $absolute)
   {
+    $defaults = $route->getDefaults();
     $page = pkContextCMSTools::getCurrentPage();
-    if (!$page)
+    if ((!$page) || ($page->engine !== $defaults['module']))
     {
-      throw new sfException('Attempt to generate pkContextCMSRoute URL without a current page');
+      $page = pkContextCMSPageTable::getFirstEnginePage($defaults['module']);
+      if (!$page)
+      {
+        throw new sfException('Attempt to generate pkContextCMSRoute URL for module ' . $defaults['module'] . ' with no matching engine page on the site');
+      }
     }
     // A route URL of / for an engine route maps to the page itself, without a trailing /
     if ($url === '/')

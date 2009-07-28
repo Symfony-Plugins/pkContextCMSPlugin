@@ -32,6 +32,8 @@ pkContextCMSPage:
   indexes:
     slugindex:
       fields: [slug]
+    engineindex:
+      fields: [engine]
   relations:
     Author:
       class: sfGuardUser

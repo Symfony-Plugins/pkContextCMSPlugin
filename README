@@ -1294,7 +1294,7 @@ The bar at the top of each page will now feature your additional button or butto
 
 Suitably coded Symfony modules can now be grafted into the page tree at any point in a flexible way that allows admins to switch any page from operating as a normal template page to operating as an engine page, with all URLs beginning with that page slug remapped to the actions of the engine module. When the engine page is moved within the site, all of the virtual "pages" associated with the actions of the module move as well.
 
-A single engine may be grafted into the site in multiple locations.
+*Currently a particular engine can only be placed at a single location in the site.* This is a consequence of the way routing rules are cached in Symfony. We are working to overcome this limitation. However, engine pages are still quite useful with this limitation, as they allow components such as a media plugin or people section to be located at the point in the site where the client wishes to put them without the need to edit configuration files.
 
 Engine modules are written using normal actions and templates and otherwise-normal routes of the pkContextCMSRoute class.
 
@@ -1371,9 +1371,18 @@ To make the user interface aware of your engine, add the following to `app.yml`:
   
 Substitute the name of your module for `enginetest`. Be sure to keep the "template-based" entry in place, as otherwise normal CMS pages are not permitted on your site.
 
+Linking to the "index" action of an engine page is as simple as linking to any other page on the site. But what if you need to generate a link to a specific engine action from an unrelated page? For instance, what if you wish to link to a particular employee's profile within an engine page that contains a directory of staffers? 
+
+Just call `link_to` exactly as you did before:
+
+    echo link_to('Bar', 'enginetest/bar')
+    
+If the current page is not an engine page matching the route in question, the pkContextCMS routing system will find the first engine page in the site that does match the route, and generate a link to that engine page. 
+
+This works very well as long as there is only one engine page per engine in the site, and therefore no ambiguity about where the link should go. Currently engine support is limited to one engine page per engine in any case. However, we are working on this limitation and hope to soon offer a way to specify a particular engine page as a destination for the link. 
+
 After executing a `symfony cc`, you will begin to see your new engine module as a choice in the new "Page Engine" dropdown menu in the page settings form. Select your engine and save your changes. The page will refresh and display your engine.  
 
 Note that engine pages can be moved about the site using the normal drag and drop interface.
 
 You can create your own subnavigation within your engine page. We suggest overriding appropriate portions of your page layout via Symfony slots.
-  

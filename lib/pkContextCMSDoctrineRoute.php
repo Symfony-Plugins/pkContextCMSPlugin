@@ -35,6 +35,6 @@ class pkContextCMSDoctrineRoute extends sfDoctrineRoute
   public function generate($params, $context = array(), $absolute = false)
   {
     // Note that you must pass false to parent::generate for the $absolute parameter
-    return pkContextCMSRouteTools::addPageToUrl(parent::generate($params, $context, false), $absolute);
+    return pkContextCMSRouteTools::addPageToUrl($this, parent::generate($params, $context, false), $absolute);
   } 
 }
