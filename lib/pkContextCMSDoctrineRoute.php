@@ -2,7 +2,7 @@
 
 // Used by engine pages
 
-class pkContextCMSRoute extends sfRoute
+class pkContextCMSDoctrineRoute extends sfDoctrineRoute
 {
   public function __construct($pattern, array $defaults = array(), array $requirements = array(), array $options = array())
   {

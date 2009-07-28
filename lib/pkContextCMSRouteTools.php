@@ -1,0 +1,78 @@
+<?php
+
+// A helper class containing methods to be called from subclasses of sfRoute that are
+// intended for use with pkContextCMS engines. Keeping this code here minimizes duplication
+// and avoids the need for frequent changes to multiple classes when this code is modified.
+// This is poor man's multiple inheritance. See pkContextCMSRoute and pkContextCMSDoctrineRoute
+
+class pkContextCMSRouteTools
+{
+  /**
+   * Returns the portion of the URL after the engine page slug, or false if there
+   * is no engine page matching the URL. As a special case, if the URL exactly matches the slug,
+   * / is returned.
+   *
+   * @param  string  $url     The URL
+   *
+   * @return string The remainder of the URL
+   */
+  static public function removePageFromUrl(sfRoute $route, $url)
+  {
+    $remainder = false;
+    // Modifies $remainder if it returns a matching page
+    $page = pkContextCMSPageTable::getMatchingEnginePage($url, $remainder);
+    if (!$page)
+    {
+      return false;
+    }
+    // Engine pages can't have subpages, so if the longest matching path for any engine page
+    // has the wrong engine type for this route, this route definitely doesn't match
+    $defaults = $route->getDefaults();
+    if ($page->engine !== $defaults['module'])
+    {
+      return false;
+    }
+    // Allows pkContextCMSRoute URLs to be written like ordinary URLs rather than
+    // specifying an empty URL, which seems prone to lead to incompatibilities
+    
+    // Remainder comes back as false, not '', for an exact match
+    if (!strlen($remainder))
+    {
+      $remainder = '/';
+    }
+    return $remainder;
+  }
+  
+  /**
+   * Prepends the current CMS page to the URL.
+   *
+   * @param  string $url The URL so far obtained from parent::generate
+   * @param  Boolean $absolute  Whether to generate an absolute URL
+   *
+   * @return string The generated URL
+   */
+  
+  static public function addPageToUrl($url, $absolute)
+  {
+    $page = pkContextCMSTools::getCurrentPage();
+    if (!$page)
+    {
+      throw new sfException('Attempt to generate pkContextCMSRoute URL without a current page');
+    }
+    // A route URL of / for an engine route maps to the page itself, without a trailing /
+    if ($url === '/')
+    {
+      $url = '';
+    }
+    $pageUrl = $page->getUrl($absolute);
+    // Strip controller off so it doesn't duplicate the controller in the 
+    // URL we just generated. We could use the slug directly, but that would
+    // break if the CMS were not mounted at the root on a particular site.
+    // Take care to function properly in the presence of an absolute URL
+    if (preg_match("/^(https?:\/\/[^\/]+)?\/[^\/]+\.php(.*)$/", $pageUrl, $matches))
+    {
+      $pageUrl = $matches[2];
+    }
+    return $pageUrl . $url;
+  }
+}
