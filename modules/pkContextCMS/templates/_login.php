@@ -1,5 +1,6 @@
 <ul class="pk-controls">
 <?php if ($sf_user->isAuthenticated()): ?>
+  <li id="pk-logged-in-as">You are logged in as <?php echo $sf_user->getGuardUser()->getUsername() ?></li>
   <li><?php echo link_to("Log Out", sfConfig::get('app_pkContextCMS_actions_logout', 'sfGuardAuth/signout'), array('class' => 'pk-btn', )) ?></li>
 <?php else: ?>
   <li><?php echo link_to("Log In", sfConfig::get('app_pkContextCMS_actions_login', 'sfGuardAuth/signin'), array('class' => 'pk-btn', )) ?></li>

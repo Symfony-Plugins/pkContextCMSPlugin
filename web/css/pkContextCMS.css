@@ -1239,3 +1239,8 @@ margin-left: 10px;
 	display:inline;
 	position:relative;
 }
+
+#pk-logged-in-as
+{
+	padding-right: 10px;
+}
