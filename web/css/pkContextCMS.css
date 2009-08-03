@@ -172,11 +172,12 @@ background-color: #fff;
 
 .pk-slot
 {/* .pk-slot is the class for ALL Slots */
-	position: relative;
+position: relative;
 float: left;
 width: 100%;
 min-height: 20px;
 margin-bottom: 10px;
+font-size: 12px;
 }
 
 
@@ -349,9 +350,11 @@ margin-top: 24px; /* Space for the Arrow Controls*/
 	margin-bottom: 40px;
 }
 
-.pkContextCMSSlideshow .pk-slideshow-description
+.pkContextCMSSlideshow .pk-slideshow-description,
+.pkContextCMSSlideshow .pk-slideshow-description *
 {
 	font-size: 11px;
+	margin: 5px 0;
 }
 
 /* == */
