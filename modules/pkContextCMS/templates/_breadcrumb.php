@@ -52,34 +52,12 @@
     <?php if ($p->userHasPrivilege('edit')): ?>  
 			<li class="pk-breadcrumb-page-settings">
       <?php $id = $p->getId() ?>
-      <?php echo jq_link_to_remote("View Page Settings", 
-        array(
-          "url" => "pkContextCMS/settings?id=$id",
-          "update" => "pk-page-settings",
-          "script" => true,
-					"before" => "$('.pk-page-settings-button.open').hide();
-											 $('.pk-page-settings-loading').show();", 
-          "complete" => "$('#pk-page-settings').fadeIn();
-												 $('.pk-page-settings-loading').hide();
-												 $('#pk-page-settings-button-close').show();
-												var arrowPosition = parseInt($('.pk-breadcrumb-page-settings').offset().left);
-												$('#pk-page-settings .pk-chad').css('left',arrowPosition+'px');
-												 pkUI('#pk-page-settings');
-												$('.pk-page-overlay').show();",
-        ), array(
-					'class' => 'pk-page-settings-button open', 
-					'id' => 'pk-page-settings-button-open', 
-					'title'=>'View Page Settings')) ?>
-			<?php echo jq_link_to_function('Close Page Settings', 
-								'$("#pk-page-settings-button-close").hide(); 
-								 $("#pk-page-settings-button-open").show(); 
-								 $("#pk-page-settings").hide();
-								 $(".pk-page-overlay").hide();', 
-								 array(
-									'class' => 'pk-page-settings-button close', 
-									'id' => 'pk-page-settings-button-close',  
-									'title' => 'Close Page Settings', )) ?>
-			<?php echo image_tag('/pkToolkitPlugin/images/pk-icon-page-settings-ani.gif', array('class' => 'pk-page-settings-loading', 'style' => 'display:none;',  )) ?>
+      <?php // Sets up open and close buttons, ajax loading of form ?>
+      <?php echo pk_remote_dialog_toggle(
+        array("id" => "pk-page-settings", 
+          "title" => "Page Settings",
+          "loading" => "/pkToolkitPlugin/images/pk-icon-page-settings-ani.gif",
+          "action" => "pkContextCMS/settings?id=$id")) ?>
 			</li>												
     <?php endif ?>	
   <?php endif ?>

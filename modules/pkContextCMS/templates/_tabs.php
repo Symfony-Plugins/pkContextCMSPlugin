@@ -74,8 +74,7 @@ foreach ($tabs as $tab)
 </ul>
 <?php if ($draggable): ?>
 
-	<?php jq_add_plugins_by_name(array("ui")); ?>
-	
+
 	<script type="text/javascript">
 	//<![CDATA[
 	$(document).ready(

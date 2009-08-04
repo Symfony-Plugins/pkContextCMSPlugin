@@ -368,9 +368,8 @@ class pkContextCMSTools
       $action->setLayout(sfContext::getInstance()->getConfiguration()->getTemplateDir('pkContextCMS', 'layout.php').'/layout');
     }
 
-		//JB 6.8.09 These are both necessary 100% of the time, so I added them here at this level.
-    $action->getResponse()->addJavascript('/pkToolkitPlugin/js/pkUI.js');
-    $action->getResponse()->addJavascript('/pkToolkitPlugin/js/pkControls.js');
-    $action->getResponse()->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI
+    // Loading the pkContextCMS helper at this point guarantees not only
+    // helper functions but also necessary JavaScript and CSS
+    sfContext::getInstance()->getConfiguration()->loadHelpers('pkContextCMS');     
   }
 }

@@ -1,24 +1,34 @@
 <?php
 
-use_helper("Form", "jQuery", "I18N");
+// Loading of the pkContextCMS CSS, JavaScript and helpers is now triggered here 
+// to ensure that there is a straightforward way to obtain all of the necessary
+// components from any partial, even if it is invoked at the layout level (provided
+// that the layout does use_helper('pkContextCMS'). 
 
-// Loading of the pkContextCMS stylesheets is now triggered here rather than
-// in the show action because we need them in other places too when global
-// slots are used, or the pkContextCMS layout is used as the sitewide layout.
-
-if (sfConfig::get('app_pkContextCMS_use_bundled_stylesheet', true))
+function _pk_context_cms_required_assets()
 {
-  sfContext::getInstance()->getResponse()->addStylesheet('/pkToolkitPlugin/css/pkToolkit.css', 'first');
-  sfContext::getInstance()->getResponse()->addStylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first');
+  $response = sfContext::getInstance()->getResponse();
+
+  sfContext::getInstance()->getConfiguration()->loadHelpers(
+    array("Form", "jQuery", "I18N", 'pkDialog'));
+
+  jq_add_plugins_by_name(array("ui"));
+
+  if (sfConfig::get('app_pkContextCMS_use_bundled_stylesheet', true))
+  {
+    $response->addStylesheet('/pkToolkitPlugin/css/pkToolkit.css', 'first');
+    $response->addStylesheet('/pkContextCMSPlugin/css/pkContextCMS.css', 'first');
+  }
+
+  $response->addJavascript('/pkToolkitPlugin/js/pkUI.js');
+  $response->addJavascript('/pkToolkitPlugin/js/pkControls.js');
+  $response->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI
+  $webDir = sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin');
+  $response->addJavascript("$webDir/js/pkContextCMS.js");
+  $response->addJavascript("$webDir/js/jquery.autogrow.js");
 }
 
-sfContext::getInstance()->getResponse()->addJavascript(
-  sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
-  '/js/pkContextCMS.js');
-
-sfContext::getInstance()->getResponse()->addJavascript(
-  sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
-  '/js/jquery.autogrow.js');
+_pk_context_cms_required_assets();
 
 // Too many jquery problems
 //sfContext::getInstance()->getResponse()->addJavascript(

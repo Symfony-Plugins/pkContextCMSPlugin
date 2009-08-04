@@ -42,7 +42,7 @@ These are mostly links to independent modules.
   		<div id="pk-page-settings"></div>
   	</li>
 	<?php endif ?>
-	<?php //log out button ?>
+	<?php // also log out button and settings button ?>
 	<li class="pk-login">
 		<?php include_partial("pkContextCMS/login") ?>
 	</li>
