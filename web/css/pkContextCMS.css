@@ -625,19 +625,24 @@ line-height: 20px;
 margin: 0;
 overflow: hidden;
 text-indent: -9999px;
-background: url(/pkToolkitPlugin/images/pk-icon-personal-settings.png) no-repeat 0 0;
+background: #666 url(/pkToolkitPlugin/images/pk-icon-settings.png) top left no-repeat;
 position: relative;
 }
 
 .pk-login a.pk-personal-settings-button:hover
 {
-background-position: 0 -40px;
+background-color:#333;
 }
 
 .pk-login a.pk-personal-settings-button.close
 {
 display: none;
-background-position: 0 -20px;
+background-color: #333;
+}
+
+.pk-login a.pk-personal-settings-button.close:hover
+{
+	background-color: #666;
 }
 
 .pk-login .pk-personal-settings-loading
@@ -667,7 +672,8 @@ vertical-align: baseline;
 /* Apostrophe #pk-page-settings =========================== */
 /* == */
 
-#pk-global-toolbar li.pk-page-settings-container
+#pk-global-toolbar li.pk-page-settings-container,
+#pk-global-toolbar li.pk-personal-settings-container
 {
 position: absolute;
 top: 29px;
@@ -686,7 +692,8 @@ height: 11px;
 width: 100%;
 }
 
-#pk-page-settings
+#pk-page-settings,
+#pk-personal-settings
 {
 position: relative;
 display: none;
@@ -699,7 +706,8 @@ border-top: 1px solid #ddd;
 border-bottom: solid 10px #eee;
 }
 
-#pk-page-settings-form
+#pk-page-settings-form,
+#pk-personal-settings-form
 {
 width: auto;
 float: left;
@@ -721,7 +729,8 @@ font-weight: bold;
 margin: 0 0 10px 0;
 }
 
-#pk-page-settings .pk-form-row
+#pk-page-settings .pk-form-row,
+#pk-personal-settings .pk-form-row
 {
 margin: 10px 0px 10px 0;
 float: left;
@@ -730,7 +739,8 @@ clear: both;
 width: 100%;
 }
 
-#pk-page-settings .pk-form-row label
+#pk-page-settings .pk-form-row label,
+#pk-personal-settings .pk-form-row label
 {
 /*position: relative;
 top: 1em;
@@ -789,7 +799,10 @@ width: 240px;
 
 #pk-page-settings-form .pk-form-row input,
 #pk-page-settings-form .pk-form-row select,
-#pk-page-settings-form .pk-form-row textarea
+#pk-page-settings-form .pk-form-row textarea,
+#pk-personal-settings-form .pk-form-row input,
+#pk-personal-settings-form .pk-form-row select,
+#pk-personal-settings-form .pk-form-row textarea
 {
 font-size: 12px;
 font-family: arial, sans-serif;

@@ -46,4 +46,5 @@ pkMultipleSelect('#pk-personal-settings', { });
 pkRadioSelect('.pk-radio-select', { });
 <?php endif ?>
 $('#pk-personal-settings').show();
+$('#pk-personal-settings-form li').addClass('pk-form-row');
 </script>
