@@ -2,7 +2,9 @@
 
 // Used by engine pages
 
-class pkContextCMSRoute extends sfRoute
+// NOT YET: implements pkContextCMSRouteClass
+
+class pkContextCMSRoute extends sfRoute 
 {
   public function __construct($pattern, array $defaults = array(), array $requirements = array(), array $options = array())
   {

@@ -740,11 +740,17 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   }
  
   private $parentCache = false;
-  public function getParent()
+  
+  // The parent object comes back with a populated title slot.
+  // The other slots are NOT populated for performance reasons
+  // (is there a scenario where this would be a problem?)
+  public function getParent($with = false)
   {
     if ($this->parentCache === false)
     {
+      pkContextCMSPageTable::treeTitlesOn();
       $this->parentCache = $this->getNode()->getParent();
+      pkContextCMSPageTable::treeTitlesOff();
     }
     return $this->parentCache;
   }

@@ -1,8 +1,9 @@
 <?php
 
 // Used by engine pages
+// Not yet: implements pkContextCMSRouteClass
 
-class pkContextCMSDoctrineRoute extends sfDoctrineRoute
+class pkContextCMSDoctrineRoute extends sfDoctrineRoute 
 {
   public function __construct($pattern, array $defaults = array(), array $requirements = array(), array $options = array())
   {
