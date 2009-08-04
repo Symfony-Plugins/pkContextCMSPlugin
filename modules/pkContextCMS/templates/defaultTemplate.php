@@ -12,4 +12,4 @@
 		'pkContextCMSSlideshow' => array("width" => 598, "flexHeight" => true)
 	))) ?>
 	
-<?php pk_context_cms_slot("sidebar", 'pkContextCMSImage', array("global" => true, "width" => 125, "height" => 200, "resizeType" => "s", "link" => "/", "defaultImage" => "/pkContextCMSPlugin/images/cmstest-sample-logo.png")) ?>	
+<?php pk_context_cms_slot("sidebar", 'pkContextCMSImage', array("global" => true, "width" => 200, "flexHeight" => true, "resizeType" => "s")) ?>	
