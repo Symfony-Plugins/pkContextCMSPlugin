@@ -41,6 +41,9 @@ These are mostly links to independent modules.
   	<li class="pk-page-settings-container">
   		<div id="pk-page-settings"></div>
   	</li>
+  	<li class="pk-personal-settings-container">
+            <div id="pk-personal-settings"></div>
+    </li>  
 	<?php endif ?>
 	<?php // also log out button and settings button ?>
 	<li class="pk-login">

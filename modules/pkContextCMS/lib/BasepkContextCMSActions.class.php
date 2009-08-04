@@ -610,4 +610,25 @@ class BasepkContextCMSActions extends sfActions
     exit(0);
   }
   
+  public function executePersonalSettings(sfRequest $request)
+  {
+    $this->logMessage("ZZ hello", "info");
+    $this->forward404Unless($this->getUser()->isAuthenticated());
+    $this->logMessage("ZZ after auth", "info");
+    $profile = $this->getUser()->getProfile();
+    $this->logMessage("ZZ after fetch profile", "info");
+    $this->forward404Unless($profile);
+    $this->logMessage("ZZ after profile", "info");
+    $this->form = new pkContextCMSPersonalSettingsForm($profile);
+    if ($request->getParameter('submit'))
+    {
+      $this->form->bind($request->getParameter('settings'));
+      if ($this->form->isValid())
+      {
+        $this->form->save();
+        return 'Redirect';
+      }
+    }
+  }
 }
+
