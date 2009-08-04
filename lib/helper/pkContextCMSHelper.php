@@ -10,7 +10,7 @@ function _pk_context_cms_required_assets()
   $response = sfContext::getInstance()->getResponse();
 
   sfContext::getInstance()->getConfiguration()->loadHelpers(
-    array("Form", "jQuery", "I18N", 'pkDialog'));
+    array("Form", "jQuery", "I18N", 'PkDialog'));
 
   jq_add_plugins_by_name(array("ui"));
 
