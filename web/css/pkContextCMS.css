@@ -1237,7 +1237,7 @@ margin-left: 10px;
 #pk-subnav
 {
 	width: 200px;
-	margin:40px 40px 0 0;
+	margin: 0 40px 0 0;
 	float:left;
 	display:inline;
 	position:relative;
