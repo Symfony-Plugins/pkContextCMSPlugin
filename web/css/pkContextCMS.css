@@ -379,7 +379,7 @@ z-index: 999;
 display: inline;
 float: left;
 position: relative;
-height: 24px;
+/*height: 24px;*/
 }
 
 #pk-global-toolbar #the-apostrophe
@@ -1246,4 +1246,10 @@ margin-left: 10px;
 #pk-logged-in-as
 {
 	padding-right: 10px;
+	line-height: 20px;
+}
+
+#pk-logged-in-as span
+{
+	color: #666;
 }
