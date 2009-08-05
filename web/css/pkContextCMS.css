@@ -1287,13 +1287,13 @@ margin-left: 10px;
 	position:relative;
 }
 
-#pk-logged-in-as
+.pk-logged-in-as
 {
 	padding-right: 10px;
 	line-height: 20px;
 }
 
-#pk-logged-in-as span
+.pk-logged-in-as span
 {
 	color: #666;
 }
