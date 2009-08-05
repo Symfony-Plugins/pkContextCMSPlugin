@@ -612,6 +612,7 @@ class BasepkContextCMSActions extends sfActions
   
   public function executePersonalSettings(sfRequest $request)
   {
+    $this->forward404Unless(sfConfig::get('app_pkContextCMS_personal_settings_enabled', false));
     $this->logMessage("ZZ hello", "info");
     $this->forward404Unless($this->getUser()->isAuthenticated());
     $this->logMessage("ZZ after auth", "info");

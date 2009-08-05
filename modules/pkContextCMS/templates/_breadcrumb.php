@@ -57,6 +57,7 @@
         array("id" => "pk-page-settings", 
           "title" => "Page Settings",
           "loading" => "/pkToolkitPlugin/images/pk-icon-page-settings-ani.gif",
+          "chadFrom" => ".pk-breadcrumb-page-settings",
           "action" => "pkContextCMS/settings?id=$id")) ?>
 			</li>												
     <?php endif ?>	
