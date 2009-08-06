@@ -50,7 +50,6 @@ These are mostly links to independent modules.
 		<?php include_partial("pkContextCMS/login") ?>
 	</li>
 </ul>
-
 <script type="text/javascript">
 var apostropheOpenState = 0;
 
