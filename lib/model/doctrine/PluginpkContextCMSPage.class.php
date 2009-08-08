@@ -404,25 +404,31 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   private $childrenCache = null;
   private $childrenCacheLivingOnly = null;
+  private $childrenCacheSlot = null;
   // Returns an array even when there are zero children.
   // Who in the world wants to special case that as if it
   // were the end of the world?
-  public function getChildren($livingOnly = true)
+  public function getChildren($livingOnly = true, $withSlot = 'title')
   {
     if ($this->childrenCache !== null)
     {
-      if ($livingOnly === $this->childrenCacheLivingOnly)
+      if (($livingOnly === $this->childrenCacheLivingOnly) && ($this->childrenCacheSlot === $withSlot))
       {
         return $this->childrenCache;
       }
     }
-    $this->childrenCacheLivingOnly = $livingOnly;
     // TODO: consider whether it's possible to get the base query to
     // exclude archived children. That would result in multiple
     // calls to where(), but perhaps Doctrine can combine them for us.
-    pkContextCMSPageTable::treeTitlesOn();
+    if ($withSlot !== false)
+    {
+      pkContextCMSPageTable::treeSlotOn($withSlot);      
+    }
     $children = $this->getNode()->getChildren();
-    pkContextCMSPageTable::treeTitlesOff();
+    if ($withSlot !== false)
+    {
+      pkContextCMSPageTable::treeSlotOff();
+    }
     if ($children !== false)
     {
       $living = array();
@@ -452,8 +458,11 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       $children = array();
     }
     $this->childrenCache = $children;
+    $this->childrenCacheLivingOnly = $livingOnly;
+    $this->childrenCacheSlot = $withSlot;
     return $children;
   }
+  
   public function hasChildren($livingOnly = true)
   {
     // not as inefficient as it looks because of the caching feature

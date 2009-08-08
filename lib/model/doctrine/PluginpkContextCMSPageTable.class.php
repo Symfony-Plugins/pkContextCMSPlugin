@@ -74,6 +74,11 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
 
   static public function queryWithTitles($culture = null)
   {
+    return self::queryWithSlot('title', $culture);
+  }
+  
+  static public function queryWithSlot($slot, $culture = null)
+  {
     if (is_null($culture))
     {
       $culture = pkContextCMSTools::getUserCulture();
@@ -81,7 +86,7 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     return Doctrine_Query::Create()->
       select("p.*, a.*, v.*, avs.*, s.*")->
       from("pkContextCMSPage p")->
-      leftJoin('p.Areas a WITH (a.name = ? AND a.culture = ?)', array('title', $culture))->
+      leftJoin('p.Areas a WITH (a.name = ? AND a.culture = ?)', array($slot, $culture))->
       leftJoin('a.AreaVersions v WITH (a.latest_version = v.version)')->
       leftJoin('v.AreaVersionSlots avs')->
       leftJoin('avs.Slot s');
@@ -146,20 +151,32 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
   }
   
   static private $treeObject = null;
+  
   static public function treeTitlesOn()
   {
-    $query = pkContextCMSPageTable::queryWithTitles();
+    self::treeSlotOn('title');
+  }
+  
+  static public function treeSlotOn($slot)
+  {
+    $query = pkContextCMSPageTable::queryWithSlot($slot);
     self::$treeObject = Doctrine::getTable('pkContextCMSPage')->getTree();
     // I'm not crazy about how I have to set the base query and then
     // reset it, instead of simply passing it to getChildren. A
     // Doctrine oddity
     self::$treeObject->setBaseQuery($query);
   }
+  
   static public function treeTitlesOff()
   {
-    self::$treeObject->resetBaseQuery();
+    self::treeSlotOff();
   }
- 
+  
+  static public function treeSlotOff()
+  {
+    self::$treeObject->resetBaseQuery();
+  } 
+  
   public function getLuceneIndexFile()
   {
     return pkZendSearch::getLuceneIndexFile($this);
