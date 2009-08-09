@@ -62,6 +62,7 @@ class pkContextCMSTools
   // We need a separate flag so that even a non-CMS page can
   // restore its state (i.e. set the page back to null)
   static private $global = false;
+  static private $globalCache = false;
   static private $currentPage = null;
   static private $savedCurrentPage = null;
   static public function setCurrentPage($page)
@@ -78,12 +79,21 @@ class pkContextCMSTools
     if (isset($options['global']) && $options['global'])
     {
       self::$savedCurrentPage = self::getCurrentPage();
-      $global = pkContextCMSPageTable::retrieveBySlugWithSlots('global');
-      if (!$global)
+      // Caching the global page speeds up pages with two or more global slots
+      if (self::$globalCache !== false)
       {
-        $global = new pkContextCMSPage();
-        $global->slug = 'global';
-        $global->save();
+        $global = self::$globalCache;
+      }
+      else
+      {        
+        $global = pkContextCMSPageTable::retrieveBySlugWithSlots('global');
+        if (!$global)
+        {
+          $global = new pkContextCMSPage();
+          $global->slug = 'global';
+          $global->save();
+        }
+        self::$globalCache = $global;
       }
       self::setCurrentPage($global);
       self::$global = true;

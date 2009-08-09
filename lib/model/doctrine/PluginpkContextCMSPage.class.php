@@ -429,6 +429,12 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     {
       pkContextCMSPageTable::treeSlotOff();
     }
+    // Don't let Doctrine's clever reuse of objects prevent us from seeing
+    // the results if we fetch a different slot this time
+    foreach ($children as $child)
+    {
+      $child->clearSlotCache();
+    }
     if ($children !== false)
     {
       $living = array();
