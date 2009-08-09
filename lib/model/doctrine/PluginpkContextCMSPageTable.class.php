@@ -53,7 +53,6 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
   // or sf_default_culture if none is set or we're running in a task context
   static public function retrieveBySlugWithSlots($slug, $culture = null)
   {
-    sfContext::getInstance()->getLogger()->info(pkSimpleBacktrace::traceText());
     if (is_null($culture))
     {
       $culture = pkContextCMSTools::getUserCulture();

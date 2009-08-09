@@ -483,6 +483,11 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   private $ancestorsCache = false;
   public function getAncestors()
   {
+    // Home page has no ancestors; save a query on a popular page
+    if ($this->level == 0)
+    {
+      return array();
+    }
     if ($this->ancestorsCache !== false)
     {
       return $this->ancestorsCache;
