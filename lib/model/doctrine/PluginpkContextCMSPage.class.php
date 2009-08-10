@@ -435,12 +435,20 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     {
       pkContextCMSPageTable::treeSlotOff();
     }
-    // Don't let Doctrine's clever reuse of objects prevent us from seeing
-    // the results if we fetch a different slot this time
     
+    // Don't let Doctrine's clever reuse of objects prevent us from seeing
+    // the results if we fetch a different slot this time... unless the child
+    // is also the current page. In that case we assume that we have superior
+    // data in the cache already (inclusive of all slots). Discarding that
+    // was leading to disappearing data on emap
+      
+    $current = pkContextCMSTools::getCurrentPage();
     foreach ($children as $child)
     {
-      $child->clearSlotCache();
+      if ($current->id !== $child->id)
+      {
+        $child->clearSlotCache();
+      }
     }
     if ($children !== false)
     {
