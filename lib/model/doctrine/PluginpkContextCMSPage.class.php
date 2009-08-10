@@ -445,10 +445,11 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $current = pkContextCMSTools::getCurrentPage();
     foreach ($children as $child)
     {
-      if ($current->id !== $child->id)
+      if ($current && ($current->id === $child->id))
       {
-        $child->clearSlotCache();
+        continue;
       }
+      $child->clearSlotCache();
     }
     if ($children !== false)
     {
