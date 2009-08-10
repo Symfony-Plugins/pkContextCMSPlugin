@@ -431,7 +431,6 @@ class BasepkContextCMSActions extends sfActions
     $this->pager = new sfDoctrinePager(
       'pkContextCMSPage',
       sfConfig::get('app_pkContextCMS_search_results_per_page', 10));
-    $this->results = $query->execute();
     $this->pager->setQuery($query);
     $page = $request->getParameter('page', 1);
     $this->pager->setPage($page);
