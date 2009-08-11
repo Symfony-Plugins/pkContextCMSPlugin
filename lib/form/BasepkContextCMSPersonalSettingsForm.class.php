@@ -1,10 +1,10 @@
 <?php
 
-class pkContextCMSPersonalSettingsForm extends sfGuardUserProfileForm
+class BasepkContextCMSPersonalSettingsForm extends sfGuardUserProfileForm
 {
-  public function configure()
+  public function setup()
   {
-    parent::configure();
+    parent::setup();
     // Allowing a user to associate their profile with another
     // user's id does not make sense
     unset($this['user_id']);
