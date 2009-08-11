@@ -1257,6 +1257,10 @@ position: relative;
 margin-left: 10px;
 }
 
+#pk-subnav .pk-navcolumn li .pk-archived
+{ /* pkUI Makes Unpublished pages 50% Opacity */
+text-decoration: line-through;
+}
 
 /* == */
 /* ==  style for bundled layout.php */

@@ -231,7 +231,7 @@ function _pk_context_cms_navcolumn_body($page, $toplevel, $grandchildren = false
       $title = $child->getTitle();
       if ($child->getArchived())
       {
-        $title = "<span class='pk-archived'>$title</span>";
+        $title = '<span class="pk-archived" title="&quot;'.$title.'&quot; is Unpublished">'.$title.'</span>';
       }
       if ($sortHandle !== false)
       {
