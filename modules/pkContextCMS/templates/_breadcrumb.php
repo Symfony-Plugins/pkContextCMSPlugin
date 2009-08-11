@@ -55,7 +55,7 @@
       <?php // Sets up open and close buttons, ajax loading of form ?>
       <?php echo pk_remote_dialog_toggle(
         array("id" => "pk-page-settings", 
-          "title" => "Page Settings",
+          "label" => "Page Settings",
           "loading" => "/pkToolkitPlugin/images/pk-icon-page-settings-ani.gif",
           "chadFrom" => ".pk-breadcrumb-page-settings",
           "action" => "pkContextCMS/settings?id=$id")) ?>

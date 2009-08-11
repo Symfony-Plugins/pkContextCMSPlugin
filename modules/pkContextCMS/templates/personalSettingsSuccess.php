@@ -15,7 +15,7 @@
 	<?php // We need this to distinguish the original AJAX POST from an ?>
 	<?php // actual form submit; we can't use a name attribute on the ?>
 	<?php // submit tag because that doesn't work in jq_form_remote_tag ?>
-	<h3 id="pk-personal-settings-heading">Personal Settings</h3>
+	<h3 id="pk-personal-settings-heading">User Preferences for <span><?php echo $sf_user->getGuardUser()->getUsername() ?></span></h3>
 
 	<?php echo input_hidden_tag('submit', 1) ?>
 
@@ -40,11 +40,11 @@
 
 </form>
 
-<script>
-<?php if (0): ?>
-pkMultipleSelect('#pk-personal-settings', { });
-pkRadioSelect('.pk-radio-select', { });
-<?php endif ?>
-$('#pk-personal-settings').show();
-$('#pk-personal-settings-form li').addClass('pk-form-row');
+<script type="text/javascript" charset="utf-8">
+	<?php if (0): ?>
+	pkMultipleSelect('#pk-personal-settings', { });
+	pkRadioSelect('.pk-radio-select', { });
+	<?php endif ?>
+
+	$('#pk-personal-settings').show();
 </script>

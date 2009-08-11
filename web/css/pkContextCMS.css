@@ -405,6 +405,24 @@ margin-right: 5px;
 	float: right;
 	display: inline;
 	margin-right:5px;
+	line-height: 20px;
+}
+
+#pk-global-toolbar #pk-logged-in-as
+{
+	float: left;
+	line-height: 20px;
+	padding-right: 5px;
+}
+
+#pk-global-toolbar #pk-logged-in-as a
+{
+	text-decoration: underline;
+}
+
+#pk-global-toolbar #pk-logged-in-as a:hover
+{
+	color: #000;
 }
 
 /* == */
@@ -617,7 +635,7 @@ background-position: 0 -20px;
 
 .pk-login a.pk-personal-settings-button
 {
-float: left;
+/*float: left;
 display: inline;
 height: 20px;
 width: 20px;
@@ -627,28 +645,28 @@ overflow: hidden;
 text-indent: -9999px;
 background: #666 url(/pkToolkitPlugin/images/pk-icon-settings.png) top left no-repeat;
 position: relative;
-}
+*/}
 
 .pk-login a.pk-personal-settings-button:hover
 {
-background-color:#333;
+/*background-color:#333;*/
 }
 
 .pk-login a.pk-personal-settings-button.close
 {
-display: none;
-background-color: #333;
+/*display: none;*/
+/*background-color: #333;*/
 }
 
 .pk-login a.pk-personal-settings-button.close:hover
 {
-	background-color: #666;
+/*	background-color: #666;*/
 }
 
 .pk-login .pk-personal-settings-loading
 {
-	float: left;
-	display: inline;
+float:right;
+margin:0 0 0 5px
 }
 
 #pk-breadcrumb .pk-context-cms-breadcrumb-add-controls
@@ -713,13 +731,24 @@ width: auto;
 float: left;
 display: inline;
 margin: 0 28px;
-padding-bottom: 20px;
+padding: 20px 0;
 }
 
-#pk-page-settings #pk-page-settings-heading
+#pk-page-settings-heading,
+#pk-personal-settings-heading
 {
 margin: 20px 0 0 0;
 font-size: 16px;
+}
+
+#pk-personal-settings-heading
+{
+	margin: 0 0 10px;
+}
+
+#pk-personal-settings-heading span
+{
+	color:#ac3;
 }
 
 #pk-page-settings h4
@@ -771,7 +800,8 @@ margin-top: 10px;
 line-height: 20px;
 }
 
-#pk-page-settings-footer
+#pk-page-settings-footer,
+#pk-personal-settings-footer
 {
 float: left;
 margin-top: 10px;
