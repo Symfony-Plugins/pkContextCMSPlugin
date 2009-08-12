@@ -35,7 +35,7 @@
 	
   <?php $title = $p->getTitle() ?>
   <?php if ($p->archived): ?> 
-    <?php $title = "<span class='archived'>".$title."</span>" ?>
+    <?php $title = "<span class='pk-archived-page'>".$title."</span>" ?>
   <?php endif ?>
 
   <?php if ($page === $p): ?>
