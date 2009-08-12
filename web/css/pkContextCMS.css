@@ -1287,8 +1287,7 @@ position: relative;
 margin-left: 10px;
 }
 
-#pk-subnav .pk-navcolumn li .pk-archived-page,
-#pk-breadcrumb .pk-breadcrumb-title .pk-archived-page
+.pk-archived-page
 { /* pkUI Makes Unpublished pages 50% Opacity */
 text-decoration: line-through;
 }
