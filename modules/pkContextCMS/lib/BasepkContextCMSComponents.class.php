@@ -35,7 +35,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
       $ancestors = array($this->page);	
     }
     $home = $ancestors[0];
-    $this->tabs = $home->getChildren(!$this->getUser()->getAttribute('show-archived', false, 'pk-context-cms'));
+    $this->tabs = $home->getChildren(!$this->getUser()->getAttribute('show-archived', true, 'pk-context-cms'));
     $ids = pkArray::getIds($this->tabs);
     $this->logMessage("ZZ resulting list is " . implode(",", $ids));
     if (sfConfig::get('app_pkContextCMS_home_as_tab', true))

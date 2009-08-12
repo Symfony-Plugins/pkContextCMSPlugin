@@ -136,7 +136,7 @@ function _pk_context_cms_navcolumn_body($page, $toplevel, $grandchildren = false
   }
   $result = "";
   if ($adminPrivileges && 
-    $sf_user->getAttribute('show-archived', false, 'pk-context-cms'))
+    $sf_user->getAttribute('show-archived', true, 'pk-context-cms'))
   {
     $livingOnly = false;
   }
