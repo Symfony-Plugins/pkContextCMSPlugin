@@ -20,7 +20,7 @@ foreach ($tabs as $tab)
 	}
 	
   $id = $tab['id'];
-  echo("<li id='pk-tab-nav-item-$id'");
+  echo('<li id="pk-tab-nav-item-' . $id . '" ');
   $classes = '';
   if ($page)
   {
@@ -46,7 +46,6 @@ foreach ($tabs as $tab)
     pkContextCMSTools::urlForPage($tab['slug']),
     array('target' => '_top'));
   echo("</li>\n");
-
 	$tabcount++;
 
 }
