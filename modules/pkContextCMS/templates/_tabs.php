@@ -19,53 +19,33 @@ foreach ($tabs as $tab)
 		$tabclass = "pk-tab-nav-item";
 	}
 	
-  if (is_array($tab))
+  $id = $tab['id'];
+  echo("<li id='pk-tab-nav-item-$id'");
+  $classes = '';
+  if ($page)
   {
-    // Foreign tab implemented by a non-CMS page
-    echo("<li");
-
-    echo (fnmatch(isset($tab['pattern']) ? 
-       	$tab['pattern'] : $tab['url'], 
-      	$sf_params->get('module') . '/' .
-    		$sf_params->get('action')) ? "class='current'" : "") ;
-
-    echo link_to(
-      	$tab['name'], $tab['url'], 
-      	array('class' => 'pk-tab-nav-item'));
-
-    echo("</li>");
-
-  }
-  else
-  {
-    $id = $tab->getId();
-    echo("<li id='pk-tab-nav-item-$id'");
-    $classes = '';
-    if ($page)
+    if ($tab['level'] > 0)
     {
-      if (!($tab->getNode()->isRoot()))
-      {
-        if ($page->getNode()->isDescendantOf($tab))
-        {
-          $classes .= "pk-current-page ";
-        }
-      } 
-      if ($page->isEqualTo($tab))
+      if (pkContextCMSTools::pageIsDescendantOfInfo($page, $tab))
       {
         $classes .= "pk-current-page ";
       }
-    }  
-    if ($tab->getArchived())
+    } 
+    if ($page->slug === $tab['slug'])
     {
-      $classes .= "pk-archived-page ";
+      $classes .= "pk-current-page ";
     }
-    echo("class='$classes $tabclass'>");
-    echo link_to(
-      $tab->__toString(), 
-      $tab->getUrl(),
-      array('target' => '_top'));
-    echo("</li>\n");
+  }  
+  if ($tab['archived'])
+  {
+    $classes .= "pk-archived-page ";
   }
+  echo("class='$classes $tabclass'>");
+  echo link_to(
+    $tab['title'], 
+    pkContextCMSTools::urlForPage($tab['slug']),
+    array('target' => '_top'));
+  echo("</li>\n");
 
 	$tabcount++;
 

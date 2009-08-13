@@ -13,7 +13,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
   {
     // Use our caching proxy implementation of getAncestors
     $this->page = pkContextCMSTools::getCurrentPage();
-    $this->pages = $this->page->getAncestors();
+    $this->ancestorsInfo = $this->page->getAncestorsInfo();
   }
   public function executeSubnav(sfRequest $request)
   {
@@ -29,18 +29,17 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
       // Tabs on non-CMS pages are relative to the home page
       $this->page = pkContextCMSPageTable::retrieveBySlug('/');
     }
-    $ancestors = $this->page->getAncestors();
-    if (!$ancestors)
+    $ancestorsInfo = $this->page->getAncestorsInfo();
+    if (!count($ancestorsInfo))
     {
-      $ancestors = array($this->page);	
+      $ancestorsInfo = array($this->page);	
     }
-    $home = $ancestors[0];
-    $this->tabs = $home->getChildren(!$this->getUser()->getAttribute('show-archived', true, 'pk-context-cms'));
-    $ids = pkArray::getIds($this->tabs);
-    $this->logMessage("ZZ resulting list is " . implode(",", $ids));
+    $homeInfo = $ancestorsInfo[0];
+    
+    $this->tabs = $this->page->getTabsInfo(!$this->getUser()->getAttribute('show-archived', true, 'pk-context-cms'), $homeInfo);
     if (sfConfig::get('app_pkContextCMS_home_as_tab', true))
     {
-      array_unshift($this->tabs, $home);
+      array_unshift($this->tabs, $homeInfo);
     }
     $this->draggable = $this->page->userHasPrivilege('edit');
   }

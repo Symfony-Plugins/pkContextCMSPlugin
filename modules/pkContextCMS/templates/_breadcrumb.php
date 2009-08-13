@@ -12,19 +12,14 @@
 
 <?php $first = true; ?>
 <?php $skipNext = false; ?>
-<?php $pages[] = $page; ?>
+<?php // ancestors info doesn't include the page itself ?>
+<?php $ancestorsInfo[] = array('title' => $page->title, 'slug' => $page->slug, 'archived' => $page->archived, 'id' => $page->id); ?>
 
-<?php foreach ($pages as $p): ?>
+<?php foreach ($ancestorsInfo as $pinfo): ?>
 
   <?php if ($skipNext): ?>
     <?php $skipNext = false ?>
     <?php continue ?>
-  <?php endif ?>
-
-  <?php if (!$sf_user->hasCredential('cms_admin')): ?>
-    <?php if ($p->template == 'grandchildren'): ?>
-      <?php $skipNext = true ?>
-    <?php endif ?>
   <?php endif ?>
 
   <?php if (!$first): ?>
@@ -33,25 +28,25 @@
   <?php $first = false; ?>
   <?php endif ?>
 	
-  <?php $title = $p->getTitle() ?>
-  <?php if ($p->archived): ?> 
+  <?php $title = $pinfo['title'] ?>
+  <?php if ($pinfo['archived']): ?> 
     <?php $title = "<span class='pk-archived-page'>".$title."</span>" ?>
   <?php endif ?>
 
-  <?php if ($page === $p): ?>
+  <?php if ($page->id === $pinfo['id']): ?>
    <li class="pk-breadcrumb-title current-page" id="pk-breadcrumb-title-rename">
-    <?php echo editable_path_component($title, "pkContextCMS/rename", array("id" => $page->id), $p->userHasPrivilege('edit'), "epc") ?>
+    <?php echo editable_path_component($title, "pkContextCMS/rename", array("id" => $page->id), $page->userHasPrivilege('edit'), "epc") ?>
    </li>
 	<?php else: ?>
    <li class="pk-breadcrumb-title" id="pk-breadcrumb-title">
-		<?php echo link_to($title, $p->getUrl()) ?>
+		<?php echo link_to($title, pkContextCMSTools::urlForPage($pinfo['slug'])) ?>
 	 </li>
 	<?php endif ?>
 	
-  <?php if ($page === $p): ?>
-    <?php if ($p->userHasPrivilege('edit')): ?>  
+  <?php if ($page->id === $pinfo['id']): ?>
+    <?php if ($page->userHasPrivilege('edit')): ?>  
 			<li class="pk-breadcrumb-page-settings">
-      <?php $id = $p->getId() ?>
+      <?php $id = $page->id ?>
       <?php // Sets up open and close buttons, ajax loading of form ?>
       <?php echo pk_remote_dialog_toggle(
         array("id" => "pk-page-settings", 
@@ -65,7 +60,7 @@
 
 <?php endforeach ?>
 
-<?php if ($p->userHasPrivilege('manage')): ?>
+<?php if ($page->userHasPrivilege('manage')): ?>
   <?php if (has_slot('pk_add_page')): ?>
     <?php include_slot('pk_add_page') ?>
   <?php else: ?>

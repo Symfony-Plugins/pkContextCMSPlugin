@@ -484,6 +484,115 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $this->childrenCacheSlot = $withSlot;
     return $children;
   }
+
+  // A highly optimized function which returns an associative array as follows:
+  //
+  // array('ancestors' => array(id => array('title' => title, 'slug' => slug, 'view_is_secure' => boolean, 'archived' => boolean)),
+  //   'tabs' => ... array in the same format ...,
+  //   'children' => ... array in the same format ...,
+  //   'peers' => ... array in the same format ...
+  //
+  // This is enough information to generate most types of navigation without hydrating any page objects or
+  // incurring DQL overhead.
+    
+  protected $ancestorsInfo;
+  
+  public function getAncestorsInfo()
+  {
+    if (!isset($this->ancestorsInfo))
+    {
+      $id = $this->id;
+      $this->ancestorsInfo = $this->getPagesInfo(false, '( p.lft < ' . $this->lft . ' AND p.rgt > ' . $this->rgt . ' )');
+    }
+    return $this->ancestorsInfo;
+  }
+
+  public function getParentInfo()
+  {
+    $info = $this->getAncestorsInfo();
+    if (count($info))
+    {
+      return $info[count($info) - 1];
+    }
+    return false;
+  }
+
+  protected $peerInfo;
+  
+  public function getPeerInfo($livingOnly = true)
+  {
+    if (!isset($this->peersInfo))
+    {
+      $parentInfo = $this->getParentInfo();
+      if (!$parentInfo)
+      {
+        // TODO: we should stub in the current page here, but it's going to be the home page, 
+        // and we're not very interested in the peers of the home page (i.e. it has none)
+        $this->peerInfo = array();
+      }
+      else
+      {
+        $lft = $parentInfo['lft'];
+        $rgt = $parentInfo['rgt'];
+        $level = $parentInfo['level'] + 1;
+        $this->peerInfo = $this->getPagesInfo($livingOnly, '(( p.lft > ' . $lft . ' AND p.rgt < ' . $rgt . ' ) AND (level = ' . $level . '))');        
+      }       
+    }   
+    return $this->peerInfo;
+  }
+
+  protected $childrenInfo;
+  
+  public function getChildrenInfo($livingOnly = true)
+  {
+    if (!isset($this->childrenInfo))
+    {
+      $lft = $this->lft;
+      $rgt = $this->rgt;
+      $level = $this->level + 1;
+      $this->childrenInfo = $this->getPagesInfo($livingOnly, '(( p.lft > ' . $lft . ' AND p.rgt < ' . $rgt . ' ) AND (level = ' . $level . '))');
+    }
+    return $this->childrenInfo;
+  }
+
+  protected $tabsInfo;
+  
+  public function getTabsInfo($livingOnly = true)
+  {
+    if (!isset($this->tabsInfo))
+    {
+      $id = $this->id;
+      $this->tabsInfo = $this->getPagesInfo($livingOnly, '(level = 1)');
+    }
+    return $this->tabsInfo;
+  }
+  
+  // TODO: we could be grabbing ancestors, children and tabs in one shot. Peers are tougher
+  protected function getPagesInfo($livingOnly = true, $where)
+  {
+    $connection = Doctrine_Manager::connection();
+    $pdo = $connection->getDbh();
+    $query = "SELECT p.id, p.slug, p.view_is_secure, p.archived, p.lft, p.rgt, p.level, s.value AS title FROM pk_context_cms_page p
+      LEFT JOIN pk_context_cms_area a ON a.page_id = p.id AND a.name = 'title'
+      LEFT JOIN pk_context_cms_area_version v ON v.area_id = a.id AND a.latest_version = v.version 
+      LEFT JOIN pk_context_cms_area_version_slot avs ON avs.area_version_id = v.id
+      LEFT JOIN pk_context_cms_slot s ON s.id = avs.slot_id ";
+    $whereClauses = array();
+    if ($livingOnly)
+    {
+      $whereClauses[] = 'p.archived = false';
+    }
+    $whereClauses[] = $where;
+    $query .= "WHERE " . implode(' AND ', $whereClauses);
+    $resultSet = $pdo->query($query);
+    // Turn it into an actual array (what would happen if we didn't bother?)
+    $results = array();
+    foreach ($resultSet as $result)
+    {
+      $results[] = $result;
+    }
+    return $results;
+  }
   
   public function hasChildren($livingOnly = true)
   {

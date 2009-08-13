@@ -360,7 +360,7 @@ class pkContextCMSTools
 
   // Establish the page title, set the layout, and add the javascripts that are
   // necessary to manage pages. pkContextCMS::executeShow and pkContextCMSEngineActions::preExecute
-  // both use this
+  // both use this. TODO: is this redundant now that pkContextCMSHelper does it?
   
   static public function setPageEnvironment(sfAction $action, pkContextCMSPage $page)
   {
@@ -381,5 +381,10 @@ class pkContextCMSTools
     // Loading the pkContextCMS helper at this point guarantees not only
     // helper functions but also necessary JavaScript and CSS
     sfContext::getInstance()->getConfiguration()->loadHelpers('pkContextCMS');     
+  }
+  
+  static public function pageIsDescendantOfInfo($page, $info)
+  {
+    return ($page->lft > $info['lft']) && ($page->rgt < $info['rgt']);
   }
 }

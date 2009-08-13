@@ -104,31 +104,14 @@ function pk_context_cms_slot_body($name, $type, $permid, $options, $validationDa
 function pk_context_cms_navcolumn()
 {
   $page = pkContextCMSTools::getCurrentPage();
-  return _pk_context_cms_navcolumn_body($page, true);
+  return _pk_context_cms_navcolumn_body($page);
 }
 
-// Displays a two-dimensional table of links, children as headings,
-// grandchildren below. Direct child pages are accessible
-// only to the admin, who uses them to edit and order the 
-// grandchildren. 
-
-function pk_context_cms_navcolumn_grandchildren($page)
-{
-  return _pk_context_cms_navcolumn_body($page, true, true);
-}
-
-function _pk_context_cms_navcolumn_body($page, $toplevel, $grandchildren = false, $editable = true)
+function _pk_context_cms_navcolumn_body($page)
 {
   $sortHandle = "";
   $sf_user = sfContext::getInstance()->getUser();
-  if (!$editable)
-  {
-    $admin = false;
-  }
-  else
-  {
-    $admin = $page->userHasPrivilege('edit');
-  }
+  $admin = $page->userHasPrivilege('edit');
   $adminPrivileges = $page->userHasPrivilege('edit');
   if ($admin)
   {
@@ -144,107 +127,30 @@ function _pk_context_cms_navcolumn_body($page, $toplevel, $grandchildren = false
   {
     $livingOnly = true;
   }
-  if ($grandchildren)
+  $result = '<ul id="pk-navcolumn" class="pk-navcolumn">';
+  $childrenInfo = $page->getChildrenInfo($livingOnly);
+  if (!count($childrenInfo))
   {
-    // TODO: this could be a getDescendants(2) call instead of
-    // nested calls to getChildren()
-    $children = $page->getChildren($livingOnly);
-    if ($children === false)
+    $childrenInfo = $page->getPeerInfo($livingOnly);
+  }
+  foreach ($childrenInfo as $childInfo)
+  {
+    $class = "peer_item";
+    if ($childInfo['id'] == $page->id)
     {
-      $children = array();
+      $class = "self_item";
     }
-    $last = count($children) - 1;
-    $i = 0;
-    foreach ($children as $child)
-    {  
-      $result .= "<ul id=\"column_" . basename($child->slug) . "\">\n";
-      $result .= "<li>";
-      $result .= "<h4>";
-      if ($admin)
-      {
-        if ($i != 0)
-        {
-          $result .= link_to(
-            "&laquo;",
-            "pkContextCMS/move?id=" . $child->id .
-              "&shift=-1");
-          $result .= "&nbsp;";
-        }
-      }
-      if ($admin)
-      {
-        $result .= link_to($child->getTitle(), $child->getUrl());
-      }
-      else
-      {
-        $result .= $child->getTitle();
-      }
-      if ($admin)
-      {
-        if ($i != $last)
-        {
-          $result .= "&nbsp;";
-          $result .= link_to(
-            "&raquo;",
-            "pkContextCMS/move?id=". $child->id . 
-              "&shift=1");
-        }
-      }
-      $result .= "</h4></li>\n";
-      if ($child->hasChildren(!$adminPrivileges))
-      {
-        $result .= _pk_context_cms_navcolumn_body($child, false, false, false);
-      }
-      $result .= "</ul>\n";
-      $i++;
-    }
-    return $result;
-  }
-  if ($toplevel)
-  {
-    $result = '<ul id="pk-navcolumn" class="pk-navcolumn">';
-  }
-  if ($page->hasChildren($livingOnly))
-  {
-    $children = $page->getChildren($livingOnly);
-  } 
-  else
-  {
-    $parent = $page->getNode()->getParent();
-    $children = array();
-    if ($parent && $parent->hasChildren($livingOnly))
+    // Specific format to please jQuery.sortable
+    $result .= "<li id=\"pk-navcolumn_" . $childInfo['id'] . "\" class=\"$class\">\n";
+    $title = $childInfo['title'];
+    if ($childInfo['archived'])
     {
-      $children = $parent->getChildren($livingOnly);
+      $title = '<span class="pk-archived-page" title="&quot;'.$title.'&quot; is Unpublished">'.$title.'</span>';
     }
+    $result .= $sortHandle.link_to($title, pkContextCMSTools::urlForPage($childInfo['slug']));
+    $result .= "</li>\n";
   }
-  if ($children !== false)
-  {
-    foreach ($children as $child)
-    {
-      $class = "peer_item";
-      if ($child->id == $page->id)
-      {
-        $class = "self_item";
-      }
-      // Specific format to please jQuery.sortable
-      $result .= "<li id=\"pk-navcolumn_" . $child->id . "\" class=\"$class\">\n";
-      $title = $child->getTitle();
-      if ($child->getArchived())
-      {
-        $title = '<span class="pk-archived-page" title="&quot;'.$title.'&quot; is Unpublished">'.$title.'</span>';
-      }
-      if ($sortHandle !== false)
-      {
-        $title = $title;
-      }
-      $result .= $sortHandle.link_to($title, $child->getUrl());
-      $result .= "</li>\n";
-    }
-  }
-  if ($toplevel)
-  {
-    $result .= "</ul>\n";
-  }
+  $result .= "</ul>\n";
   if ($admin)
   {
     $result .= jq_sortable_element('#pk-navcolumn', array('url' => 'pkContextCMS/sort?page=' . $page->getId()));    
