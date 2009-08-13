@@ -50,42 +50,52 @@ These are mostly links to independent modules.
 		<?php include_partial("pkContextCMS/login") ?>
 	</li>
 </ul>
+
 <script type="text/javascript">
-var apostropheOpenState = 0;
 
-function apostropheOpen() 
-{
-	$(this).parent().siblings().hide();
-	$('.pk-global-toolbar-buttons').fadeIn();
-	$('.pk-global-toolbar-buttons .pk-cancel').fadeIn();			
-	$('.pk-global-toolbar-buttons .pk-cancel').parent().show();
-	apostropheOpenState = 1;
-}
+	var apostropheOpenState = 0;
 
-function apostropheClose() 
-{
-  $(this).parent().siblings().fadeIn();
-  $('.pk-global-toolbar-buttons').hide();			
-	apostropheOpenState = 0;
-}
+	function apostropheOpen() 
+	{
+		$(this).parent().siblings().hide();
+		$('.pk-global-toolbar-buttons').fadeIn();
+		$('.pk-global-toolbar-buttons .pk-cancel').fadeIn();			
+		$('.pk-global-toolbar-buttons .pk-cancel').parent().show();
+		apostropheOpenState = 1;
+	}
 
-$(document).ready(function(){
-  $('#the-apostrophe').click(function(){
-   if (!apostropheOpenState)
-   {
-     apostropheOpen();
-   }
-   else
-   {
-     apostropheClose();
-   }
-  });
-  $('.pk-global-toolbar-buttons .pk-cancel').click(function(){
-   $(this).parent().parent().hide();
-   $(this).parent().parent().parent().siblings().fadeIn();
-   apostropheOpenState = 0;
-  });      
-});
+	function apostropheClose() 
+	{
+	  $(this).parent().siblings().fadeIn();
+	  $('.pk-global-toolbar-buttons').hide();			
+		apostropheOpenState = 0;
+	}
+
+	$(document).ready(function(){
+	  $('#the-apostrophe').click(function(){
+
+	   if (!apostropheOpenState)
+	   {
+	     apostropheOpen();
+	   }
+	   else
+	   {
+	     apostropheClose();
+	   }
+
+		$(this).toggleClass('open');
+
+	  });
+  
+		$('.pk-global-toolbar-buttons .pk-cancel').click(function(){
+	  $(this).parent().parent().hide();
+	  $(this).parent().parent().parent().siblings().fadeIn();
+	  apostropheOpenState = 0;
+	
+	  });      
+
+	});
+	
 </script>
 
 <?php // TODO: Rewrite this with jQuery so it's lighter! ?>

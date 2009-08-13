@@ -393,6 +393,17 @@ overflow: hidden;
 margin: 2px;
 }
 
+#pk-global-toolbar #the-apostrophe.open
+{
+	background-color:#000;
+}
+
+#pk-global-toolbar #the-apostrophe:hover,
+#pk-global-toolbar #the-apostrophe.open:hover
+{
+	background-color: #666;
+}
+
 #pk-global-toolbar .pk-global-toolbar-buttons
 {
 display: none;
