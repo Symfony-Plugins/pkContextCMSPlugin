@@ -77,6 +77,7 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     return self::queryWithSlot('title', $culture);
   }
   
+  // This is a slot name, like 'title'
   static public function queryWithSlot($slot, $culture = null)
   {
     if (is_null($culture))
@@ -90,6 +91,22 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
       leftJoin('a.AreaVersions v WITH (a.latest_version = v.version)')->
       leftJoin('v.AreaVersionSlots avs')->
       leftJoin('avs.Slot s');
+  }
+
+  // This is a slot type, like 'pkContextCMSRichText'
+  static public function queryWithSlotType($slotType, $culture = null)
+  {
+    if (is_null($culture))
+    {
+      $culture = pkContextCMSTools::getUserCulture();
+    }
+    return Doctrine_Query::Create()->
+      select("p.*, a.*, v.*, avs.*, s.*")->
+      from("pkContextCMSPage p")->
+      leftJoin('p.Areas a WITH (a.culture = ?)', array($culture))->
+      leftJoin('a.AreaVersions v WITH (a.latest_version = v.version)')->
+      leftJoin('v.AreaVersionSlots avs')->
+      leftJoin('avs.Slot s WITH (s.type = ?)', array($slotType));
   }
  
   // If culture is null you get the current user's culture,
@@ -298,5 +315,18 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
      limit(1)->
      fetchOne();
     return $page;
+  }
+  
+  // Useful with queries aimed at finding a page; avoids the 
+  // considerable expense of hydrating it
+  static public function fetchOneSlug($query)
+  {
+    $query->limit(1);
+    $data = $query->fetchArray();
+    if (!count($data))
+    {
+      return false;
+    }
+    return $data[0]['slug'];
   }
 }

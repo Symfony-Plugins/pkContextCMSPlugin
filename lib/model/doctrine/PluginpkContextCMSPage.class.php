@@ -927,10 +927,18 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function updateLuceneIndex()
   {
+    $title = $this->getTitle();
+    $summary = $this->getSearchSummary();
     $text = $this->getSearchText();
+    $slug = $this->getSlug();
     pkZendSearch::updateLuceneIndex($this, 
       array('text' => $text),
-      $this->getCulture());
+      $this->getCulture(),
+      array(
+        'title' => $title,
+        'summary' => $summary,
+        'slug' => $slug,
+        'view_is_secure' => $this->getViewIsSecure()));
   }
 
   public function getSearchSummary()

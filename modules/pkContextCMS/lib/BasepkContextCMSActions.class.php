@@ -405,10 +405,17 @@ class BasepkContextCMSActions extends sfActions
   
   public function executeSearch(sfRequest $request)
   {
+    // create the array of pages matching the query
     $q = $request->getParameter('q');
     
-    // Support for replacing certain searches with others. Used to deal with
-    // frequent searches for which lucene does the wrong thing on a particular site
+    if ($request->hasParameter('x'))
+    {
+      // We like to use input type="image" for presentation reasons, but it generates
+      // ugly x and y parameters with click coordinates. Get rid of those and come back.
+      return $this->redirect(sfContext::getInstance()->getController()->genUrl('@search', true) . '?' .
+    http_build_query(array("q" => $q)));
+    }
+    
     $key = strtolower(trim($q));
     $key = preg_replace('/\s+/', ' ', $key);
     $replacements = sfConfig::get('app_pkContextCMS_search_refinements', array());
@@ -416,30 +423,73 @@ class BasepkContextCMSActions extends sfActions
     {
       $q = $replacements[$key];
     }
-    
-    $query = pkContextCMSPageTable::queryWithSlots();
-    $query = Doctrine::getTable('pkContextCMSPage')->addSearchQuery($query, $q);
-    $user = $this->getUser();
-    if (!$user->isAuthenticated())
+
+    $values = pkZendSearch::searchLuceneWithValues(Doctrine::getTable('pkContextCMSPage'), $q, pkContextCMSTools::getUserCulture());
+
+    $nvalues = array();
+
+    foreach ($values as $value)
     {
-      // I should have made this a non-nullable field but it's too late now
-      $query->andWhere($query->getRootAlias() . ".view_is_secure is null or " .
-        $query->getRootAlias() . ".view_is_secure = false");
+      if (!sfContext::getInstance()->getUser()->isAuthenticated())
+      {
+        if (isset($value->view_is_secure) && $value->view_is_secure)
+        {
+          continue;
+        }
+      }
+      $nvalue = $value;      
+      $nvalue->url = pkContextCMSTools::urlForPage($nvalue->slug, false);
+      $nvalue->class = 'pkContextCMSPage';
+      $nvalues[] = $nvalue;
     }
-    // Don't include faux "pages" like the 'global' page that contains global slots
-    $query->andWhere("SUBSTRING(" . $query->getRootAlias() . ".slug, 1, 1) = '/'");
-    $this->pager = new sfDoctrinePager(
-      'pkContextCMSPage',
-      sfConfig::get('app_pkContextCMS_search_results_per_page', 10));
-    $this->pager->setQuery($query);
-    $page = $request->getParameter('page', 1);
-    $this->pager->setPage($page);
+    $values = $nvalues;
+
+    if ($this->searchAddResults($values, $q))
+    {
+      usort($values, "pkContextCMSActions::compareScores");
+    }
+    $this->pager = new pkArrayPager(null, sfConfig::get('app_pkContextCMS_search_results_per_page', 10));    
+    $this->pager->setResultArray($values);
+    $this->pager->setPage($request->getParameter('page', 1));
     $this->pager->init();
-    $this->results = $this->pager->getResults();
-    $this->pagerUrl = "pkContextCMS/search?" .
-            http_build_query(array("q" => $q));
+    $this->pagerUrl = "pkContextCMS/search?" .http_build_query(array("q" => $q));
     // setTitle takes care of escaping things
-    $this->getResponse()->setTitle(pkContextCMSTools::getOptionI18n('title_prefix') . 'Search for ' . $q);            
+    $this->getResponse()->setTitle(pkContextCMSTools::getOptionI18n('title_prefix') . 'Search for ' . $q);
+    $this->results = $this->pager->getResults();
+  }
+  
+  protected function searchAddResults(&$values, $q)
+  {
+    // $values is the set of results so far, passed by reference so you can append more.
+    // $q is the Zend query the user typed.
+    //
+    // Override me! Add more items to the $values array here (note that it was passed by reference).
+    // Example: $values[] = array('title' => 'Hi there', 'summary' => 'I like my blog', 
+    // 'link' => 'http://thissite/wherever', 'class' => 'blog_post', 'score' => 0.8)
+    //
+    // 'class' is used to set a CSS class (see searchSuccess.php) to distinguish result types.
+    //
+    // Best when used with results from a pkZendSearch::searchLuceneWithValues call.
+    //
+    // IF YOU CHANGE THE ARRAY you must return true, otherwise it will not be sorted by score.
+    return false;
+  }
+  
+  static public function compareScores($i1, $i2)
+  {
+    // You can't just use - when comparing non-integers. Oops.
+    if ($i2->score < $i1->score)
+    {
+      return -1;
+    } 
+    elseif ($i2->score > $i1->score)
+    {
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
   }
   
   public function executePageTree(sfRequest $request)
