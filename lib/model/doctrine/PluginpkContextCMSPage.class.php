@@ -584,6 +584,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     $whereClauses[] = $where;
     $query .= "WHERE " . implode(' AND ', $whereClauses);
+    $query .= " ORDER BY p.lft";
     $resultSet = $pdo->query($query);
     // Turn it into an actual array (what would happen if we didn't bother?)
     $results = array();
