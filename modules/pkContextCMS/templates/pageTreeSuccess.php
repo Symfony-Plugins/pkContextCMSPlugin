@@ -51,7 +51,7 @@
   </ul></li>
 <?php endfor ?>
 </ul>
-<script>
+<script type="text/javascript" charset="utf-8">
 $('#pagetree li').draggable();
 $('#pagetree li').droppable({
   drop: function(event, ui)

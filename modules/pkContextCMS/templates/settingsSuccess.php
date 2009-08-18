@@ -123,7 +123,7 @@
     </div>
   <?php endif ?>
 <?php endif ?>
-	<script>
+<script type="text/javascript" charset="utf-8">
 	function pkUpdateEngineAndTemplate()
 	{
 	  if (!$('#settings_engine').val().length)

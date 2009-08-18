@@ -34,7 +34,7 @@ _pk_context_cms_required_assets();
 //sfContext::getInstance()->getResponse()->addJavascript(
 // sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin') . 
 // '/js/pkSubmitButton.js');
-//<script>
+//<script type="text/javascript" charset="utf-8">
 //pkSubmitButtonAll();
 //</script>
 function pk_context_cms_slot($name, $type, $options = false)

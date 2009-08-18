@@ -20,8 +20,8 @@
 <?php $n++; endforeach ?>
 
 <?php $n=0; foreach ($versions as $version => $data): ?>
-<script>
-  $("#pk-history-item-<?php echo $n ?>").data('params',
+<script type="text/javascript" charset="utf-8">
+	$("#pk-history-item-<?php echo $n ?>").data('params',
 		{ 'preview': 
 			{ 
 	      id: <?php echo $id ?>, 
