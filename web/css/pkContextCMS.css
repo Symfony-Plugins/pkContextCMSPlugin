@@ -351,7 +351,9 @@ margin-top: 24px; /* Space for the Arrow Controls*/
 }
 
 .pkContextCMSSlideshow .pk-slideshow-description,
-.pkContextCMSSlideshow .pk-slideshow-description *
+.pkContextCMSSlideshow .pk-slideshow-description *,
+.pkContextCMSPDF .pk-pdf-description,
+.pkContextCMSPDF .pk-pdf-description *
 {
 	font-size: 11px;
 	margin: 5px 0;
