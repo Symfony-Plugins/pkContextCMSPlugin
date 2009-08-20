@@ -1,10 +1,15 @@
+<?php if (!isset($controlsSlot)): ?>
+  <?php $controlsSlot = true ?>
+<?php endif ?>
+<?php if ($controlsSlot): ?>
 <?php slot("pk-slot-controls-$name-$permid") ?>
+<?php endif ?>
 	<li class="pk-controls-item edit">
-  <?php echo jq_link_to_function("edit", "", 
+  <?php echo jq_link_to_function(isset($label) ? $label : "edit", "", 
 				array(
 					'id' => 'pk-slot-edit-'.$name.'-'.$permid, 
-					'class' => 'pk-btn icon pk-edit', 
-					'title' => 'Edit', 
+					'class' => isset($class) ? $class : 'pk-btn icon pk-edit', 
+					'title' => isset($title) ? $title : 'Edit', 
 	)) ?>
 	<script type="text/javascript">
 	$(document).ready(function(){
@@ -20,4 +25,7 @@
 	})
 	</script>
 	</li>
+<?php if ($controlsSlot): ?>
 <?php end_slot() ?>
+<?php endif ?>
+  
