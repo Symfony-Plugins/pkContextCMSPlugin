@@ -116,7 +116,11 @@ For the new Lucene-based search features to work you will also need
 to set up a cron job. For the search index to be brought up to date
 every ten minutes, use:
 
-0,10,20,30,40,50 * * * * /path/to/your/project/symfony pkContextCMS:update-lucene
+0,10,20,30,40,50 * * * * /path/to/your/project/symfony pkContextCMS:update-lucene --env=env
+
+Note the `--env` option. There is a separate index for each
+environment. On a development workstation, specify `--env=env`. In
+a production environment you might specify `--env=prod`.
 
 Synchronous lucene search index updates are for the birds. They slow
 down editing and create consistency problems with Doctrine's caching
