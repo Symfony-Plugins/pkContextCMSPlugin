@@ -230,13 +230,17 @@ class pkContextCMSTools
     // but this is a simple static thing
     
     // Add the users button only if the user has the admin credential.
-    // This is typically only given to admins and superadmins
+    // This is typically only given to admins and superadmins.
+    // TODO: there is also the cms_admin credential, should I differentiate here?
     $user = sfContext::getInstance()->getUser();
     if ($user->hasCredential('admin'))
     {
       $extraAdminButtons = sfConfig::get('app_pkContextCMS_extra_admin_buttons', 
-        array(array('label' => 'Users', 'action' => 'pkUserAdmin/index', 'class' => 'pk-users')));
-      // Eventually this one too
+        array(
+          array('label' => 'Users', 'action' => 'pkUserAdmin/index', 'class' => 'pk-users'),
+          array('label' => 'Reorganize', 'action' => 'pkContextCMS/reorganize', 'class' => 'pk-reorganize')        
+        ));
+      // Eventually this one too. Reorganize will probably get moved into it
       // ('Settings', 'pkContextCMS/globalSettings', 'pk-settings')
 
       if (is_array($extraAdminButtons))

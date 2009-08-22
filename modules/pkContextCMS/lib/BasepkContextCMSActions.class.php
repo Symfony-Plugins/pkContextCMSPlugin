@@ -492,74 +492,53 @@ class BasepkContextCMSActions extends sfActions
     }
   }
   
-  public function executePageTree(sfRequest $request)
+  public function executeReorganize(sfRequest $request)
   {
-    // Work in progress, stubbed out for now
-    
-    $this->forward404();
     
     // Reorganizing the tree = escaping your page-specific security limitations.
     // So only full CMS admins can do it.
     $this->flunkUnless($this->getUser()->hasCredential('cms_admin'));
     
-    // This would be prohibitive with thousands of pages due to
-    // memory limitations, PHP/Doctrine is a memory hog when it comes
-    // to hydrating objects. Think about that at some point
-    $q = pkContextCMSPageTable::queryWithTitles();
-    // Take advantage of the structure information
-    // inherent in the Doctrine nested set to organize
-    // this painlessly without multiple queries. This will need changing
-    // if we ever ditch the Doctrine nested set behavior
-    $q->orderBy($q->getRootAlias() . '.lft');
-    $pages = $q->execute();
-    $pageInfos = array();
-    $lastLevel = -1;
-    $parents = array();
-    $tree = array();
-    $lastPage = null;
-    foreach ($pages as $page)
-    {
-      if (!$page->lft)
-      {
-        // The global page that hosts global slots, and any other pages outside the tree
-        // that may come into being later 
-        continue;
-      }
-      $level = $page->getLevel();
-      if ($level < $lastLevel)
-      {
-        // Careful, watch out for:
-        //  1
-        //     a
-        //        b
-        //          c
-        //  2
-        // which needs three pops
-        for ($i = 0; ($i < ($lastLevel - $level)); $i++)
-        {
-          array_pop($parents);
-        }
-      }
-      elseif ($level > $lastLevel)
-      {
-        if ($lastPage)
-        {
-          $parents[] = $lastPage->getId();
-        }
-      }
-      $pageInfo = array();
-      $pageInfo['title'] = $page->getTitle();
-      $pageInfo['level'] = $page->getLevel();
-      $pageInfo['id'] = $page->getId();
-      $tree[pkArray::last($parents)][] = $page->getId();
-      $pageInfos[] = $pageInfo;
-      $lastLevel = $page->getLevel();
-      $lastPage = $page;
-    }
-    $this->tree = $tree;
-    $this->pageInfos = $pageInfos;
+    $root = pkContextCMSPageTable::retrieveBySlug('/');
+    $this->forward404Unless($root);
+    
+    $this->treeData = $root->getTreeJSONReady();
+    // setTitle takes care of escaping things
+    $this->getResponse()->setTitle(pkContextCMSTools::getOptionI18n('title_prefix') . 'Reorganize');
   }
 
+  public function executeTreeMove($request)
+  {
+    $page = $this->retrievePageForEditingById('id', 'manage');
+    $refPage = $this->retrievePageForEditingById('refId', 'manage');
+    $type = $request->getParameter('type');
+    if ($refPage->slug === '/')
+    {
+      // Root must not have peers
+      if ($type !== 'inside')
+      {
+        $this->forward404();
+      }
+    }
+    if ($type === 'after')
+    {
+      $page->getNode()->moveAsNextSiblingOf($refPage);
+    }
+    elseif ($type === 'before')
+    {
+      $page->getNode()->moveAsPrevSiblingOf($refPage);
+    }
+    elseif ($type === 'inside')
+    {
+      $page->getNode()->moveAsLastChildOf($refPage);
+    }
+    else
+    {
+      $this->forward404();
+    }
+    echo("ok");
+    return sfView::NONE;
+  }
   
   public function executeMoveUp($request)
   {

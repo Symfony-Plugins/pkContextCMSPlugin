@@ -567,6 +567,67 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return $this->tabsInfo;
   }
   
+  public function getTreeJSONReady($livingOnly = true)
+  {
+    // Recursively builds a page tree ready to be JSON-encoded and sent to
+    // the jsTree object (yes this is rather specific to jsTree for the model layer,
+    // but this would be a reasonable input format for any JS tree implementation).
+    $infos = $this->getDescendantsInfo($livingOnly);
+    $offset = 0;
+    $level = 0;
+    $tree = array("attributes" => array("id" => "tree-" . $this->id),
+      "data" => $this->getTitle(),
+      "state" => 'open',
+      "children" => $this->getTreeChildren($this->lft, $this->rgt, $infos, $offset, $level + 1)
+    );
+    if (!count($tree['children']))
+    {
+      unset($tree['children']);
+    }
+    else
+    {
+      $item['state'] = 'open';
+    }
+  return $tree;
+  }
+  
+  protected function getTreeChildren($lft, $rgt, $infos, &$offset, $level)
+  {
+    $count = count($infos);
+    $result = array();
+    while ($offset < $count)
+    {      
+      $info = $infos[$offset];
+      if (($info['lft'] <= $lft) || ($info['rgt'] >= $rgt))
+      {
+        break;
+      }
+      $offset++;
+      $item = array(
+        "attributes" => array("id" => "tree-" . $info['id']), 
+        "data" => $info['title'],
+        "children" => $this->getTreeChildren($info['lft'], $info['rgt'], $infos, $offset, $level + 1)
+      );
+      if (!count($item['children']))
+      {
+        unset($item['children']);
+      }
+      else
+      {
+        $item['state'] = ($level < 2) ? "open" : "closed";
+      }
+      $result[] = $item;
+    }
+    return $result;
+  }
+  
+  // Low level access to all info for all descendants. For an interface that
+  // gives you back a hierarchy see getTree. 
+  protected function getDescendantsInfo($livingOnly = true)
+  {
+    return $this->getPagesInfo($livingOnly, '( p.lft > ' . $this->lft . ' AND p.rgt < ' . $this->rgt . ' )');
+  }
+  
   // TODO: we could be grabbing ancestors, children and tabs in one shot. Peers are tougher
   protected function getPagesInfo($livingOnly = true, $where)
   {
