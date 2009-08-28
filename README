@@ -1,25 +1,9 @@
 ## READ THIS NOTE FIRST ##
 
 This is a technology preview release of pkContextCMS. Although the
-CMS already works quite well and we are close to launching a production
-site based on it, certain aspects are still maturing. In particular
-the stylesheet we provide in the cmstest project is definitely larger
-than the final stylesheet we'll ultimately provide as we haven't had
-time to prune it back. 
+CMS already works quite well and we have released production sites
+based on it, certain aspects are still maturing. 
 
-Editing works 100% in Firefox, Safari and Internet Explorer 7+. 
-Editing is expressly not supported in Internet Explorer 6. Of course,
-browsing the site as a user works just fine in Internet Explorer 6.
-
-Internationalization is supported at a basic level: separate versions
-of content are served depending on the result of calling getCulture()
-for the current user. When you edit, you are editing the version of
-the content for your current culture. The user's culture defaults, as
-usual, to the sf_default_culture settings.yml setting. The search index also 
-distinguishes between cultures. Webmasters who make use of internationalization will want
-to add a "culture switcher" to their sites so that a user interface is
-available to make these features visible. Thanks to Quentin
-Dugauthier for his assistance in debugging these features.
 
 Internationalization is also supported for the `title_prefix` option
 and will be supported for all future options that expect user-readable content
@@ -36,6 +20,10 @@ pkContextCMSPlugin is heavily inspired by, and borrows a little code
 and numerous ideas from, sfSimpleCMSPlugin. The changes here are
 dramatic enough that a separate plugin makes more sense, but we want
 to acknowledge this right up front.
+
+Editing works 100% in Firefox, Safari and Internet Explorer 7+. 
+Editing is expressly not supported in Internet Explorer 6. Of course,
+browsing the site as a user works just fine in Internet Explorer 6.
 
 Standard features of pkContextCMSPlugin include version control
 for every content slot and the ability to undelete pages, as well as 
@@ -1390,3 +1378,31 @@ After executing a `symfony cc`, you will begin to see your new engine module as 
 Note that engine pages can be moved about the site using the normal drag and drop interface.
 
 You can create your own subnavigation within your engine page. We suggest overriding appropriate portions of your page layout via Symfony slots.
+
+## Internationalization ##
+
+Internationalization is supported at a basic level: separate versions
+of content are served depending on the result of calling getCulture()
+for the current user. When you edit, you are editing the version of
+the content for your current culture. The user's culture defaults, as
+usual, to the sf_default_culture settings.yml setting. The search index also 
+distinguishes between cultures. Webmasters who make use of internationalization will want
+to add a "culture switcher" to their sites so that a user interface is
+available to make these features visible. Thanks to Quentin
+Dugauthier for his assistance in debugging these features.
+
+## Support ##
+
+You can obtain support for pkContextCMS via the pkContextCMS Google group:
+
+http://groups.google.com/group/pkcontextcms
+
+Also be sure to follow our Twitter account:
+
+http://twitter.com/apostrophenow
+
+And visit the Apostrophe Now site:
+
+http://www.apostrophenow.com/
+
+Apostrophe Now is our CMS product based on the open-source pkContextCMS plugin.
