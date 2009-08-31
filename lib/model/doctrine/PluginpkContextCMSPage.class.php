@@ -641,7 +641,8 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $whereClauses = array();
     if ($livingOnly)
     {
-      $whereClauses[] = 'p.archived = false';
+      // Watch out, p.archived IS NULL in some older dbs
+      $whereClauses[] = '(p.archived = false OR p.archived IS NULL)';
     }
     $whereClauses[] = $where;
     $query .= "WHERE " . implode(' AND ', $whereClauses);

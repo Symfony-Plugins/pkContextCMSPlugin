@@ -20,8 +20,10 @@ pkContextCMSPage:
       unique: yes
     template:
       type: string(100)
+    # Not currently used
     is_published: boolean
     view_is_secure: boolean
+    # For historical reasons this means "unpublished"
     archived: boolean
     author_id:
       type: integer(4)

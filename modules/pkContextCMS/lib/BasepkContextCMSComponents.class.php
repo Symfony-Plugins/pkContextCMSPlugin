@@ -36,7 +36,8 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
     }
     $homeInfo = $ancestorsInfo[0];
     
-    $this->tabs = $this->page->getTabsInfo(!$this->getUser()->getAttribute('show-archived', true, 'pk-context-cms'), $homeInfo);
+    // Show archived tabs only to those who are potential editors.
+    $this->tabs = $this->page->getTabsInfo(!(pkContextCMSTools::isPotentialEditor() &&  $this->getUser()->getAttribute('show-archived', true, 'pk-context-cms')), $homeInfo);
     if (sfConfig::get('app_pkContextCMS_home_as_tab', true))
     {
       array_unshift($this->tabs, $homeInfo);

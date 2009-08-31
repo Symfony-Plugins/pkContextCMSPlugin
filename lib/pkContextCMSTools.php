@@ -391,4 +391,82 @@ class pkContextCMSTools
   {
     return ($page->lft > $info['lft']) && ($page->rgt < $info['rgt']);
   }
+  
+  // Same rules found in pkContextCMSPage::userHasPrivilege(), but without checking for
+  // a particular page, so we return true even for users who are just *potential* editors
+  // when granted privileges at an appropriate point in the page tree. This is useful for
+  // deciding whether the tabs control should show archived pages or not. (Showing those to
+  // a few editors who can't edit them is not a major problem, and checking the privs on
+  // each and every one is an unacceptable performance hit) 
+  
+  static public function isPotentialEditor($user = false)
+  {
+    if ($user === false)
+    {
+      $user = sfContext::getInstance()->getUser();
+    }
+    // Rule 1: admin can do anything
+    // Work around a bug in some releases of sfDoctrineGuard: users sometimes
+    // still have credentials even though they are not logged in
+    if ($user->isAuthenticated() && $user->hasCredential('cms_admin'))
+    {
+      return true;
+    }
+    $sufficientCredentials = sfConfig::get("app_pkContextCMS_edit_sufficient_credentials", false);
+    $sufficientGroup = sfConfig::get("app_pkContextCMS_edit_sufficient_group", false);
+    $candidateGroup = sfConfig::get("app_pkContextCMS_edit_candidate_group", false);
+    // By default users must log in to do anything except view
+    $loginRequired = sfConfig::get("app_pkContextCMS_edit_login_required", true);
+    
+    if ($loginRequired)
+    {
+      if (!$user->isAuthenticated())
+      {
+        return false;
+      }
+      // Rule 3: if there are no sufficient credentials and there is no
+      // required or sufficient group, then login alone is sufficient. Common 
+      // on sites with one admin
+      if (($sufficientCredentials === false) && ($candidateGroup === false) && ($sufficientGroup === false))
+      {
+        // Logging in is the only requirement
+        return true; 
+      }
+      // Rule 4: if the user has sufficient credentials... that's sufficient!
+      // Many sites will want to simply say 'editors can edit everything' etc
+      if ($sufficientCredentials && 
+        ($user->hasCredential($sufficientCredentials)))
+      {
+        
+        return true;
+      }
+      if ($sufficientGroup && 
+        ($user->hasGroup($sufficientGroup)))
+      {
+        return true;
+      }
+
+      // Rule 5: if there is a candidate group, make sure the user is a member
+      if ($candidateGroup && 
+        (!$user->hasGroup($candidateGroup)))
+      {
+        return false;
+      }
+      return true;
+    }
+    else
+    {
+      // No login required
+      return true;
+    }      
+  
+    // Rule 6: when minimum but not sufficient credentials are present,
+    // check for an explicit grant of privileges to this user, on
+    // this page or on any ancestor page.
+    $result = $this->userHasExplicitPrivilege($privilege);
+    if ($result)
+    {
+      return true;
+    }
+  }
 }

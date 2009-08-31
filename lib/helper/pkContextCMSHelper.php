@@ -112,13 +112,17 @@ function _pk_context_cms_navcolumn_body($page)
   $sortHandle = "";
   $sf_user = sfContext::getInstance()->getUser();
   $admin = $page->userHasPrivilege('edit');
-  $adminPrivileges = $page->userHasPrivilege('edit');
   if ($admin)
   {
     $sortHandle = "<div class='pk-btn icon pk-drag pk-controls'></div>";
   }
   $result = "";
-  if ($adminPrivileges && 
+  // Inclusion of archived pages should be a bit generous to allow for tricky situations
+  // in which those who can edit a subpage might not be able to find it otherwise.
+  // We don't want the performance hit of checking for the right to edit each archived
+  // subpage, so just allow those with potential-editor privs to see that archived pages
+  // exist, whether or not they are allowed to actually edit them
+  if (pkContextCMSTools::isPotentialEditor() && 
     $sf_user->getAttribute('show-archived', true, 'pk-context-cms'))
   {
     $livingOnly = false;
