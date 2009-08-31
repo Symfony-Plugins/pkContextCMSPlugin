@@ -514,7 +514,7 @@ page layout or template as a design element:
 
     <h1>
         <?php pk_context_cms_slot('title', 'pkContextCMSText',
-          array('toolbar' => 'basic')) ?>
+          array('tool' => 'basic')) ?>
     </h1>
 
 The behavior of most slot types can be influenced by passing 
@@ -524,7 +524,7 @@ to the helper, like this:
 
     <h2>
         <?php pk_context_cms_slot('subtitle', 'pkContextCMSRichText',
-          array('toolbar' => 'basic')) ?>
+          array('tool' => 'basic')) ?>
     </h2>
 
 Here we create a subtitle area on the page which is editable, but only
