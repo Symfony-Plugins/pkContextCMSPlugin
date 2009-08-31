@@ -9,6 +9,9 @@
   'type_options' => array(
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
   	'pkContextCMSText' => array('multiline' => true),
+		'pkContextCMSImage' => array("width" => 480, "flexHeight" => true),
+		'pkContextCMSButton' => array("width" => 480, "flexHeight" => true),
+		'pkContextCMSPDF' => array("width" => 480, "flexHeight" => true),
 		'pkContextCMSSlideshow' => array("width" => 480, "flexHeight" => true)
 	))) ?>
 
@@ -17,5 +20,7 @@
   'type_options' => array(
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
   	'pkContextCMSText' => array('multiline' => true),
-		'pkContextCMSSlideshow' => array("width" => 198, "flexHeight" => true)
+		'pkContextCMSSlideshow' => array("width" => 198, "flexHeight" => true),
+		'pkContextCMSButton' => array("width" => 198, "flexHeight" => true),
+		'pkContextCMSPDF' => array("width" => 198, "flexHeight" => true)
 	))) ?>
