@@ -69,13 +69,13 @@
 	  var params = $(this).data('params');
 	
 		var targetArea = "#"+$(this).parent().attr('rel');					// this finds the associated area that the history browser is displaying
-		var historyBtn = $(targetArea+ ' a.pk-history');				// this grabs the history button
-		var cancelBtn = $(targetArea+ ' a.pk-cancel');					// this grabs the cancel button for this area
-		var revertBtn = $(targetArea+ ' a.pk-history-revert');	// this grabs the history revert button for this area
+		var historyBtn = $(targetArea+ ' .pk-area-controls a.pk-history');				// this grabs the history button
+		var cancelBtn = $(targetArea+ ' .pk-area-controls a.pk-cancel');					// this grabs the cancel button for this area
+		var revertBtn = $(targetArea+ ' .pk-area-controls a.pk-history-revert');	// this grabs the history revert button for this area
 		
 		$(historyBtn).siblings('.pk-history-options').show();
 
-	  $.post(
+	  $.post( //User clicks to PREVIEW revision
 	    <?php echo json_encode(url_for('pkContextCMS/revert')) ?>,
 	    params.preview,
 	    function(result)
@@ -94,7 +94,7 @@
 		// Assign behaviors to the revert and cancel buttons when THIS history item is clicked
 		
 		revertBtn.click(function(){
-		  $.post(
+		  $.post( // User clicks REVERT
 		    <?php echo json_encode(url_for('pkContextCMS/revert')) ?>,
 		    params.revert,
 		    function(result)
@@ -107,8 +107,9 @@
 			);	
 		});
 			
-		cancelBtn.click(function(){ // additional functionality added to the existing cancel button
-		  $.post(
+		cancelBtn.mouseup(function(){ // * 9/1/09 I Had to change this to MOUSEUP from CLICK because of a necessary unbind call in pkUI applied to the cancel button. 
+			// additional functionality added to the existing cancel button
+		  $.post( // User clicks CANCEL
 		    <?php echo json_encode(url_for('pkContextCMS/revert')) ?>,
 		    params.cancel,
 		    function(result)
