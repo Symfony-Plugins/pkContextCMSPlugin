@@ -507,6 +507,7 @@ margin-right: 0px;
 {
 padding: 0px 3px 0 3px;
 white-space: nowrap;
+cursor:text;
 }
 
 #pk-breadcrumb .pk-breadcrumb-slash
