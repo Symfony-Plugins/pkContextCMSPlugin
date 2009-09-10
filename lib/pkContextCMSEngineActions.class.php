@@ -3,6 +3,7 @@
 class pkContextCMSEngineActions extends sfActions
 {
   protected $page = null;
+  
   public function preExecute()
   {
     $request = $this->getRequest();
