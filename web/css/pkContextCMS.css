@@ -1297,6 +1297,7 @@ margin-bottom: 5px;
 float: right;
 position: relative;
 margin-left: 10px;
+cursor:move;
 }
 
 .pk-archived-page
