@@ -5,8 +5,6 @@
 <?php // subnav is redundant on the home page ?>
 <?php slot('pk-subnav', '') ?>
 
-hi there
-
 <?php pk_context_cms_area('body', array(
 	'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSSlideshow', 'pkContextCMSVideo'),
   'type_options' => array(
