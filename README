@@ -173,6 +173,13 @@ want to change these actions in apps/frontend/config/app.yml:
         actions_logout: "sfShibbolethAuth/logout"
         actions_login: "sfShibbolethAuth/login"
 
+You can also log in by going directly to `/login`. If you don't want to display the login link
+(for instance, because your site is edited only you), just shut that feature off:
+
+    all:
+      pkContextCMS:
+        login_link: false
+
 You will also need to enable the pkContextCMS modules in 
 your application's `settings.yml` file. Of course you may need
 other modules as well based on your application's needs:
@@ -455,7 +462,7 @@ application's modules folder:
 Now you can copy homeTemplate.php and defaultTemplate.php to this folder,
 or just start over from scratch. You can also copy _login.php if you don't
 like the way we present the login and logout options. The same applies
-to _tabs.php. We *do not recommend* altering the rest of the templates unless 
+to _tabs.php and _subnav.php. We *do not recommend* altering the rest of the templates unless 
 you have a clear understanding of their purpose and function and are
 willing to make ongoing changes when new releases are made. In general,
 if you can use CSS to match the behavior of our HTML to your needs,

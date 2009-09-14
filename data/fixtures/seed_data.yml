@@ -1,7 +1,7 @@
 pkContextCMSPage:
   home:
     slug: "/"
-    template: default
+    template: home
     is_published: true
     Areas:
       home_en_title:
