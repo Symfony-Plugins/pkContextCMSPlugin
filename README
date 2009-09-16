@@ -74,6 +74,8 @@ sample project via Subversion:
 
     svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
 
+Better yet, copy it to your own repository with [svnforeigncopy](https://sourceforge.net/projects/svnforeigncopy/) each time you want to start a new site. That's what we do. With svnforeigncopy you get an export of the cmstest project with the svn:ignore and svn:externals properties completely intact (although you don't get the project history).
+
 Then light up the folder `cmstest/web` as a virtualhost named cmstest via 
 MAMP, `httpd.conf` or whatever your testing environment requires.
 
