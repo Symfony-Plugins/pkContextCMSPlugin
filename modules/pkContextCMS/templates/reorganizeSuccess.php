@@ -4,17 +4,15 @@
 <?php sfContext::getInstance()->getResponse()->addJavascript('/pkContextCMSPlugin/js/jsTree/source/tree_component.js') ?>
 <?php sfContext::getInstance()->getResponse()->addStylesheet('/pkContextCMSPlugin/js/jsTree/source/tree_component.css') ?>
 
+<?php slot('tabs') ?>
+<?php end_slot() ?>
+
 <div id="pk-page-tree-container">
 
-<h2>Reorganize</h2>
+	<h3>Drag and drop pages to reorganize the site.</h3>
 
-<p>
-  Drag and drop pages to reorganize the site.
-</p>
+	<div id="tree"></div>
 
-<div id="tree">
-  
-</div>
 </div>
 
 <script type="text/javascript">
@@ -25,6 +23,11 @@ $(function() {
       <?php // Supports multiple roots so we have to specify a list ?>
       json: [ <?php echo json_encode($treeData) ?> ]
     },
+		ui: {
+			theme_path: "/pkContextCMSPlugin/js/jsTree/source/themes/",
+      theme_name: "punk",
+			context: false
+		},
     rules: {
       // Turn off most operations as we're only here to reorg the tree.
       // Allowing renames and deletes here is an interesting thought but
