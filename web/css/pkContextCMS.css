@@ -195,7 +195,8 @@ display: none;
 .pkContextCMSVideo .pk-messages,
 .pkContextCMSSlideshow .pk-messages,
 .pkContextCMSImage .pk-messages,
-.pkContextCMSText .pk-messages
+.pkContextCMSText .pk-messages,
+.pkContextCMSRawHTML .pk-messages
 {
 display: none;
 }
@@ -298,7 +299,8 @@ display: block;
 .pk-slot-is-editable.pkContextCMSRichText .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSText .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSBlogPost .pk-slot-content-container,
-.pk-slot-is-editable.pkContextCMSBlogCalendar .pk-slot-content-container
+.pk-slot-is-editable.pkContextCMSBlogCalendar .pk-slot-content-container,
+.pk-slot-is-editable.pkContextCMSRawHTML .pk-slot-content-container,
 {/* For certain slot types we don't want the buttons superimposed directly on the start (for instance, it's bad with text) */
 	padding-top: 22px !important;
 }
@@ -340,6 +342,11 @@ display: block;
 }
 
 .pk-slot .pkContextCMSTextSlot
+{
+width: 100%;
+}
+
+.pk-slot .pkContextCMSRawHTMLSlot
 {
 width: 100%;
 }

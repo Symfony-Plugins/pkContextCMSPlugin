@@ -182,6 +182,13 @@ pkContextCMSRichTextSlot:
     keyField: type
     keyValue: 'pkContextCMSRichText'
 
+pkContextCMSRawHTMLSlot:
+  inheritance:
+    extends: pkContextCMSSlot
+    type: column_aggregation
+    keyField: type
+    keyValue: 'pkContextCMSRawHTML'
+
 pkContextCMSAccess:
   tableName: pk_context_cms_access
   columns:
