@@ -11,14 +11,12 @@
 	</li>
 </ul>
 
-<?php echo textarea_tag("value", $value, 
-	html_entity_decode(strip_tags($value)),
-		array_merge(array("id" => "$id-value", 'class' => 'pkContextCMSRawHTMLSlot'), $options)) ?>
+<?php echo textarea_tag($value, html_entity_decode(strip_tags($value)),array('id' => $id.'-value', 'class' => 'pkContextCMSRawHTMLSlotTextarea', 'name' => $id.'-value', )); ?>
 
 <script type="text/javascript">
 	$(document).ready (function() {
-		$('textarea.pkContextCMSRawHTMLSlot').autogrow({
-			minHeight: 64,
+		$('textarea.pkContextCMSRawHTMLSlotTextarea').autogrow({
+			minHeight: 416,
 			lineHeight: 16
 		});
 	});
