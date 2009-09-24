@@ -1380,7 +1380,13 @@ Just call `link_to` exactly as you did before:
     
 If the current page is not an engine page matching the route in question, the pkContextCMS routing system will find the first engine page in the site that does match the route, and generate a link to that engine page. 
 
-This works very well as long as there is only one engine page per engine in the site, and therefore no ambiguity about where the link should go. Currently engine support is limited to one engine page per engine in any case. However, we are working on this limitation and hope to soon offer a way to specify a particular engine page as a destination for the link. 
+Note: if there is currently no engine page for the given engine, this will throw an exception and generate a 500 error. This makes sense: trying to generate a link to an engine page that doesn't exist is a lot like trying to use a route that doesn't exist. You can test to make sure the engine page exists like this:
+
+<?php if (pkContextCMSPageTable::getFirstEnginePage('enginetest')): ?>
+  <?php echo link_to('Bar', 'enginetest/bar') ?>
+<?php endif ?>
+
+Thissystem  works very well as long as there is only one engine page per engine in the site, and therefore no ambiguity about where the link should go. Currently engine support is limited to one engine page per engine in any case. However, we are working on this limitation and hope to soon offer a way to specify a particular engine page as a destination for the link. This will be useful in situations where you wish to instantiate the same engine more than once, possibly with page-specific settings. However, note that you can already have any number of "subpages" of your engine page using engine routes as described above. You can write a complete database-driven sub-application in an engine, with many sub-"pages." The only thing you currently can't do is insert that engine into two completely distinct portions of your CMS page tree.
 
 After executing a `symfony cc`, you will begin to see your new engine module as a choice in the new "Page Engine" dropdown menu in the page settings form. Select your engine and save your changes. The page will refresh and display your engine.  
 
