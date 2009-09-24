@@ -42,26 +42,30 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 //      // Make sure we pass the user on!
 //      return $parent->userHasPrivilege('edit', $user);
 //    }
-    // Caching for speed when answering the same query about the
-    // current user over and over again during the lifetime of
-    // a single request (to check editing privs on slots etc)
+
     if ($user === false)
     {
       $user = sfContext::getInstance()->getUser();
-      if (!isset($this->privileges[$privilege]))
-      {
-        $this->privileges[$privilege] = $this->userHasPrivilegeBody(
-          $privilege, $user);
-      }
-      return $this->privileges[$privilege];
     }
-    else
+
+    // per-user privilege caching. This ought to be overkill, but we need it as a band-aid 
+    // for the lack of Doctrine cache restart in Symfony functional testing restart().
+    // That is going to have other consequences for us too since we
+    // use various static class variables (and even if we behaved ourselves
+    // and used the singleton pattern there would still be one)
+    
+    $username = false;
+    if ($user->getGuardUser())
     {
-      // If we're asking about a specific user we presumably have
-      // something less frequent in mind
-      $this->userHasPrivilegeBody(
+      $username = $user->getGuardUser()->getUsername();
+    }
+    
+    if (!isset($this->privileges[$username][$privilege]))
+    {
+      $this->privileges[$username][$privilege] = $this->userHasPrivilegeBody(
         $privilege, $user);
     }
+    return $this->privileges[$username][$privilege];
   }
 
   protected function userHasPrivilegeBody($privilege, $user, $debug = false)
