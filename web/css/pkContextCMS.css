@@ -300,7 +300,7 @@ display: block;
 .pk-slot-is-editable.pkContextCMSText .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSBlogPost .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSBlogCalendar .pk-slot-content-container,
-.pk-slot-is-editable.pkContextCMSRawHTML .pk-slot-content-container,
+.pk-slot-is-editable.pkContextCMSRawHTML .pk-slot-content-container
 {/* For certain slot types we don't want the buttons superimposed directly on the start (for instance, it's bad with text) */
 	padding-top: 22px !important;
 }
