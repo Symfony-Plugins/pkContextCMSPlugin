@@ -307,6 +307,8 @@ display: block;
 .pk-slot-form
 {/* Creates space for buttons to sit on top of forms when logged-in-editing */
 	padding-top: 22px !important;
+	float: left;
+	width: 100%;
 }
 
 .pk-slot.pkContextCMSRichText h3,
@@ -349,6 +351,15 @@ width: 100%;
 .pk-slot .pkContextCMSRawHTMLSlot
 {
 width: 100%;
+}
+
+.pk-slot .pkContextCMSRawHTMLSlot .pk-slot-form textarea
+{
+	float: left;
+	width: 100%;
+	background: #f00;
+	border: 1px solid #333;
+	height: 400px;
 }
 
 .pkContextCMSSlideshow
