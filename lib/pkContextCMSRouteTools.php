@@ -69,6 +69,11 @@ class pkContextCMSRouteTools
     {
       $url = '';
     }
+    // Ditto for / followed by a query string (missed this before)
+    if (substr($url, 0, 2) === '/?')
+    {
+      $url = substr($url, 1);
+    }
     $pageUrl = $page->getUrl($absolute);
     // Strip controller off so it doesn't duplicate the controller in the 
     // URL we just generated. We could use the slug directly, but that would

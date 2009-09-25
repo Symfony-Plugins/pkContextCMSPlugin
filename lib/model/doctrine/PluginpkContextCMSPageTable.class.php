@@ -268,7 +268,8 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
       return self::$engineCachePage;
     }
     $urls = array();
-    $twig = $url;
+    // Remove any query string
+    $twig = preg_replace('/\?.*$/', '', $url);
     while (true)
     {
       if (($twig === '/') || (!strlen($twig)))
