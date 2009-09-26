@@ -2,6 +2,28 @@
 
 class pkContextCMSTools
 {
+  // ALL static variables must go here
+  
+  // We need a separate flag so that even a non-CMS page can
+  // restore its state (i.e. set the page back to null)
+  static private $global = false;
+  static private $globalCache = false;
+  static private $currentPage = null;
+  static private $savedCurrentPage = null;
+  static protected $globalButtons = false;
+  static private $allowSlotEditing = true;
+  
+  // Must reset ALL static variables to their initial state
+  static public function listenToSimulateNewRequestEvent(sfEvent $event)
+  {
+    self::$global = false;
+    self::$globalCache = false;
+    self::$currentPage = null;
+    self::$savedCurrentPage = null;
+    self::$globalButtons = false;
+    self::$allowSlotEditing = true;
+  }
+  
   static public function cultureOrDefault($culture = false)
   {
     if ($culture)
@@ -59,12 +81,7 @@ class pkContextCMSTools
     }
     return $routed_url;
   }
-  // We need a separate flag so that even a non-CMS page can
-  // restore its state (i.e. set the page back to null)
-  static private $global = false;
-  static private $globalCache = false;
-  static private $currentPage = null;
-  static private $savedCurrentPage = null;
+  
   static public function setCurrentPage($page)
   {
     self::$currentPage = $page;
@@ -254,8 +271,6 @@ class pkContextCMSTools
     }
   }
   
-  static protected $globalButtons = false;
-
   // To be called only in response to a pkContextCMS.getGlobalButtons event 
   static public function addGlobalButtons($array)
   {
@@ -323,7 +338,6 @@ class pkContextCMSTools
   // (Suppressing editing of slots on normal CMS pages is of course a bad idea,
   // because how else would you ever edit them?)
   
-  static private $allowSlotEditing = true;
   static public function setAllowSlotEditing($value)
   {
     self::$allowSlotEditing = $value;
