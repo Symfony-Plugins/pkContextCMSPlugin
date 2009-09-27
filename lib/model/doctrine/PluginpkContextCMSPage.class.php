@@ -790,9 +790,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       $newText = $params['slot']->getSearchText();
       $fullDiff = pkString::diff($oldText, $newText);
       $diff = '';
-      ob_start();
-      var_dump($fullDiff);
-      sfContext::getInstance()->getLogger()->info("GG: " . str_replace("\n", " ", ob_get_clean()));
       if (!empty($fullDiff['onlyin1']))
       {
         $diff .= '<strike>' . pkString::limitCharacters($fullDiff['onlyin1'][0], 20) . '</strike>';
@@ -845,7 +842,19 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     $area->latest_version++;
     $area->save();
-    pkContextCMSLuceneUpdateTable::requestUpdate($this);
+    if (sfConfig::get('app_pkContextCMS_defer_search_updates', false))
+    {
+      // Deferred updates are sometimes nice for performance...
+      pkContextCMSLuceneUpdateTable::requestUpdate($this);
+    }
+    else
+    {
+      // ... But the average developer hates cron.
+      // Without this the changes we just made aren't visible to getSearchText,
+      // we need to trigger a thorough recaching
+      pkContextCMSPageTable::retrieveByIdWithSlots($this->id);
+      $this->updateLuceneIndex();
+    }
     $this->end();
   }
   public function clearSlotCache()

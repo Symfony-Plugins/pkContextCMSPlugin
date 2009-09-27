@@ -50,8 +50,7 @@ pkContextCMSPlugin requires:
 * sfDoctrineGuardPlugin
 * pkToolkitPlugin 
 * PHP 5.2.4 or better with PDO (for Symfony)
-* Zend Search
-* cron or other scheduled task support (for search index updates)
+* The Zend framework, for search (minimal edition OK)
 
 Many users will also want pkMediaPlugin and pkMediaCMSSlotsPlugin.
 
@@ -102,9 +101,10 @@ site behaves when you're logged in. Start adding subpages, editing
 slots, adding slots to the multiple-slot content area... have a ball with it
 and send your comments to `tom@punkave.com`.
 
-For the new Lucene-based search features to work you will also need
-to set up a cron job. For the search index to be brought up to date
-every ten minutes, use:
+OPTIONAL: by default pages are reindexed for search purposes at the time
+edits are made. For performance reasons you might be happier deferring
+this to a cron job that runs every few minutes. If you want to take this
+approach, set up a cron job like this:
 
 0,10,20,30,40,50 * * * * /path/to/your/project/symfony pkContextCMS:update-lucene --env=env
 
@@ -112,11 +112,14 @@ Note the `--env` option. There is a separate index for each
 environment. On a development workstation, specify `--env=env`. In
 a production environment you might specify `--env=prod`.
 
-Synchronous lucene search index updates are for the birds. They slow
-down editing and create consistency problems with Doctrine's caching
-mechanism which are extremely difficult to debug. If cron jobs are a 
-problem for you, trigger this task via system() from a PHP page that
-is hit periodically.
+
+Then turn on the feature in app.yml:
+
+all:
+  pkContextCMS:
+    defer_search_updates: true
+
+This is a bit faster, but if you don't like cron, you don't have to enable it.
 
 That's the easy way. The notes that follow assume you're doing it 
 the hard way. (: 

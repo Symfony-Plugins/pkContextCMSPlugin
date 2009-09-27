@@ -412,7 +412,7 @@ class BasepkContextCMSActions extends sfActions
     {
       // We like to use input type="image" for presentation reasons, but it generates
       // ugly x and y parameters with click coordinates. Get rid of those and come back.
-      return $this->redirect(sfContext::getInstance()->getController()->genUrl('@search', true) . '?' .
+      return $this->redirect(sfContext::getInstance()->getController()->genUrl('pkContextCMS/search', true) . '?' .
     http_build_query(array("q" => $q)));
     }
     

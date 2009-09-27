@@ -24,7 +24,20 @@
 	<div id="pk-wrapper">
     <?php // Note that just about everything can be suppressed or replaced by setting a ?>
     <?php // Symfony slot. Use them - don't write zillions of layouts or do layout stuff ?>
-    <?php // in the template (except by setting a slot). ?>
+    <?php // in the template (except by setting a slot). To suppress one of these slots ?>
+    <?php // completely in one line of code, just do: slot('pk-whichever', '') ?>
+      
+    <?php if (has_slot('pk-search')): ?>
+      <?php include_slot('pk-search') ?>
+    <?php else: ?>
+      <div id="pk-search">
+        <form id="pk-search-global" action="<?php echo url_for('pkContextCMS/search') ?>" method="get" class="pk-search-form">
+          <input type="text" name="q" value="" class="pk-search-field"/> 
+          <input type="image" src="/pkContextCMSPlugin/images/pk-special-blank.gif" class="submit" value="Search Pages" />
+        </form>
+      </div>
+    <?php endif ?>
+    
     <?php if (has_slot('pk-header')): ?>
       <?php include_slot('pk-header') ?>
     <?php else: ?>
