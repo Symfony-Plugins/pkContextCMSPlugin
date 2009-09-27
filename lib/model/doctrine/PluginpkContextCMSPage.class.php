@@ -7,13 +7,36 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 {
   const NEXT_PERMID = -1;
   public $culture;
-  public $privileges;
+  
+  // Keep all cached information here for easy reference and inclusion 
+  // in the reset code in hydrate()
+  public $privilegesCache = null;
+  private $slotCache = false;
+  private $childrenCache = null;
+  private $childrenCacheLivingOnly = null;
+  private $childrenCacheSlot = null;
+  private $ancestorsCache = false;
+  private $parentCache = false;
+
+  public function hydrate(array $data, $overwriteLocalChanges = true)
+  {
+    // Purge all caches when Doctrine refreshes the object
+    $this->slotCache = false;
+    $this->privilegesCache = array();
+    $this->childrenCache = null;
+    $this->childrenCacheLivingOnly = null;
+    $this->childrenCacheSlot = null;
+    $this->ancestorsCache = false;
+    $this->parentCache = false;
+    return parent::hydrate($data, $overwriteLocalChanges);
+  }
+
   // Not a typo. Doctrine calls construct() for you as an alternative
   // to __construct(), which it won't let you override.
   public function construct()
   {
     $this->culture = pkContextCMSTools::getUserCulture();
-    $this->privileges = array();
+    $this->privilegesCache = array();
   }
   private function log($message)
   {
@@ -47,12 +70,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     {
       $user = sfContext::getInstance()->getUser();
     }
-
-    // per-user privilege caching. This ought to be overkill, but we need it as a band-aid 
-    // for the lack of Doctrine cache restart in Symfony functional testing restart().
-    // That is going to have other consequences for us too since we
-    // use various static class variables (and even if we behaved ourselves
-    // and used the singleton pattern there would still be one)
     
     $username = false;
     if ($user->getGuardUser())
@@ -60,12 +77,12 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       $username = $user->getGuardUser()->getUsername();
     }
     
-    if (!isset($this->privileges[$username][$privilege]))
+    if (!isset($this->privilegesCache[$username][$privilege]))
     {
-      $this->privileges[$username][$privilege] = $this->userHasPrivilegeBody(
+      $this->privilegesCache[$username][$privilege] = $this->userHasPrivilegeBody(
         $privilege, $user);
     }
-    return $this->privileges[$username][$privilege];
+    return $this->privilegesCache[$username][$privilege];
   }
 
   protected function userHasPrivilegeBody($privilege, $user, $debug = false)
@@ -212,7 +229,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   // newAreaVersion(name, action, params)
  
 
-  private $slotCache = false;
   private function populateSlotCache()
   {
     if ($this->slotCache === false)
@@ -406,9 +422,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return 0;
   }
 
-  private $childrenCache = null;
-  private $childrenCacheLivingOnly = null;
-  private $childrenCacheSlot = null;
   // Returns an array even when there are zero children.
   // Who in the world wants to special case that as if it
   // were the end of the world?
@@ -672,7 +685,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return pkContextCMSTools::urlForPage($this->getSlug(), $absolute);
   }
 
-  private $ancestorsCache = false;
   public function getAncestors()
   {
     // Home page has no ancestors; save a query on a popular page
@@ -951,8 +963,6 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
   }
  
-  private $parentCache = false;
-  
   // The parent object comes back with a populated title slot.
   // The other slots are NOT populated for performance reasons
   // (is there a scenario where this would be a problem?)
@@ -1070,4 +1080,5 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     return $peers;
   }
+  
 }
