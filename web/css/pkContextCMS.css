@@ -33,7 +33,7 @@ clear: both;
 z-index: 999;
 overflow: hidden;
 display: none;
-border-top: 10px solid #eee;
+border-top: 10px solid #ddd;
 border-bottom: 40px solid transparent;
 }
 
@@ -47,7 +47,7 @@ width: 920px;
 margin: 0;
 padding: 10px;
 clear: both;
-border: 10px solid #eee;
+border: 10px solid #ddd;
 border-top: 0;
 border-bottom: 0;
 background-color: #fff;
@@ -64,15 +64,15 @@ padding: 8px;
 
 a.pk-history-browser-all:hover
 {
-background-color: #eee;
+background-color: #ddd;
 }
 
 .pk-history-browser-crop
 {/*This CAN make history a scrollable box, sets width to be width of site */
 width: 940px;
 margin: 0;
-border: 10px solid #eee;
-border-top: 1px solid #eee;
+border: 10px solid #ddd;
+border-top: 1px solid #ddd;
 float: left;
 clear: both;
 }
@@ -81,7 +81,7 @@ clear: both;
 {
 width: 100%;
 table-layout: fixed;
-border-bottom: 1px solid #eee;
+border-bottom: 1px solid #ddd;
 font-size: 11px;
 color: #333;
 background-color: #fff;
@@ -91,12 +91,12 @@ background-color: #fff;
 {
 font-weight: bold;
 padding: 8px 4px;
-border-bottom: 1px solid #eee;
+border-bottom: 1px solid #ddd;
 }
 
 .pk-history-browser tbody tr:hover
 {
-background-color: #f0f0f0;
+background-color: #e2e2e2;
 }
 
 .pk-history-browser tbody td
@@ -110,7 +110,7 @@ padding: 0 4px;
 
 .pk-history-browser tfoot td
 {
-border-top: 1px solid #eee;
+border-top: 1px solid #ddd;
 /*	padding: 8px 4px;*/
 }
 
@@ -144,7 +144,7 @@ width: 100%;
 z-index: 999;
 background: #fff;
 color: #d4c;
-border-bottom: 1px solid #eee;
+border-bottom: 1px solid #ddd;
 }
 
 .pk-history-preview-notice div
@@ -334,7 +334,7 @@ display: none;
 
 .pk-slot.pkContextCMSRichText.pk-edit-view:hover
 {
-color: #999;
+color: #888;
 }
 
 .pk-slot.pkContextCMSRichText.pk-edit-view:hover .pk-controls,
@@ -380,7 +380,7 @@ position: relative;
 display: inline;
 float: left;
 width: 100%;
-border-bottom: 1px solid #eee;
+border-bottom: 1px solid #ddd;
 padding: 5px 0 2px 0;
 margin-bottom: 5px;
 clear: both;
@@ -535,9 +535,9 @@ color: #333;
 
 #pk-breadcrumb a.epc-rename-button:hover
 {
-background-color: #eee;
+background-color: #ddd;
 text-decoration: none;
-/*border-bottom: 1px solid #eee;*/
+/*border-bottom: 1px solid #ddd;*/
 }
 
 #pk-breadcrumb .epc-form
@@ -746,7 +746,7 @@ margin: 10px 0 0;
 padding: 0;
 color: #333;
 border-top: 1px solid #ddd;
-border-bottom: solid 10px #eee;
+border-bottom: solid 10px #ddd;
 }
 
 #pk-page-settings-form,
@@ -879,7 +879,7 @@ float: left;
 clear: both;
 width: 360px;
 font-size: 11px;
-color: #999;
+color: #888;
 margin-top: 10px;
 }
 
@@ -1002,14 +1002,14 @@ background-position: 0 -20px;
 	width: 118px;
 	height: 20px;
 	line-height: 20px;
-	border: 1px solid #eee;
+	border: 1px solid #ddd;
 	border-bottom: 0;
 	border-right: 0;
 }
 
 #pk-tab-navigation .pk-tab-nav-item.last
 {
-	border-right: 1px solid #eee;
+	border-right: 1px solid #ddd;
 }
 
 #pk-tab-navigation .pk-tab-nav-item a
@@ -1026,7 +1026,7 @@ background-position: 0 -20px;
 #pk-tab-navigation .pk-tab-nav-item.pk-current-page a,
 #pk-tab-navigation .pk-tab-nav-item a:hover
 {
-	background-color: #eee;
+	background-color: #ddd;
 	color:#000;
 }
 
@@ -1170,12 +1170,15 @@ cursor: pointer;
 .result-title
 {
 	font-size: 14px;
+	margin-bottom: 5px;
 }
 
 .result-url
 {
 font-size: 11px;
+margin-top: 5px;
 margin-bottom: 15px;
+color: #666;
 }
 
 /* [END] pkContextCMS SEARCH ==================================================================== */
@@ -1311,4 +1314,20 @@ text-decoration: line-through;
 .pk-logged-in-as span
 {
 	color: #666;
+}
+
+/* Home Template */
+
+/* Default Template */
+
+.pk-default #pk-content
+{
+	clear: none;
+	float: left;
+	width: auto;
+}
+
+.pk-default #pk-area-body
+{
+	width: 480px;
 }

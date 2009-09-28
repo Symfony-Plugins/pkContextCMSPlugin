@@ -15,7 +15,7 @@
 <?php pk_context_cms_area('sidebar', array(
 	'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSImage', 'pkContextCMSButton', 'pkContextCMSSlideshow', 'pkContextCMSVideo', 'pkContextCMSPDF'),
   'type_options' => array(
-		'pkContextCMSRichText' => array('tool' => 'Main'),
+		'pkContextCMSRichText' => array('tool' => 'Sidebar'),
 		'pkContextCMSImage' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),
 		'pkContextCMSButton' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),
 		'pkContextCMSSlideshow' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),
