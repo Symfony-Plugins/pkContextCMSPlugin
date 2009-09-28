@@ -1028,7 +1028,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function getSearchSummary()
   {
-    return pkString::limitWords($this->getSearchText(false), 100, "...");
+    return pkString::limitWords($this->getSearchText(false), sfConfig::get('app_pkContextCMS_search_summary_wordcount', 50), "...");
   }
 
   public function getSearchText($withTitle = true)

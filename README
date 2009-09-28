@@ -121,8 +121,15 @@ all:
 
 This is a bit faster, but if you don't like cron, you don't have to enable it.
 
-That's the easy way. The notes that follow assume you're doing it 
-the hard way. (: 
+You can also change the word count of search summaries:
+
+		all:
+		  pkContextCMS:
+		    search_summary_wordcount: 50
+
+
+That's the easy way to configure the CMS. The notes that follow assume you're doing it 
+the hard way, without starting with the cmstest project.
 
 * * *
 
