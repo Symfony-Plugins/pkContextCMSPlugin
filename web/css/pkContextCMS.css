@@ -1167,10 +1167,17 @@ cursor: pointer;
 	overflow:hidden;
 }
 
-.result-summary
+.result-title
 {
-margin-bottom: 10px;	
+	font-size: 14px;
 }
+
+.result-url
+{
+font-size: 11px;
+margin-bottom: 15px;
+}
+
 /* [END] pkContextCMS SEARCH ==================================================================== */
 
 

@@ -12,8 +12,8 @@
 	  <dt class="result-title <?php echo $result->class ?>">
 			<?php echo link_to($result->title, $url) ?>
 		</dt>
-		<dd class="result-url"><?php echo link_to($url, $url) ?></dd>
 	  <dd class="result-summary"><?php echo $result->summary ?></dd>
+		<dd class="result-url"><?php echo link_to($url, $url) ?></dd>
 	<?php endforeach ?>
 	</dl>
 
