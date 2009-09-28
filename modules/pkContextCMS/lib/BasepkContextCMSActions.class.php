@@ -438,7 +438,7 @@ class BasepkContextCMSActions extends sfActions
         }
       }
       $nvalue = $value;      
-      $nvalue->url = pkContextCMSTools::urlForPage($nvalue->slug, false);
+      $nvalue->url = pkContextCMSTools::urlForPage($nvalue->slug, true);
       $nvalue->class = 'pkContextCMSPage';
       $nvalues[] = $nvalue;
     }
