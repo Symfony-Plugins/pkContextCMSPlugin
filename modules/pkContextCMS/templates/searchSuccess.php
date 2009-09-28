@@ -6,7 +6,7 @@
 
 	<h2>Search: "<?php echo htmlspecialchars($sf_request->getParameter('q')) ?>"</h2>
 
-	<dl class="pk-context-cms-search-results">
+	<dl class="pk-search-results">
 	<?php foreach ($results as $result): ?>
 	  <?php $url = $result->url ?>
 	  <dt class="result-title <?php echo $result->class ?>">
