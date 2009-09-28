@@ -13,7 +13,7 @@
 			<?php echo link_to($result->title, $url) ?>
 		</dt>
 	  <dd class="result-summary"><?php echo $result->summary ?></dd>
-		<dd class="result-url"><?php echo link_to($url, $url) ?></dd>
+		<dd class="result-url"><?php echo $url ?></dd>
 	<?php endforeach ?>
 	</dl>
 
