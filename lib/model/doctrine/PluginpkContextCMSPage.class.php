@@ -723,6 +723,8 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $conn->commit();
   }
 
+  // SAVE ANY CHANGES to the actual page object FIRST before you call this method.
+
   // 20090505: you must pass valid HTML text (i.e. pre-escaped entities)
   public function setTitle($title)
   {
@@ -735,6 +737,8 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
         'slot' => $slot));
   }
 
+  // SAVE ANY CHANGES to the actual page object FIRST before you call this method.
+  
   public function newAreaVersion($name, $action, $params = false)
   {
     $diff = '';

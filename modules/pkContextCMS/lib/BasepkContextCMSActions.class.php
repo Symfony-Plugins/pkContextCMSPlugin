@@ -142,7 +142,6 @@ class BasepkContextCMSActions extends sfActions
     $this->flunkUnless($page->userHasPrivilege('edit|manage'));    
     // Rename never changes the slug, just the title
     $page->setTitle(htmlspecialchars($request->getParameter('title')));
-    $page->save();
     return $this->redirect($page->getUrl());
   }
 
@@ -214,8 +213,10 @@ class BasepkContextCMSActions extends sfActions
       // Unpublished pages don't show up in the breadcrumb trail,
       // and we don't have a UI for it yet anyway.
       $page->is_published = true;
-      $page->setTitle(htmlspecialchars($title));
+      // Must save the page BEFORE we call setTitle, which has the side effect of
+      // refreshing the page object
       $page->save();
+      $page->setTitle(htmlspecialchars($title));
       return $this->redirect($page->getUrl());
     }
   }
