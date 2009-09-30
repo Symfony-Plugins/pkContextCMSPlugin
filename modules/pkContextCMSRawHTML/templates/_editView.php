@@ -11,7 +11,8 @@
 	</li>
 </ul>
 
-<?php echo textarea_tag($value, html_entity_decode(strip_tags($value)),array('id' => $id.'-value', 'class' => 'pkContextCMSRawHTMLSlotTextarea', 'name' => 'value', )); ?>
+<?php // Value as-is, that's the point. textarea_tag will escape it once ?>
+<?php echo textarea_tag('value', $value, array('id' => $id.'-value', 'class' => 'pkContextCMSRawHTMLSlotTextarea')); ?>
 
 <script type="text/javascript">
 	$(document).ready (function() {
