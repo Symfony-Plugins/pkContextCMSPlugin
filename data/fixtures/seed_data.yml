@@ -36,7 +36,7 @@ pkContextCMSPage:
         template: default
         is_published: true
         Areas:
-          home_en_title:
+          about_en_title:
             name: title
             culture: en
             latest_version: 1
