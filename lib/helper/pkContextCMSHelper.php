@@ -23,7 +23,8 @@ function _pk_context_cms_required_assets()
   $response->addJavascript('/pkToolkitPlugin/js/pkUI.js');
   $response->addJavascript('/pkToolkitPlugin/js/pkControls.js');
   $response->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI
-  $response->addJavascript('/pkToolkitPlugin/js/jquery.autogrow.js');
+  $response->addJavascript('/pkToolkitPlugin/js/jquery.autogrow.js'); // Autogrowing Textareas
+  $response->addJavascript('/pkToolkitPlugin/js/jquery.pulse.js'); // Ajax update highlight a color
   $webDir = sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin');
   $response->addJavascript("$webDir/js/pkContextCMS.js");
 
