@@ -11,7 +11,7 @@
 	</li>
 </ul>
 
-<?php echo textarea_tag($value, html_entity_decode(strip_tags($value)),array('id' => $id.'-value', 'class' => 'pkContextCMSRawHTMLSlotTextarea', 'name' => $id.'-value', )); ?>
+<?php echo textarea_tag($value, html_entity_decode(strip_tags($value)),array('id' => $id.'-value', 'class' => 'pkContextCMSRawHTMLSlotTextarea', 'name' => 'value', )); ?>
 
 <script type="text/javascript">
 	$(document).ready (function() {
