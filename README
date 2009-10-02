@@ -52,7 +52,7 @@ pkContextCMSPlugin requires:
 * PHP 5.2.4 or better with PDO (for Symfony)
 * The Zend framework, for search (minimal edition OK)
 
-Many users will also want pkMediaPlugin and pkMediaCMSSlotsPlugin.
+Most users will also want pkMediaPlugin and pkMediaCMSSlotsPlugin.
 
 pkContextCMSPlugin is compatible with sfShibbolethPlugin (the 1.2 trunk version).
 
@@ -90,6 +90,21 @@ you'll need to copy the provided file
 config/require-core.php.example to config/require-core.php and edit
 the require path in that file to suit your needs. This shouldn't be
 necessary if Symfony 1.2 is in your PHP include path.
+
+Now set the permissions of data/pk_writable and web/uploads and their
+children so that they are writable by the web server. In a typical
+virtual hosting or dedicated hosting environment, the following commands
+are correct. This is necessary because svn does not store permissions:
+
+		chmod -R 777 data/pk-writable
+		chmod -R 777 web/uploads
+		chmod -R 777 cache
+		chmod -R 777 logs
+
+More subtle permissions are possible. However be aware that most
+"shared hosting" environments are inherently insecure for a variety
+of reasons. Before criticizing the "777 approach," be sure
+to [read this article on shared hosting and Symfony](http://trac.symfony-project.org/wiki/SharedHostingNotSecure).
 
 Next, build the search index for the first time. It doesn't live in
 the database so it needs to be done separately: 
