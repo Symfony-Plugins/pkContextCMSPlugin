@@ -91,10 +91,10 @@ config/require-core.php.example to config/require-core.php and edit
 the require path in that file to suit your needs. This shouldn't be
 necessary if Symfony 1.2 is in your PHP include path.
 
-Now set the permissions of data/pk_writable and web/uploads and their
-children so that they are writable by the web server. In a typical
+Now set the permissions of data folders so that they are writable by the web server. In a typical
 virtual hosting or dedicated hosting environment, the following commands
-are correct. This is necessary because svn does not store permissions:
+are correct. (Important note: checking out cmstest from svn does not handle this
+for you, svn does not store permissions.)
 
 		chmod -R 777 data/pk-writable
 		chmod -R 777 web/uploads
