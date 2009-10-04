@@ -125,14 +125,20 @@ Next, cd to the `cmstest` folder and run this command:
 This will create a sample database from the fixtures files.
 
 Now set the permissions of data folders so that they are writable by the web 
-server. In a typical virtual hosting or dedicated hosting environment, the 
-following commands are correct. (Important note: checking out cmstest from 
-svn does not handle this for you! svn does not store permissions.)
+server. Note that svn does NOT store permissions so you can NOT assume they are
+already correct:
+
+./symfony project:permissions
+
+Our pkToolkitPlugin extends project:permissions for you to include the
+data/writable folder in addition to the standard web/uploads, cache and log folders.)
+
+If you prefer you can do this manually:
 
 		chmod -R 777 data/pk_writable
 		chmod -R 777 web/uploads
 		chmod -R 777 cache
-		chmod -R 777 logs
+		chmod -R 777 log
 
 More subtle permissions are possible. However be aware that most
 "shared hosting" environments are inherently insecure for a variety
