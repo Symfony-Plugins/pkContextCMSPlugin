@@ -323,6 +323,23 @@ clear: both;
 margin: 0 0 10px 0;
 }
 
+.pk-slot.pkContextCMSRichText table
+{
+	border: 1px solid #ccc;
+	border-bottom: none;
+	border-right: none;
+	margin: 5px 0;
+}
+
+.pk-slot.pkContextCMSRichText table th,
+.pk-slot.pkContextCMSRichText table td
+{
+	border-bottom: 1px solid #ccc;
+	border-right: 1px solid #ccc	;
+	padding: 3px;
+	line-height: 1.2;
+}
+
 .pk-slot.pkContextCMSRichText.pk-edit-view
 {
 }
