@@ -1,17 +1,24 @@
-## READ THIS NOTE FIRST ##
+# pkContextCMSPlugin #
+
+## READ THIS FIRST ##
+
+Did you download this plugin from the Symfony plugins site? Depending on your needs, you're probably doing it the hard way. Please read the "Installation" section!
+
+## Before You Begin ##
 
 This is a technology preview release of pkContextCMS. Although the
 CMS already works quite well and we have released production sites
 based on it, certain aspects are still maturing. 
 
+We strongly recommend that you follow the instructions in this
+document which permit you to check out or copy a complete project from svn 
+rather than wrestling with the pear package dependencies yourself. You can check
+out our cmstest project directly as a sandbox, or copy it with our
+svnforeigncopy script to start your own version-controlled project.
+*This is how we start new sites of our own*, so you will get maximum
+support following this approach.
 
-Internationalization is also supported for the `title_prefix` option
-and will be supported for all future options that expect user-readable content
-in the `app.yml` file.
-
-Enjoy!
-
-## pkContextCMSPlugin ##
+## Overview ##
 
 pkContextCMSPlugin is a CMS (Content Management System) based on the
 philosophy that editing should be done "in context" whenever possible.
@@ -20,10 +27,6 @@ pkContextCMSPlugin is heavily inspired by, and borrows a little code
 and numerous ideas from, sfSimpleCMSPlugin. The changes here are
 dramatic enough that a separate plugin makes more sense, but we want
 to acknowledge this right up front.
-
-Editing works 100% in Firefox, Safari and Internet Explorer 7+. 
-Editing is expressly not supported in Internet Explorer 6. Of course,
-browsing the site as a user works just fine in Internet Explorer 6.
 
 Standard features of pkContextCMSPlugin include version control
 for every content slot and the ability to undelete pages, as well as 
@@ -39,6 +42,12 @@ with editing privileges are able to create more than one slot. This
 makes it easy to interleave text with multimedia and other custom
 slot types without the need to develop a custom PHP template for
 every page.
+
+## Supported Browsers ##
+
+Editing works 100% in Firefox, Safari and Internet Explorer 7+. 
+Editing is expressly not supported in Internet Explorer 6. Of course,
+browsing the site as a user works just fine in Internet Explorer 6.
 
 ## Requirements ##
 
@@ -57,10 +66,13 @@ The following must be installed on your system:
 * Optional, for PDF slots: ghostscript
 
 See pkMediaPlugin/README and pkImageConverterPlugin/README for more
-information about installing netpbm and ghostscript, and/or
-enabling GD in app.yml as an alternative. *You must do one of these
-things before media slots will work.* (A few truly excellent hosting 
-companies may already have everything in place for you.)
+information about installing netpbm and ghostscript. A few truly excellent hosting 
+companies may already have these in place. If you have a Virtual Private Server
+(and you should, shared hosting is very insecure), you can most likely install
+netpbm and ghostscript with a few simple commands like `sudo apt-get install netpbm`
+and `sudo apt-get install ghotscript`.
+
+If you are choosing a Linux distribution, we recommend Ubuntu. Ubuntu includes a sufficiently modern version of PHP right out of the box. If you are using Red Hat Enterprise Linux or CentOS, you will need to upgrade PHP to version 5.2.x on your own. This is unfortunate and Red Hat really ought to get a move on and fix it.
 
 ### PHP Libraries ###
 
@@ -71,8 +83,9 @@ companies may already have everything in place for you.)
 * Doctrine (standard with Symfony 1.2)
 * The Zend framework, for search (provided with cmstest)
 
-Most users will also want pkMediaPlugin and pkMediaCMSSlotsPlugin,
-which are also included in cmstest.
+Note that all of the components "provided with cmstest" are provided as svn externals, which means they update automatically when you type `svn update`. Wherever possible we've pinned these to stable branches, not development versions.
+
+Most users will also want pkMediaPlugin and pkMediaCMSSlotsPlugin, which are also included in cmstest.
 
 Optional: pkContextCMSPlugin is compatible with sfShibbolethPlugin (the 1.2 trunk version) and sfDoctrineApplyPlugin.
 
@@ -83,23 +96,24 @@ To fix that, add this line to the `.profile` file in your home directory:
 
     export PATH="/Applications/MAMP/Library/bin:/Applications/MAMP/bin/php5/bin:$PATH"
 
-Of course your production server will ultimately need to meet the
-same requirements with regard to PHP and PDO.
+Of course your production server will ultimately need to meet the same requirements with regard to PHP and PDO.
+
+The use of Microsoft Windows as a hosting environment has not been tested but may work reasonably well now that netpbm is no longer mandatory for media slots.
 
 ## Installation ##
 
 For the time being, we recommend that you check out our
-sample project via Subversion:
+sample project via Subversion. You don't need to be an svn expert
+to use this command:
 
     svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
 
-Better yet, copy it to your own repository with [svnforeigncopy](https://sourceforge.net/projects/svnforeigncopy/) each time you want to start a new site. That's what we do. With svnforeigncopy you get an export of the cmstest project with the svn:ignore and svn:externals properties completely intact (although you don't get the project history).
+Better yet, copy it to your own repository with [svnforeigncopy](https://sourceforge.net/projects/svnforeigncopy/) each time you want to start a new site. That's what we do. With `svnforeigncopy` you get a copy of the cmstest project in your own svn repository, with the `svn:ignore` and `svn:externals` properties completely intact. You don't get the project history, but since 99% of the code is in the externally referenced plugins and libraries, that's really not a big deal.
 
 This will give you all of the necessary plugins and the ability to
 `svn update` the whole shebang with one command.
 
-Then light up the folder `cmstest/web` as a virtualhost named cmstest via 
-MAMP, `httpd.conf` or whatever your testing environment requires.
+Next light up the folder `cmstest/web` as a virtualhost named `cmstest` via MAMP, `httpd.conf` or whatever your testing environment requires. As with any Symfony project you'll want to allow full Apache overrides in this folder. See `config/vhost.sample` for tips on virtual host configuration for Apache.
 
 Now create the `config/databases.yml` file, which must contain
 database settings appropriate to *your* system. Copy the file
@@ -114,7 +128,7 @@ need to change these credentials.
 
 At this point you're ready to use the checkout of Symfony's 1.2.x branch
 that is included in the project. If you want to use a different installation
-of Symfony (note that only 1.2.x is likely to work), copy 
+of Symfony, such as a shared install for many sites (note that only 1.2.x is likely to work), copy 
 config/require-core.php.example to config/require-core.php and edit the 
 paths in that file. 
 
@@ -131,7 +145,7 @@ already correct:
 ./symfony project:permissions
 
 Our pkToolkitPlugin extends project:permissions for you to include the
-data/writable folder in addition to the standard web/uploads, cache and log folders.)
+data/writable folder in addition to the standard web/uploads, cache and log folders. Handy, isn't it?
 
 If you prefer you can do this manually:
 
@@ -145,7 +159,7 @@ More subtle permissions are possible. However be aware that most
 of reasons. Before criticizing the "777 approach," be sure
 to [read this article on shared hosting and Symfony](http://trac.symfony-project.org/wiki/SharedHostingNotSecure).
 
-Next, build the search index for the first time. It doesn't live in
+Next, build the site's search index for the first time (yes, search is included). It doesn't live in
 the database so it needs to be done separately. After this, you won't
 need to run this command again unless you are deploying to a new
 environment such as a staging or production server:
@@ -176,7 +190,7 @@ all:
   pkContextCMS:
     defer_search_updates: true
 
-This is a bit faster, but if you don't like cron, you don't have to enable it.
+This speeds up editing a bit. But if you don't like cron, you don't have to enable it.
 
 You can also change the word count of search summaries:
 
@@ -184,16 +198,11 @@ You can also change the word count of search summaries:
 		  pkContextCMS:
 		    search_summary_wordcount: 50
 
-
 That's the easy way to configure the CMS. The notes that follow assume you're doing it the hard way, without starting from the cmstest project.
 
 * * *
 
-Install the above plug-ins in your Symfony 1.2 project. We strongly encourage
-you to do so using svn externals.
-If you are using that approach you will need to be sure to create the 
-necessary symbolic links from your projects web/ folder 
-to to the web/ folders of the plugins that have one. For best results use
+Install the above plug-ins in your Symfony 1.2 project. We strongly encourage you to do so using svn externals. If you are using that approach you will need to be sure to create the necessary symbolic links from your projects web/ folder to to the web/ folders of the plugins that have one. For best results use
 a relative path:
 
     cd web
