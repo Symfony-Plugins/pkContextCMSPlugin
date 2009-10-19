@@ -20,28 +20,13 @@ support following this approach.
 
 ## Overview ##
 
-pkContextCMSPlugin is a CMS (Content Management System) based on the
-philosophy that editing should be done "in context" whenever possible.
+pkContextCMSPlugin is the core of a suite of plugins that make up the Apostrophe Content Management System. The philosophy of Apostrophe is that editing should be done "in context" whenever possible.
 
-pkContextCMSPlugin is heavily inspired by, and borrows a little code
-and numerous ideas from, sfSimpleCMSPlugin. The changes here are
-dramatic enough that a separate plugin makes more sense, but we want
-to acknowledge this right up front.
+pkContextCMSPlugin is heavily inspired by and borrows a little code and numerous ideas from sfSimpleCMSPlugin. The changes here are dramatic enough that a separate plugin makes more sense, but we felt it important to acknowledge this up front. sfSimpleCMSPlugin allowed users to double-click text frames and edit them in place. We have expanded this idea to allow for a number of content slots to be edited without leaving the page.
 
-Standard features of pkContextCMSPlugin include version control
-for every content slot and the ability to undelete pages, as well as 
-in-context editing of all kinds: not just text and rich text editing, 
-but also in-context addition, deletion, reordering and retitling of pages. 
-When a user is logged in with appropriate privileges, the breadcrumb trail 
-and side navigation areas become editing tools, neatly extending the 
-metaphors they already implement rather than requiring a second interface
-solely for editing purposes. 
+Standard features of pkContextCMSPlugin include version control for all content slots, locking pages for authenticated users only, and in-context addition/deletion/reordering/retitling of pages. When a user is logged in with appropriate privileges the breadcrumb trail and sub-navigation areas become editing tools, neatly extending the metaphors they already implement rather than requiring a second interface solely for editing purposes.
 
-pkContextCMSPlugin also introduces "areas," vertical columns in which users 
-with editing privileges are able to create more than one slot. This 
-makes it easy to interleave text with multimedia and other custom
-slot types without the need to develop a custom PHP template for
-every page.
+pkContextCMSPlugin also introduces "areas," or vertical columns, which users with editing privileges are able to create more than one slot. This makes it easy to interleave text with multimedia and other custom slot types without the need to develop a custom PHP template for every page.
 
 ## Supported Browsers ##
 
@@ -1489,4 +1474,4 @@ Also be sure to [follow our Twitter account](http://twitter.com/apostrophenow).
 
 And be sure to [visit the Apostrophe Now site](http://www.apostrophenow.com/).
 
-Apostrophe Now is our CMS product based on the open-source pkContextCMS plugin.
+Apostrophe is our CMS product based on the open-source pkContextCMS plugin.
