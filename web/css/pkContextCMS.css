@@ -304,6 +304,7 @@ display: block;
 {/* For certain slot types we don't want the buttons superimposed directly on the start (for instance, it's bad with text) */
 	padding-top: 22px !important;
 }
+
 .pk-slot-form
 {/* Creates space for buttons to sit on top of forms when logged-in-editing */
 	padding-top: 22px !important;
