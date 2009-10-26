@@ -294,15 +294,15 @@ list-style: inside disc;
 display: block;
 }
 
-/* TBB: some specific slot types should not superimpose the buttons on the content.
-  But ALL standard editing forms should not. */
+/* TBB: some specific slot types should not superimpose the buttons on the content. But ALL standard editing forms should not. */
+/* For certain slot types we don't want the buttons superimposed directly on the start (for instance, it's bad with text) */
 .pk-slot-is-editable.pkContextCMSRichText .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSText .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSBlogPost .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSBlogCalendar .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSRawHTML .pk-slot-content-container
-{/* For certain slot types we don't want the buttons superimposed directly on the start (for instance, it's bad with text) */
-	padding-top: 22px !important;
+{
+	padding: 22px 0 0 0 !important;
 }
 
 .pk-slot-form
