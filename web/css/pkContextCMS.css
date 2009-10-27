@@ -369,9 +369,12 @@ width: 100%;
 textarea.pkContextCMSRawHTMLSlotTextarea
 {
 	float: left;
-	width: 100%;
+	width: 99%;
 	border: 1px solid #333;
+	padding: 2px;
 	height: 200px;
+	font: 12px/1.2 Monospace;
+	background: #efefef;
 }
 
 .pkContextCMSSlideshow
