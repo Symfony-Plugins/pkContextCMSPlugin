@@ -30,12 +30,7 @@
     <?php if (has_slot('pk-search')): ?>
       <?php include_slot('pk-search') ?>
     <?php else: ?>
-      <div id="pk-search">
-        <form id="pk-search-global" action="<?php echo url_for('pkContextCMS/search') ?>" method="get" class="pk-search-form">
-          <input type="text" name="q" value="" class="pk-search-field"/> 
-          <input type="image" src="/pkContextCMSPlugin/images/pk-special-blank.gif" class="submit" value="Search Pages" />
-        </form>
-      </div>
+      <?php include_partial('pkContextCMS/search') ?>
     <?php endif ?>
     
     <?php if (has_slot('pk-header')): ?>
