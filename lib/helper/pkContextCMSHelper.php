@@ -97,6 +97,29 @@ function pk_context_cms_slot_body($name, $type, $permid, $options, $validationDa
   }
 }
 
+function pk_context_cms_navtree($depth = null)
+{
+  $page = pkContextCMSTools::getCurrentPage();
+  $children = $page->getTreeInfo(true, $depth);
+  return pk_context_cms_navtree_body($children);
+}
+
+function pk_context_cms_navtree_body($children)
+{
+  $s = "<ul>\n";
+  foreach ($children as $info)
+  {
+    $s .= '<li>' . link_to($info['title'], pkContextCMSTools::urlForPage($info['slug']));
+    if (isset($info['children']))
+    {
+      $s .= pk_context_cms_navtree_body($info['children']);
+    }
+    $s .= "</li>\n";
+  }
+  $s .= "</ul>\n";
+  return $s;
+}
+
 // Keeping this functionality in a helper is very questionable.
 // It should probably be a component.
 

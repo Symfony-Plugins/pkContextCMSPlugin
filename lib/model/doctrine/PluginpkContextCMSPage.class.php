@@ -28,6 +28,10 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $this->childrenCacheSlot = null;
     $this->ancestorsCache = false;
     $this->parentCache = false;
+    $this->ancestorsInfo = null;
+    $this->peerInfo = null;
+    $this->childrenInfo = null;
+    $this->tabsInfo = null;
     return parent::hydrate($data, $overwriteLocalChanges);
   }
 
@@ -422,6 +426,10 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return 0;
   }
 
+  // This is not the most efficient way to learn about the child pages of the current page.
+  // See getChildrenInfo. This method is now primarily for backwards compatibility and relatively rare cases where 
+  // you need a slot other than the title.
+    
   // Returns an array even when there are zero children.
   // Who in the world wants to special case that as if it
   // were the end of the world?
@@ -502,16 +510,22 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return $children;
   }
 
-  // A highly optimized function which returns an associative array as follows:
-  //
-  // array('ancestors' => array(id => array('title' => title, 'slug' => slug, 'view_is_secure' => boolean, 'archived' => boolean)),
-  //   'tabs' => ... array in the same format ...,
-  //   'children' => ... array in the same format ...,
-  //   'peers' => ... array in the same format ...
-  //
-  // This is enough information to generate most types of navigation without hydrating any page objects or
-  // incurring DQL overhead.
-    
+  // Optimized methods returning information about related pages.
+  
+  // All of these methods return an array of associative arrays, as follows:
+  
+  // array(
+  //   array('id' => page1id, 'title' => page1title, 'slug' => page1slug, 'view_is_secure' => bool, 'archived' => bool, 'level' => level),
+  //   array('id' => page2id, 'title' => page2title, 'slug' => page2slug, 'view_is_secure' => bool, 'archived' => bool, 'level' => level) ...
+  // )
+  
+  // The getTreeInfo and getAccordionInfo methods return nested arrays. If a page has children that
+  // are suitable to return, then the associative array for that page will have a 'children' key, and
+  // the value will be an array of child pages, which may have children of their own. If a page has
+  // no children there will not be a 'children' key (you may test isset($info['children'])).
+  
+  // To generate a URL for a page use: pkContextCMSTools::urlForPage($info['slug'])
+  
   protected $ancestorsInfo;
   
   public function getAncestorsInfo()
@@ -584,6 +598,50 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return $this->tabsInfo;
   }
   
+  // If $depth is null we get all of the descendants
+  public function getTreeInfo($livingOnly = true, $depth = null)
+  {
+    // Recursively builds a page tree. If a page has children, the info array for that
+    // page will have a 'children' element containing an array of info arrays for its
+    // children, etc.
+    
+    // Efficiently fetches only to the appropriate depth
+    $infos = $this->getDescendantsInfo($livingOnly, $depth);
+    $offset = 0;
+    $level = 0;
+    return $this->getTreeInfoBody($this->lft, $this->rgt, $infos, $offset, $level + 1, $depth);
+  }
+  
+  protected function getTreeInfoBody($lft, $rgt, $infos, &$offset, $level, $depth)
+  {
+    $count = count($infos);
+    $result = array();
+    if ($depth === 0)
+    {
+      // Limit depth 
+      return $result;
+    }
+    while ($offset < $count)
+    {      
+      $info = $infos[$offset];
+      if (($info['lft'] <= $lft) || ($info['rgt'] >= $rgt))
+      {
+        break;
+      }
+      $offset++;
+      $children = $this->getTreeInfoBody($info['lft'], $info['rgt'], $infos, $offset, $level + 1, isset($depth) ? ($depth - 1) : null);
+      if (count($children))
+      {
+        $info['children'] = $children;
+      }
+      $result[] = $info;
+    }
+    return $result;
+  }
+  
+  // Used by the reorganize feature. Return value is compatible with jstree. 
+  // See getTreeInfo for something more appropriate for front end navigation
+  
   public function getTreeJSONReady($livingOnly = true)
   {
     // Recursively builds a page tree ready to be JSON-encoded and sent to
@@ -595,7 +653,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     $tree = array("attributes" => array("id" => "tree-" . $this->id),
       "data" => $this->getTitle(),
       "state" => 'open',
-      "children" => $this->getTreeChildren($this->lft, $this->rgt, $infos, $offset, $level + 1)
+      "children" => $this->getTreeJSONReadyBody($this->lft, $this->rgt, $infos, $offset, $level + 1)
     );
     if (!count($tree['children']))
     {
@@ -607,8 +665,8 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
   return $tree;
   }
-  
-  protected function getTreeChildren($lft, $rgt, $infos, &$offset, $level)
+
+  protected function getTreeJSONReadyBody($lft, $rgt, $infos, &$offset, $level)
   {
     $count = count($infos);
     $result = array();
@@ -623,7 +681,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       $item = array(
         "attributes" => array("id" => "tree-" . $info['id']), 
         "data" => $info['title'],
-        "children" => $this->getTreeChildren($info['lft'], $info['rgt'], $infos, $offset, $level + 1)
+        "children" => $this->getTreeJSONReadyBody($info['lft'], $info['rgt'], $infos, $offset, $level + 1)
       );
       if (!count($item['children']))
       {
@@ -638,16 +696,24 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return $result;
   }
   
-  // Low level access to all info for all descendants. For an interface that
-  // gives you back a hierarchy see getTree. 
-  protected function getDescendantsInfo($livingOnly = true)
+  // Low level access to all info for all descendants. You probably don't want this. For an interface that
+  // gives you back a hierarchy see getTreeInfo. 
+  protected function getDescendantsInfo($livingOnly = true, $depth = null)
   {
-    return $this->getPagesInfo($livingOnly, '( p.lft > ' . $this->lft . ' AND p.rgt < ' . $this->rgt . ' )');
+    $where = '( p.lft > ' . $this->lft . ' AND p.rgt < ' . $this->rgt . ' )';
+    if (isset($depth))
+    {
+      $where = '(' . $where . ' AND (p.level <= ' . ($this->level + $depth) . '))';
+    }
+    return $this->getPagesInfo($livingOnly, $where);
   }
   
-  // TODO: we could be grabbing ancestors, children and tabs in one shot. Peers are tougher
+  // This is the low level query method used to implement the above. You won't call this directly
+  // unless you're implementing a new type of query for related pages
+  
   protected function getPagesInfo($livingOnly = true, $where)
   {
+    // Raw PDO for performance
     $connection = Doctrine_Manager::connection();
     $pdo = $connection->getDbh();
     $query = "SELECT p.id, p.slug, p.view_is_secure, p.archived, p.lft, p.rgt, p.level, s.value AS title FROM pk_context_cms_page p
