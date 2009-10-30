@@ -111,6 +111,15 @@ If you are testing with MAMP the default settings
 just fine for you. If you are testing on a staging server you will
 need to change these credentials.
 
+Also create your `properties.ini` file:
+
+    cp config/properties.ini.sample config/properties.ini
+
+In Symfony `properties.ini` contains information about hosts that a project can be synced to, in addition
+to the name of the project. The sample properties.ini file just defines the name of the project. You'll
+add information there when and if you choose to sync the project to a production server via project:deploy.
+See the Symfony documentation for more information about that technique.
+
 At this point you're ready to use the checkout of Symfony's 1.2.x branch
 that is included in the project. If you want to use a different installation
 of Symfony, such as a shared install for many sites (note that only 1.2.x is likely to work), copy 
