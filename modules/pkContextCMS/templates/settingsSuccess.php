@@ -126,13 +126,13 @@
 <script type="text/javascript" charset="utf-8">
 	function pkUpdateEngineAndTemplate()
 	{
-	  if (!$('#settings_engine').val().length)
+	  if (!$('#pk_context_cms_settings_settings_engine').val().length)
 	  {
-	    $('#settings_template').show();
+	    $('#pk_context_cms_settings_settings_template').show();
 	  }
 	  else
 	  {
-	    $('#settings_template').hide();
+	    $('#pk_context_cms_settings_settings_template').hide();
 	  }
 	}
 	pkUpdateEngineAndTemplate();

@@ -52,6 +52,14 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
 
   public function userHasPrivilege($privilege, $user = false)
   {
+    // Individual pages can be conveniently locked for 
+    // viewing purposes on an otherwise public site. This is
+    // implemented as a separate permission. 
+    if (($privilege === 'view') && $this->view_is_secure)
+    {
+      $privilege = 'view_locked';
+    }
+    
     // This was nice logic for granting delete privileges if you
     // have the privilege of editing the parent of the page. 
     // A good idea, but not what the client wants. We've gone
@@ -80,6 +88,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     {
       $username = $user->getGuardUser()->getUsername();
     }
+    
     
     if (!isset($this->privilegesCache[$username][$privilege]))
     {
@@ -132,7 +141,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
           "app_pkContextCMS_$privilege" . "_sufficient_group", false);
       $candidateGroup = sfConfig::get(
           "app_pkContextCMS_$privilege" . "_candidate_group", false);
-      // By default users must log in to do anything except view
+      // By default users must log in to do anything, except for viewing an unlocked page
       $loginRequired = sfConfig::get(
           "app_pkContextCMS_$privilege" . "_login_required", 
           ($privilege === 'view' ? false : true));
@@ -141,20 +150,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       // privilege, anyone can do it...
       if (!$loginRequired)
       {
-        // Except for rule 2a: individual pages can be conveniently locked for 
-        // viewing purposes on an otherwise public site
-        if (($privilege === 'view') && $this->view_is_secure)
-        {
-          if ($user->isAuthenticated())
-          {
-            return true;
-          }
-          continue;
-        } 
-        else
-        {
-          return true;
-        }
+        return true;
       }
 
       // Corollary of rule 2: if login IS required and you're not

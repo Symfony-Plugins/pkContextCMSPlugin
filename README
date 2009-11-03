@@ -773,8 +773,15 @@ in the CMS, use the following setting in `app.yml`:
 
 To require the user to log in before accessing a particular page,
 just navigate to that page as a user with editing privileges
-and click on the "lock" icon. Locked pages are only accessible
-to logged-in users.
+and click on the "lock" icon. 
+
+By default, locked pages are only accessible to logged-in users. Of course, on some sites this is too permissive, especially when users are allowed to create their own accounts without further approval. In such situations you can set up different credentials to access the pages. To require the `view_locked` credential to view locked pages, use the following app.yml setting:
+
+		all:
+		  pkContextCMS:
+		    view_locked_sufficient_credentials: view_locked
+
+Then grant the `view_locked` permission to the appropriate sfGuard groups, and you'll be able to distinguish user-created accounts from invited guests.
 
 ### Requiring Special Credentials to Edit Pages ###
 
@@ -844,16 +851,16 @@ Note that the pulldown list of possible editors can be quite long
 if there are thousands of people with accounts on your site! This
 is why we recommend setting up groups as described above.
 
-### On/Off: Hiding Pages, by Choice and By Default ###
+### PublishingPages, by Choice and By Default ###
 
-pkContextCMS offers an "on/off" toggle under "manage page settings."
-Pages that are turned off are completely invisible to users who do not
-have editing credentials for them; a user without appropriate privileges
+pkContextCMS offers a "published/unpublished" toggle under "manage page settings."
+Pages that are unpublished are completely invisible to users who do not
+have at least the candidate credentials to be an editor; a user without appropriate privileges
 gets a 404 not found error just as if the page did not exist. In most cases
 you should use this in preference to actually deleting the page because the
 content is still available if you choose to bring it back later.
 
-By default all new pkContextCMS pages are in the "on" state.
+By default all new pkContextCMS pages are in the "published" state.
 If you need to approach the matter more conservatively, you can easily
 change this with the following `app.yml` setting:
 
