@@ -650,6 +650,13 @@ first slot and save it.
 Add more slots and you'll find that you are also able to delete them
 and reorder them at will.
 
+By default new slots appear at the top of an area. If you don't like this,
+you can change it for your entire site via `app.yml`:
+
+		all:
+		  pkContextCMS:
+		    new_slots_top: false
+
 An area has just one version control button for the entire area. This
 is because creating, deleting, and reordering slots are themselves
 actions that can be undone through version control.
@@ -666,7 +673,7 @@ associative array of options. The `allowed_types` option allows us to
 specify a list of slot types that are allowed in this particular area.
 
 In addition, you can pass options to the slots of each type, much as
-you would when insertin a single slot:
+you would when inserting a single slot:
 
     pk_context_cms_include_area("sidebar",
       array("allowed_types" => array("pkContextCMSText", "myCustomType"),

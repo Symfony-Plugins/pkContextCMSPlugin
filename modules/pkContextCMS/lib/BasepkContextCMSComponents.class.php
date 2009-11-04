@@ -79,7 +79,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
   public function executeArea()
   {
     $this->page = pkContextCMSTools::getCurrentPage();
-    $this->slots = $this->page->getArea($this->name, $this->addSlot, true);
+    $this->slots = $this->page->getArea($this->name, $this->addSlot, sfConfig::get('app_pkContextCMS_new_slots_top', true));
     $this->editable = $this->page->userHasPrivilege('edit');
     $user = $this->getUser();
     // Clean this up for nicer templates

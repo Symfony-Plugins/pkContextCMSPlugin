@@ -244,7 +244,6 @@ class BasepkContextCMSActions extends sfActions
 
     // TODO: validate the user's choice of slot type against the
     // allowed slots for this area, not just the allowed slots globally.
-    // The problem is that 
     // There is very little harm in this as slots rarely have
     // security implications, but custom slots someday might.
     if (!in_array($this->type, array_keys(pkContextCMSTools::getSlotTypeOptions($options))))

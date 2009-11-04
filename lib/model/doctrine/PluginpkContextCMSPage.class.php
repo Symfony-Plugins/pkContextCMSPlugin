@@ -721,7 +721,10 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     if ($livingOnly)
     {
       // Watch out, p.archived IS NULL in some older dbs
-      $whereClauses[] = '(p.archived = false OR p.archived IS NULL)';
+      
+      // = FALSE is not SQL92 correct. IS FALSE is. And so it works in SQLite. Learn something
+      // new every day. 
+      $whereClauses[] = '(p.archived IS FALSE OR p.archived IS NULL)';
     }
     $whereClauses[] = $where;
     $query .= "WHERE " . implode(' AND ', $whereClauses);
