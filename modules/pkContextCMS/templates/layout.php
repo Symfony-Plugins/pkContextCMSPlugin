@@ -61,13 +61,9 @@
 		<div id="pk-content">
 			<?php echo $sf_data->getRaw('sf_content') ?>
 		</div>
-
-    <?php if (has_slot('pk-footer')): ?>
-      <?php include_slot('pk-footer') ?>
-    <?php else: ?>
-	    <?php pk_context_cms_slot('footer', 'pkContextCMSRichText', array("global" => true)) ?>
-    <?php endif ?>
-        
+	
+	  <?php include_partial('pkContextCMS/footer') ?>
+	          
 	</div>
 
 </body>
