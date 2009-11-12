@@ -1298,6 +1298,31 @@ text-decoration: line-through;
 }
 
 /* == */
+/* ==  attribution footer ==================================================================== */
+/* == */
+
+.pk-attribution
+{
+	float:left;
+	display:inline;
+	line-height:16px;
+	padding-left:20px;
+	color:#666;
+	background: url(/images/apostrophe.png) no-repeat top left;
+}
+
+.pk-attribution a
+{
+	color:#0000ff;
+	text-decoration:none;
+}
+
+.pk-attribution a:hover
+{
+	text-decoration:underline;
+}
+
+/* == */
 /* ==  style for bundled layout.php ==================================================================== */
 /* == */
 
