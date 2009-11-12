@@ -1305,10 +1305,12 @@ text-decoration: line-through;
 {
 	float:left;
 	display:inline;
-	line-height:16px;
+	line-height:10px;
+	padding-bottom:6px;
 	padding-left:20px;
 	color:#666;
-	background: url(/images/apostrophe.png) no-repeat top left;
+	font-size:11px;
+	background: url(/pkContextCMSPlugin/images/apostrophe.png) no-repeat top left;
 }
 
 .pk-attribution a
