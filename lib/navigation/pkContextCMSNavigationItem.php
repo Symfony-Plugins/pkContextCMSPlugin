@@ -11,11 +11,16 @@ class pkContextCMSNavigationItem
   protected $children = array();
   protected $absoluteDepth;
   protected $relativeDepth;
+  public $ancestorOfCurrentPage = false;
+  public $peerOfAncestorOfCurrentPage = false;
+  public $peerOfCurrentPage = false;
 
-  public function __construct($name, $url, $options = array(), $children = array())
+  public function __construct($pageInfo, $url, $options = array(), $children = array())
   {
-    $this->name = $name;
+    $this->name = $pageInfo['title'];
     $this->url = $url;
+    $this->lft = $pageInfo['lft'];
+    $this->rgt = $pageInfo['rgt'];
     
     $this->options = $options;
     $this->first = isset($this->options['first']) ? $this->options['first'] : '';
@@ -60,7 +65,7 @@ class pkContextCMSNavigationItem
   
   public function hasChildren()
   {
-    return isset($this->children);
+    return count($this->children) > 0;
   }
   
   public function setRelativeDepth($relativeDepth)
@@ -86,6 +91,29 @@ class pkContextCMSNavigationItem
   public function isAncestor(pkContextCMSPage $page)
   {
     return ($page->lft > $this->lft && $page->rgt < $this->rgt)? true : false;
+  }
+  
+  public function isDescendant(pkContextCMSPage $page, $offset=null)
+  {
+    if($this->lft > $page->lft && $this->rgt < $page->rgt)
+    {
+      if(isset($offset))
+      {
+        return $page->getLevel() + $offset >= $this->getAbsoluteDepth(); 
+      }
+      return true;
+    }
+    return false;
+  }
+  
+  public function isAncestorOfCurrentPage()
+  {
+    return $ancestorOfCurrentPage;
+  }
+  
+  public function isAncestorPeerOfCurrentPage()
+  {
+    return $peerOfAncestorOfCurrentPage; 
   }
   
 }

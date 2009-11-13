@@ -19,7 +19,7 @@ abstract class pkContextCMSNavigation
     $this->setOptions($options);
 
     $this->initialize();
-    $this->buildPageTree($page, $this->getOption('maxDepth'));
+    $this->buildPageTree($page, null);
   }
 
   public function initialize()
@@ -37,10 +37,10 @@ abstract class pkContextCMSNavigation
    */
   public function buildNavigationItem($pages, $pageInfo, $pos)
   {
-    return new pkContextCMSNavigationItem($pageInfo['title'], pkContextCMSTools::urlForPage($pageInfo['slug']), array(
+    return new pkContextCMSNavigationItem($pageInfo, pkContextCMSTools::urlForPage($pageInfo['slug']), array(
       'first' => (($pos == 0) ? true : false),
       'last' => (($pos == count($pages) - 1) ? true : false),
-      'current' => (($this->getPage()->getSlug() === $pageInfo['slug']) ? true : false)
+      'current' => ((pkContextCMSTools::getCurrentPage() === $pageInfo['slug']) ? true : false)
     ));
   }
   

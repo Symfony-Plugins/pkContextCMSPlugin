@@ -5,7 +5,7 @@ class pkContextCMSNavigationTabs extends pkContextCMSNavigation
   /**
    * @return array of pkContextNavigationItem objects
    */
-  public function buildPageTree()
+   public function buildPageTree(pkContextCMSPage $page, $maxDepth=null)
   {
     $children = $this->getPage()->getTabsInfo($this->getLivingOnly());
     $items = array();

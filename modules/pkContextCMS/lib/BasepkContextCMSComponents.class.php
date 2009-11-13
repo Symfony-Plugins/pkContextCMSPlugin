@@ -179,9 +179,10 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
     {
       $this->classes .= $this->options['classes'];
     }
-    
+    $this->nest = 0;
     // The type of the navigation also is used for styling
     $this->classes .= ' ' . $this->type;
     $this->navigation = $this->navigation->getItems();
+    
   }
 }
