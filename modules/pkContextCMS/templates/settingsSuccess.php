@@ -91,38 +91,6 @@
 	</ul>
 
 </form>
-<?php // Allows a page to be moved up or down in the hierarchy. ?>
-<?php // This feature works but the UI currently leaves much to be desired. ?>
-<?php if (sfConfig::get('app_pkContextCMS_up_and_down', false)): ?>
-  <?php if ($page->userHasPrivilege('move-up') || $page->userHasPrivilege('move-down')): ?>
-    <div class="pk-page-settings-move">
-      <h4>Move the Page</h4>
-      <p>Note: to move a page among its peers, just drag and drop that page in the side nav or tabs.</p>
-      <?php if ($page->userHasPrivilege('move-up')): ?>
-        <?php echo link_to("Up One Level", "pkContextCMS/moveUp?id=" . $page->id, array("class" => "pk-btn")) ?>
-      <?php endif ?>
-      <?php if ($page->userHasPrivilege('move-down')): ?>
-        <?php $peerOptions = $page->getPeersAsOptionsArray() ?>
-        <?php if (count($peerOptions)): ?>
-          <?php echo jq_link_to_function("Down One Level", "$('#pk-page-settings-move-down-form').show(); $('#pk-page-settings-move-down-button').hide()", array("id" => "pk-page-settings-move-down-button")) ?>
-          <form method="POST" id="pk-page-settings-move-down-form" style="display: none" action="<?php echo url_for('pkContextCMS/moveDown') ?>">
-            <input type="hidden" name="id" value="<?php echo $page->id ?>" />
-            <label>New Parent:</label>
-            <?php echo select_tag('peer', options_for_select($page->getPeersAsOptionsArray())) ?>
-            <?php echo submit_tag("Move", array("id" => "pk-page-move-down-submit")) ?>
-      			<?php echo jq_link_to_function('Cancel', '
-      				$("#pk-page-settings-move-down-form").hide(); 
-      				$("#pk-page-settings-move-down-button").show();', 
-      				array(
-      					'class' => 'pk-btn icon pk-cancel', 
-      					'title' => 'cancel', 
-      				)) ?>
-      		</form>
-      	<?php endif ?>
-      <?php endif ?>
-    </div>
-  <?php endif ?>
-<?php endif ?>
 <script type="text/javascript" charset="utf-8">
 	function pkUpdateEngineAndTemplate()
 	{
@@ -144,4 +112,4 @@
 	<?php //                    betweenLinks: " " }                       ?>
 	pkRadioSelect('.pk-radio-select', { });
 	$('#pk-page-settings').show();
-	</script>
+</script>

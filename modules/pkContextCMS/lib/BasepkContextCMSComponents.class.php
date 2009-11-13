@@ -17,10 +17,9 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
   }
   public function executeSubnav(sfRequest $request)
   {
-    // This really should be a well-written component,
-    // but for the moment it just invokes specialized helpers
-    // from the template
+
   }
+  
   public function executeTabs(sfRequest $request)
   {
     $this->page = pkContextCMSTools::getCurrentPage();
@@ -44,6 +43,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
     }
     $this->draggable = $this->page->userHasPrivilege('edit');
   }
+  
   public function executeSlot()
   {
     $this->setup();
@@ -141,5 +141,47 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
         $this->slots[1] = $this->page->createSlot($this->options['type']);
       }
     }
+  }
+  public function executeNavigation(sfRequest $request)
+  {
+    // What page are we starting from?
+    // Navigation on non-CMS pages is relative to the home page
+    
+    if (!$this->page = pkContextCMSTools::getCurrentPage())
+    {
+      $this->page = pkContextCMSPageTable::retrieveBySlug('/');
+    }
+    if(!$this->navigationPage = pkContextCMSPageTable::retrieveBySlug($this->navigationSlug))
+    {
+      $this->navigationPage = $this->page;
+    }
+
+    // We build different page trees depending on the navigation type that was requested
+    if (!$this->type)
+    {
+      $this->type = 'tree';
+    }
+    
+    $class = 'pkContextCMSNavigation'.ucfirst($this->type);
+    
+    if (!class_exists($class))
+    {
+      throw new sfException(sprintf('Navigation type "%s" does not exist.', $class));
+    }
+
+    $this->navigation = new $class($this->navigationPage, $this->options);
+        
+    $this->draggable = $this->page->userHasPrivilege('edit');
+    
+    // Users can pass class names to the navigation <ul>
+    $this->classes = '';
+    if (isset($this->options['classes']))
+    {
+      $this->classes .= $this->options['classes'];
+    }
+    
+    // The type of the navigation also is used for styling
+    $this->classes .= ' ' . $this->type;
+    $this->navigation = $this->navigation->getItems();
   }
 }

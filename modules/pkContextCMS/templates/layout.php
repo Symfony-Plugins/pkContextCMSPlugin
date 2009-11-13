@@ -63,7 +63,6 @@
 		</div>
 	
 	  <?php include_partial('pkContextCMS/footer') ?>
-	          
 	</div>
 
 </body>

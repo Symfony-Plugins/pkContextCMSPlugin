@@ -635,6 +635,85 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     return $result;
   }
   
+  
+  // Accordion nav 
+  // Always starts with the children of the root and comes down to the level of this page's children,
+  // listing peers of this page's ancestors at every level. That is:
+  
+  // Home
+  //   One
+  //     1a
+  //     1b
+  //       1bx  <-- the current page
+  //         1bxA
+  //         ibxB
+  //     1c
+  //   Two
+  
+  // Note that children of Two, 1a, and 1c are NOT returned. Only the siblings of
+  // the current page's ancestors, the current page and its siblings, and the immediate
+  // children of the current page are returned. For a full tree use getTreeInfo().
+  
+  public function getAccordionInfo($livingOnly = true, $depth = null)
+  {
+    // As far as I can tell there is no super-elegant, single-query way to do this
+    // without fetching a lot of extra pages. So do a peer fetch at each level.
+    
+    // First build an array of arrays listing the peers at each level
+    
+    $ancestors = $this->getAncestorsInfo();
+    $result = array();
+    // Ancestor levels
+    foreach ($ancestors as $ancestor)
+    {
+      $lineage[] = $ancestor['id'];
+      if ($ancestor['level'] == 0)
+      {
+        $result[] = array($ancestor);
+      }
+      else
+      {
+        // TODO: this is inefficient, come up with a way to call getPeerInfo for an
+        // alternate ID without fetching that entire page
+        $result[] = pkContextCMSPageTable::retrieveBySlug($ancestor['slug'])->getPeerInfo();
+      }
+    }
+    // Current page peers level
+    $result[] = $this->getPeerInfo();
+    $lineage[] = $this->id;
+    // Current page children level
+    $result[] = $this->getChildrenInfo();
+    
+    // Now fix it up to be a properly nested array like that
+    // returned by getTreeInfo(). On each pass take a reference
+    // to the child that will own the children of the next pass
+    $accordion = $result[0][0];
+    $current = &$accordion;
+    for ($i = 0; ($i < (count($result) - 1)); $i++)
+    {
+      $current['children'] = $result[$i + 1];
+      if ($i + 1 < count($lineage))
+      {
+        // We've already started returning the kids as a flat array so 
+        // we need to scan for it unfortunately. This entire method could
+        // use more attention to performance
+        foreach ($current['children'] as &$child)
+        {
+          if ($child['id'] == $lineage[$i + 1])
+          {
+            $current = &$child;
+            break;
+          }
+        }
+      }
+    }
+    
+    // Don't return the home page itself, start with the tabs.
+    // This is consistent with getTreeInfo() which should simplify implementations.
+    // It's easy to add the home page in at a higher level if desired.
+    return $accordion['children'];
+  }
+
   // Used by the reorganize feature. Return value is compatible with jstree. 
   // See getTreeInfo for something more appropriate for front end navigation
   
@@ -738,7 +817,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     return $results;
   }
-  
+ 
   public function hasChildren($livingOnly = true)
   {
     // not as inefficient as it looks because of the caching feature

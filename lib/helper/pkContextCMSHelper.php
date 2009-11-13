@@ -120,6 +120,13 @@ function pk_context_cms_navtree_body($children)
   return $s;
 }
 
+function pk_context_cms_navaccordion()
+{
+  $page = pkContextCMSTools::getCurrentPage();
+  $children = $page->getAccordionInfo(true);
+  return pk_context_cms_navtree_body($children);
+}
+
 // Keeping this functionality in a helper is very questionable.
 // It should probably be a component.
 
