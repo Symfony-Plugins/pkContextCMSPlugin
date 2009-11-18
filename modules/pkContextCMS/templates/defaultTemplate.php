@@ -10,7 +10,7 @@
 		'pkContextCMSButton' => array('width' => 598, 'flexHeight' => true, 'resizeType' => 's'),
 		'pkContextCMSVideo' => array('width' => 598, 'flexHeight' => true, 'resizeType' => 's'),		
 		'pkContextCMSSlideshow' => array("width" => 598, "flexHeight" => true),
-		'pkContextCMSPDF' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),		
+		'pkContextCMSPDF' => array('width' => 598, 'flexHeight' => true, 'resizeType' => 's'),		
 	))) ?>
 	
 <?php pk_context_cms_area('sidebar', array(
