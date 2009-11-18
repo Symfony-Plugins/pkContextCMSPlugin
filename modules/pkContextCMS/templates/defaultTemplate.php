@@ -8,6 +8,7 @@
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
 		'pkContextCMSImage' => array('width' => 598, 'flexHeight' => true, 'resizeType' => 's'),
 		'pkContextCMSButton' => array('width' => 598, 'flexHeight' => true, 'resizeType' => 's'),
+		'pkContextCMSVideo' => array('width' => 598, 'flexHeight' => true, 'resizeType' => 's'),		
 		'pkContextCMSSlideshow' => array("width" => 598, "flexHeight" => true),
 		'pkContextCMSPDF' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),		
 	))) ?>
@@ -18,6 +19,7 @@
 		'pkContextCMSRichText' => array('tool' => 'Sidebar'),
 		'pkContextCMSImage' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),
 		'pkContextCMSButton' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),
+		'pkContextCMSVideo' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),				
 		'pkContextCMSSlideshow' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),
 		'pkContextCMSPDF' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),		
 	))) ?>
