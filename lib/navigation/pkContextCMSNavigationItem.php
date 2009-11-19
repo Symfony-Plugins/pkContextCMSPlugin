@@ -8,7 +8,11 @@ class pkContextCMSNavigationItem
   protected $last = false;
   protected $current = false;
   protected $options = array();
+  
+  protected $parent;
   protected $children = array();
+  protected $peers = array();
+  
   protected $absoluteDepth;
   protected $relativeDepth;
   public $ancestorOfCurrentPage = false;
@@ -31,6 +35,11 @@ class pkContextCMSNavigationItem
   public function getName()
   {
     return $this->name;
+  }
+  
+public function setName($name)
+  {
+    return $this->name = $name;
   }
   
   public function getUrl()
@@ -90,7 +99,7 @@ class pkContextCMSNavigationItem
   
   public function isAncestor(pkContextCMSPage $page)
   {
-    return ($page->lft > $this->lft && $page->rgt < $this->rgt)? true : false;
+    return ($this->lft < $page->lft && $this->rgt > $page->rgt)? true : false;
   }
   
   public function isDescendant(pkContextCMSPage $page, $offset=null)
@@ -114,6 +123,27 @@ class pkContextCMSNavigationItem
   public function isAncestorPeerOfCurrentPage()
   {
     return $peerOfAncestorOfCurrentPage; 
+  }
+  
+  public function getPeers(){
+    if(isset($this->parent))
+    {
+      $this->parent->getChildren();
+    }
+    else
+      return null;
+  }
+  
+  public function setPeers($peers){
+    $this->peers = $peers;
+  }
+  
+  public function getParent(){
+    return $this->parent;
+  }
+  
+  public function setParent($parent){
+    $this->parent = $parent;
   }
   
 }
