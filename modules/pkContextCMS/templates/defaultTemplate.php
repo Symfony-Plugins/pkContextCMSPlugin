@@ -3,7 +3,7 @@
 <?php slot('body_class') ?>pk-default<?php end_slot() ?>
 
 <?php pk_context_cms_area('body', array(
-	'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSImage', 'pkContextCMSButton', 'pkContextCMSSlideshow', 'pkContextCMSVideo', 'pkContextCMSPDF'),
+	'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSImage', 'pkContextCMSButton', 'pkContextCMSSlideshow', 'pkContextCMSVideo', 'pkContextCMSPDF', 'pkContextCMSRawHTML'),
   'type_options' => array(
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
 		'pkContextCMSImage' => array('width' => 598, 'flexHeight' => true, 'resizeType' => 's'),
@@ -14,7 +14,7 @@
 	))) ?>
 	
 <?php pk_context_cms_area('sidebar', array(
-	'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSImage', 'pkContextCMSButton', 'pkContextCMSSlideshow', 'pkContextCMSVideo', 'pkContextCMSPDF'),
+	'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSImage', 'pkContextCMSButton', 'pkContextCMSSlideshow', 'pkContextCMSVideo', 'pkContextCMSPDF', 'pkContextCMSRawHTML'),
   'type_options' => array(
 		'pkContextCMSRichText' => array('tool' => 'Sidebar'),
 		'pkContextCMSImage' => array('width' => 200, 'flexHeight' => true, 'resizeType' => 's'),
