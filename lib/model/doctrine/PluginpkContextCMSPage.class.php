@@ -805,6 +805,8 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       // new every day. 
       $whereClauses[] = '(p.archived IS FALSE OR p.archived IS NULL)';
     }
+    // Pay attention to the current culture. Thanks to virtualize
+    $whereClauses[] =  '(a.culture = ' . $connection->quote($this->getCulture()) . ')';
     $whereClauses[] = $where;
     $query .= "WHERE " . implode(' AND ', $whereClauses);
     $query .= " ORDER BY p.lft";
