@@ -17,7 +17,7 @@ pkContextCMSPage:
       autoincrement: true
     slug:
       type: string(255)
-      unique: yes
+      unique: true
     template:
       type: string(100)
     # Not currently used
