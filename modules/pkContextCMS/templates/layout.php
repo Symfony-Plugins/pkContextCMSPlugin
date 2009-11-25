@@ -9,6 +9,9 @@
 	<?php include_http_metas() ?>
 	<?php include_metas() ?>
 	<?php include_title() ?>
+	<?php // 1.3 and up don't do this automatically (no common filter) ?>
+	<?php include_javascripts() ?>
+  <?php include_stylesheets() ?>
 	<link rel="shortcut icon" href="/favicon.ico" />
 		
 </head>
