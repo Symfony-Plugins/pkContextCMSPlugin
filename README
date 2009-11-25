@@ -46,7 +46,7 @@ starting out in this way.
 The following must be installed on your system:
 
 * PHP 5.2.4 or better, with a PDO driver for MySQL
-* MySQL (pkContextCMS uses the FIELD() function)
+* MySQL (tested), SQLite (tested), or another relational database supported by PDO and Doctrine
 * For the media features: netpbm (recommended), or GD support in PHP
 * Optional, for PDF slots: ghostscript
 
@@ -1394,6 +1394,8 @@ Engines should always be used when you find yourself wishing to create a tree of
 
 To create a pkContextCMS engine, begin by creating an ordinary Symfony module. Feel free to test its functionality normally at this point. Then change the parent class from `sfActions` to `pkContextCMSEngineActions`. 
 
+NOTE: if your actions class has a `preExecute` method, be sure to call `parent::preExecute` from that method. Otherwise it will not work as an engine.
+
 Now, create routes for all of the actions of your module, or a catch-all route for all of them. Make sure you give these routes the `pkContextCMSRoute` class in `routing.yml`. The following are sample routes for a module called `enginetest`:
 
     # Engine rules must precede any catch-all rules
@@ -1424,6 +1426,16 @@ You can also use more complex rules to avoid writing a separate rule for each ac
       url: /:action
       param: { module: enginetest }
       class: pkContextCMSRoute
+
+You can also use Doctrine routes. Configure them as you normally would, but set the class name to pkContextCMSDoctrineRoute:
+
+		pk_context_cms_event_show:
+		  url:     /:slug
+		  param:   { module: pkContextCMSEvent, action: show }
+		  options: { model: Event, type: object }
+		  class:   pkContextCMSDoctrineRoute
+		  requirements: { slug: '[\w-]+' }
+
 
 In general, you may use all of the usual features available to Symfony routes.
 
