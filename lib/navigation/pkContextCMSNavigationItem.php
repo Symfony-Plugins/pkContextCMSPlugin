@@ -4,6 +4,7 @@ class pkContextCMSNavigationItem
 {
   protected $name = '';
   protected $url = '';
+  protected $slug = '';
   protected $first = false;
   protected $last = false;
   protected $current = false;
@@ -25,6 +26,8 @@ class pkContextCMSNavigationItem
     $this->url = $url;
     $this->lft = $pageInfo['lft'];
     $this->rgt = $pageInfo['rgt'];
+    $this->slug = $pageInfo['slug'];
+    $this->id = $pageInfo['id'];
     
     $this->options = $options;
     $this->first = isset($this->options['first']) ? $this->options['first'] : '';
@@ -37,7 +40,7 @@ class pkContextCMSNavigationItem
     return $this->name;
   }
   
-public function setName($name)
+  public function setName($name)
   {
     return $this->name = $name;
   }
@@ -113,6 +116,11 @@ public function setName($name)
       return true;
     }
     return false;
+  }
+  
+  public function isPeer($slug)
+  {
+    return substr($this->slug, 0, strrpos($this->slug, "/")+1) == substr($slug, 0, strrpos($slug, "/")+1);
   }
   
   public function isAncestorOfCurrentPage()
