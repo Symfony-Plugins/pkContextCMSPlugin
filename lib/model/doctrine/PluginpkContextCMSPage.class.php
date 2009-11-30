@@ -602,13 +602,18 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // children, etc.
     
     // Efficiently fetches only to the appropriate depth
-    $infos = $this->getDescendantsInfo($livingOnly, $depth);
+
+    // Sometimes trees will have enabled children of disabled parents. When
+    // we don't want disabled pages, we have to exclude those pages too, so we'll
+    // do the exclusion at a higher level, not in the SQL query
+
+    $infos = $this->getDescendantsInfo(false, $depth);
     $offset = 0;
     $level = 0;
-    return $this->getTreeInfoBody($this->lft, $this->rgt, $infos, $offset, $level + 1, $depth);
+    return $this->getTreeInfoBody($this->lft, $this->rgt, $infos, $offset, $level + 1, $depth, $livingOnly);
   }
   
-  protected function getTreeInfoBody($lft, $rgt, $infos, &$offset, $level, $depth)
+  protected function getTreeInfoBody($lft, $rgt, $infos, &$offset, $level, $depth, $livingOnly)
   {
     $count = count($infos);
     $result = array();
@@ -625,12 +630,19 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
         break;
       }
       $offset++;
-      $children = $this->getTreeInfoBody($info['lft'], $info['rgt'], $infos, $offset, $level + 1, isset($depth) ? ($depth - 1) : null);
+      $children = $this->getTreeInfoBody($info['lft'], $info['rgt'], $infos, $offset, $level + 1, isset($depth) ? ($depth - 1) : null, $livingOnly);
       if (count($children))
       {
         $info['children'] = $children;
       }
-      $result[] = $info;
+      if ($livingOnly && isset($info['archived']) && $info['archived'])
+      {
+        continue;
+      }
+      else
+      {
+        $result[] = $info;
+      }
     }
     return $result;
   }
@@ -660,7 +672,10 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // without fetching a lot of extra pages. So do a peer fetch at each level.
     
     // First build an array of arrays listing the peers at each level
-    
+
+    // If you have enabled children of archived ancestors and you don't
+    // want the ancestors to show up, you probably shouldn't be using
+    // an accordion contro. in the first place
     $ancestors = $this->getAncestorsInfo();
     $result = array();
     // Ancestor levels
@@ -675,14 +690,14 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       {
         // TODO: this is inefficient, come up with a way to call getPeerInfo for an
         // alternate ID without fetching that entire page
-        $result[] = pkContextCMSPageTable::retrieveBySlug($ancestor['slug'])->getPeerInfo();
+        $result[] = pkContextCMSPageTable::retrieveBySlug($ancestor['slug'])->getPeerInfo($livingOnly);
       }
     }
     // Current page peers level
-    $result[] = $this->getPeerInfo();
+    $result[] = $this->getPeerInfo($livingOnly);
     $lineage[] = $this->id;
     // Current page children level
-    $result[] = $this->getChildrenInfo();
+    $result[] = $this->getChildrenInfo($livingOnly);
     
     // Now fix it up to be a properly nested array like that
     // returned by getTreeInfo(). On each pass take a reference
@@ -722,13 +737,17 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // Recursively builds a page tree ready to be JSON-encoded and sent to
     // the jsTree object (yes this is rather specific to jsTree for the model layer,
     // but this would be a reasonable input format for any JS tree implementation).
-    $infos = $this->getDescendantsInfo($livingOnly);
+    
+    // Sometimes trees will have enabled children of archived parents. When
+    // we don't want disabled pages, we have to exclude those pages too, so we'll
+    // do the exclusion at a higher level, not in the SQL query
+    $infos = $this->getDescendantsInfo(false);
     $offset = 0;
     $level = 0;
     $tree = array("attributes" => array("id" => "tree-" . $this->id),
       "data" => $this->getTitle(),
       "state" => 'open',
-      "children" => $this->getTreeJSONReadyBody($this->lft, $this->rgt, $infos, $offset, $level + 1)
+      "children" => $this->getTreeJSONReadyBody($this->lft, $this->rgt, $infos, $offset, $level + 1, $livingOnly)
     );
     if (!count($tree['children']))
     {
@@ -741,7 +760,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
   return $tree;
   }
 
-  protected function getTreeJSONReadyBody($lft, $rgt, $infos, &$offset, $level)
+  protected function getTreeJSONReadyBody($lft, $rgt, $infos, &$offset, $level, $livingOnly)
   {
     $count = count($infos);
     $result = array();
@@ -756,7 +775,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       $item = array(
         "attributes" => array("id" => "tree-" . $info['id']), 
         "data" => $info['title'],
-        "children" => $this->getTreeJSONReadyBody($info['lft'], $info['rgt'], $infos, $offset, $level + 1)
+        "children" => $this->getTreeJSONReadyBody($info['lft'], $info['rgt'], $infos, $offset, $level + 1, $livingOnly)
       );
       if (!count($item['children']))
       {
@@ -766,7 +785,14 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       {
         $item['state'] = ($level < 2) ? "open" : "closed";
       }
-      $result[] = $item;
+      if ($livingOnly && isset($info['archived']) && $info['archived'])
+      {
+        // Skip it (and therefore its children as well) in the final result
+      }
+      else
+      {
+        $result[] = $item;
+      }
     }
     return $result;
   }
