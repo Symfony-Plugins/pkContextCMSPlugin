@@ -146,14 +146,17 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
   {
     // What page are we starting from?
     // Navigation on non-CMS pages is relative to the home page
-    
     if (!$this->page = pkContextCMSTools::getCurrentPage())
     {
       $this->page = pkContextCMSPageTable::retrieveBySlug('/');
     }
-    if(!$this->navigationPage = pkContextCMSPageTable::retrieveBySlug($this->navigationSlug))
+    if(!$this->activePage = pkContextCMSPageTable::retrieveBySlug($this->activeSlug))
     {
-      $this->navigationPage = $this->page;
+      $this->activePage = $this->page;
+    }
+    if(!$this->rootPage = pkContextCMSPageTable::retrieveBySlug($this->rootSlug))
+    {
+      $this->rootPage = $this->activePage;
     }
 
     // We build different page trees depending on the navigation type that was requested
@@ -169,7 +172,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
       throw new sfException(sprintf('Navigation type "%s" does not exist.', $class));
     }
 
-    $this->navigation = new $class($this->navigationPage, $this->options);
+    $this->navigation = new $class($this->rootPage, $this->activePage, $this->options);
         
     $this->draggable = $this->page->userHasPrivilege('edit');
     
