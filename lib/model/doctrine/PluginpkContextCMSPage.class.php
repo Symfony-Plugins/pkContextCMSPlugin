@@ -386,7 +386,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       leftJoin("a.AreaVersions v")->
       where("a.page_id = ? AND a.name = ? AND a.culture = ?",
         array($this->id, $name, $this->culture))->
-      orderBy("v.version asc")->
+      orderBy("v.version desc")->
       execute();
     $last = false;
     $versions = array();
