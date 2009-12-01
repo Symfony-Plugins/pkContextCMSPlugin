@@ -20,7 +20,7 @@ support following this approach.
 
 ## Overview ##
 
-pkContextCMSPlugin is the core of a suite of plugins that make up the Apostrophe Content Management System. The philosophy of Apostrophe is that editing should be done "in context" whenever possible.
+pkContextCMSPlugin is the core of a suite of plugins that make up the [Apostrophe Content Management System](http://www.apostrophenow.com/). The philosophy of Apostrophe is that editing should be done "in context" whenever possible.
 
 pkContextCMSPlugin is heavily inspired by and borrows a little code and numerous ideas from sfSimpleCMSPlugin. The changes here are dramatic enough that a separate plugin makes more sense, but we felt it important to acknowledge this up front. sfSimpleCMSPlugin allowed users to double-click text frames and edit them in place. We have expanded this idea to allow for a number of content slots to be edited without leaving the page.
 
