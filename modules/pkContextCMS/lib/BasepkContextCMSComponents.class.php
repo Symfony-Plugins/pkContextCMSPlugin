@@ -139,6 +139,7 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
           throw new sfException('Must specify type when embedding a singleton slot');
         }
         $this->slots[1] = $this->page->createSlot($this->options['type']);
+        $this->slots[1]->setEditDefault(false);
       }
     }
   }

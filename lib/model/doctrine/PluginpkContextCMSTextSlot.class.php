@@ -5,6 +5,8 @@
  */
 abstract class PluginpkContextCMSTextSlot extends BasepkContextCMSTextSlot
 {
+  protected $editDefault = true;
+  
   public function getSearchText()
   {
     // TODO: move this "HTML to text" logic to pkHTML rather than duplicating it

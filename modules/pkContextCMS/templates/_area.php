@@ -105,7 +105,7 @@
  <?php // provides for us ?>
 
  <?php slot("pk-slot-content-$name-$permid") ?>
-   <?php pk_context_cms_slot_body($name, $slot->type, $permid, array_merge(array("preview" => $preview), $slotOptions), array(), false) ?>
+   <?php pk_context_cms_slot_body($name, $slot->type, $permid, array_merge(array("preview" => $preview), $slotOptions), array(), $slot->isOpen()) ?>
  <?php end_slot() ?>
 
  <?php // Wraps an individual slot, with its controls ?>

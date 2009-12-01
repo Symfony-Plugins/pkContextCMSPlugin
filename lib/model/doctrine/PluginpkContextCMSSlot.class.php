@@ -5,6 +5,8 @@
  */
 abstract class PluginpkContextCMSSlot extends BasepkContextCMSSlot
 {
+  protected $editDefault = false;
+  	
   // By default, the editor for a slot is accessed by double-clicking
   // on an outlined normal view of the slot. That's not appropriate
   // for some custom slot types. Say so by overriding this function
@@ -49,5 +51,20 @@ abstract class PluginpkContextCMSSlot extends BasepkContextCMSSlot
       throw new Exception("Argument is not an array in setArrayValue");
     }
     $this->value = serialize($value);
+  }
+  
+  public function editDefault()
+  {
+    return $this->editDefault;  
+  }
+  
+  public function setEditDefault($editDefault)
+  {
+    $this->editDefault = $editDefault;
+  }
+  
+  public function isOpen()
+  {
+    return $this->isNew() && $this->editDefault;
   }
 }
