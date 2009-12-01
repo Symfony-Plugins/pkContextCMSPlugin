@@ -507,7 +507,7 @@ class BasepkContextCMSActions extends sfActions
     $root = pkContextCMSPageTable::retrieveBySlug('/');
     $this->forward404Unless($root);
     
-    $this->treeData = $root->getTreeJSONReady();
+    $this->treeData = $root->getTreeJSONReady(false);
     // setTitle takes care of escaping things
     $this->getResponse()->setTitle(pkContextCMSTools::getOptionI18n('title_prefix') . 'Reorganize');
   }

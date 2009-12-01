@@ -7,7 +7,7 @@ class pkContextCMSNavigationTabs extends pkContextCMSNavigation
    */
   public function buildNavigation()
   {
-    $children = $this->activePage->getTabsInfo($this->getLivingOnly());
+    $children = $this->rootPage->getChildrenInfo($this->getLivingOnly());
     $items = array();
     $n = 0;
     

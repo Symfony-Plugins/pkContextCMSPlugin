@@ -772,8 +772,9 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
         break;
       }
       $offset++;
+      $class = ($info['archived'])? 'archived' : 'alive';
       $item = array(
-        "attributes" => array("id" => "tree-" . $info['id']), 
+        "attributes" => array("id" => "tree-" . $info['id'], "class" => $class), 
         "data" => $info['title'],
         "children" => $this->getTreeJSONReadyBody($info['lft'], $info['rgt'], $infos, $offset, $level + 1, $livingOnly)
       );
