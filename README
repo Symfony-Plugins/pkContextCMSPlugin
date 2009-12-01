@@ -1272,6 +1272,13 @@ by padding the `outline_editable` option to the slot helper with
 a value of `false`. Explicit settings for this option override 
 what is returned by the `isOutlineEditable` module.
 
+### Overriding the default view for a new slot ###
+
+By default, when a user adds a new slot to an area the user must then click the
+edit button before making changes to the slot.  To take the user straight to
+the editView of your slot override $editDefault in your slots model.  For an
+example refer to PluginpkContextCMSTextSlot.class.php.
+
 ### When You Don't Want an Inline Editor ###
 
 Most of the time, inline editors are great. But sometimes you might be
