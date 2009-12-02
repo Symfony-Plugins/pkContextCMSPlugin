@@ -187,6 +187,10 @@ class BasepkContextCMSComponents extends pkContextCMSBaseComponents
     // The type of the navigation also is used for styling
     $this->classes .= ' ' . $this->type;
     $this->navigation = $this->navigation->getItems();
+    if(count($this->navigation) == 0)
+    {
+      return sfView::NONE;
+    }
     
   }
 }
