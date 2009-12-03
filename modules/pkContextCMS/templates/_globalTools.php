@@ -94,7 +94,6 @@ These are mostly links to independent modules.
 		}
 
 	});
-
 </script>
 
 <?php if (pkContextCMSTools::getCurrentPage()): ?>

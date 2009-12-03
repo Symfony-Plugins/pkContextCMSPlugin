@@ -1,3 +1,5 @@
+Forbid a site/user/etc named ademo1 to avoid damaging the staging server
+
 Notes on adding support for restructuring the site (not just reordering page children/peers)
 
 Let's say you have a structure like this:
