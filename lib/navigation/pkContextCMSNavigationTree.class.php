@@ -5,7 +5,7 @@ class pkContextCMSNavigationTree extends pkContextCMSNavigation
   
   public function buildNavigation($rootDepth = 2)
   {
-    $tree = $this->rootPage->getTreeInfo($this->getLivingOnly(), $rootDepth);
+    $tree = $this->rootPage->getTreeInfo($this->getLivingOnly(), $this->getOption('rootDepth'));
     $this->setItems($this->createObjects($tree, null));
     $this->buildTree($this->getItems());
   }
