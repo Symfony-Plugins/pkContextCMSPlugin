@@ -233,10 +233,12 @@ class BasepkContextCMSActions extends sfActions
     // including slots that are not current etc.
     $page = $this->retrievePageForEditingById();
     $name = $this->getRequestParameter('name');
-    $this->versions = $page->getAreaVersions($name, false);
+    $all = $this->getRequestParameter('all');
+    $this->versions = $page->getAreaVersions($name, false, isset($all)? null : 10);
     $this->id = $page->id;
     $this->version = $page->getAreaCurrentVersion($name);
     $this->name = $name;
+    $this->all = $all;
   }
   
   public function executeAddSlot(sfRequest $request)

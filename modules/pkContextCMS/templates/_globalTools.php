@@ -98,7 +98,7 @@ These are mostly links to independent modules.
 </script>
 
 <?php if (pkContextCMSTools::getCurrentPage()): ?>
-	<?php include_partial('pkContextCMS/historyBrowser') ?>
+	<?php include_partial('pkContextCMS/historyBrowser', array('page' => $page)) ?>
 <?php endif ?>
 
 <div class="pk-page-overlay"></div>

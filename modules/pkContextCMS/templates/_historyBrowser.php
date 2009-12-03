@@ -15,9 +15,11 @@
 			</tr>
 			</thead>
 			<tfoot>
-			<?php if (0): ?>
+			<?php if (1): ?>
 			  <tr>
-				  <td colspan="4"><a href="#" class="pk-history-browser-view-more">View More Revisions</a></td>
+				  <td colspan="4">
+				    <a href="#" class="pk-history-browser-view-more">View More Revisions</a>
+            </td>
 			  </tr>
 			<?php endif ?>
 			</tfoot>

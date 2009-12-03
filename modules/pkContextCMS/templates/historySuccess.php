@@ -1,7 +1,7 @@
 <?php use_helper('Form', 'jQuery') ?>
 
 <?php $n=0; foreach ($versions as $version => $data): ?>
-<tr class="pk-history-item" id="pk-history-item-<?php echo $n ?>">
+<tr class="pk-history-item" id="pk-history-item-<?php echo $data['version'] ?>">
   <?php if (0): ?>
 	  <td class="id">
 		  ID#
@@ -14,14 +14,14 @@
 		<?php echo $data['author'] ?>
 	</td>
 	<td class="preview">
-		<?php echo $data['diff'] ?>		
+		<?php echo $data['diff'] ?>
 	</td>
 </tr>
 <?php $n++; endforeach ?>
 
 <?php $n=0; foreach ($versions as $version => $data): ?>
 <script type="text/javascript" charset="utf-8">
-	$("#pk-history-item-<?php echo $n ?>").data('params',
+	$("#pk-history-item-<?php echo $data['version'] ?>").data('params',
 		{ 'preview': 
 			{ 
 	      id: <?php echo $id ?>, 
@@ -60,6 +60,21 @@
 		</td>
 	</tr>
 <?php endif ?>
+
+<?php if(count($versions)  == 10 && is_null($all)): ?>
+<script type="text/javascript">
+  $(function() {
+        $('.pk-history-browser .pk-history-browser-view-more').show();
+  });
+</script>
+<?php else: ?>
+<script type="text/javascript">
+  $(function() {
+        $('.pk-history-browser .pk-history-browser-view-more').hide();
+  });
+</script>
+<?php endif ?>
+
 
 <script type="text/javascript">
 	$('.pk-history-item').click(function() {

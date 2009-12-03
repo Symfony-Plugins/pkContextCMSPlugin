@@ -378,34 +378,36 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     return $title;
   }
-
-  public function getAreaVersions($name, $selectOptions = true)
+  
+  public function getAreaVersions($name, $selectOptions = true, $limit = 10)
   {
-    $results = Doctrine_Query::create()->
-      from("pkContextCMSArea a")->
-      leftJoin("a.AreaVersions v")->
+    $q = Doctrine_Query::create()->
+      from("pkContextCMSAreaVersion av")->
+      leftJoin("av.Area a")->
+      leftJoin("av.Author au")->
       where("a.page_id = ? AND a.name = ? AND a.culture = ?",
         array($this->id, $name, $this->culture))->
-      orderBy("v.version desc")->
-      execute();
-    $last = false;
-    $versions = array();
-    $area = $results[0];
-    foreach ($area->AreaVersions as $areaVersion)
+      orderBy("av.version desc");
+    if(!is_null($limit))
+      $q->limit($limit);
+    $areaVersions = $q->execute();
+    $versions = array();  
+    foreach ($areaVersions as $areaVersion)
     {
-			if ($selectOptions)
-			{
-	      $versions[$areaVersion->version] = 
-	        $areaVersion->created_at . " " . ($areaVersion->Author ? 
-	            $areaVersion->Author->username : "NONE") . " " . $areaVersion->diff;
-			}
-			else
-			{
-				$versions[$areaVersion->version] =
-					array("created_at" => $areaVersion->created_at, "author" => $areaVersion->Author ? $areaVersion->Author->username : "NONE", "diff" => $areaVersion->diff);
-			}
+      if ($selectOptions)
+      {
+        $versions[$areaVersion->version] = 
+          $areaVersion->created_at . " " . ($areaVersion->Author ? 
+              $areaVersion->Author->username : "NONE") . " " . $areaVersion->diff;
+      }
+      else
+      {
+        $versions[$areaVersion->version] =
+          array("created_at" => $areaVersion->created_at, "author" => $areaVersion->Author ? $areaVersion->Author->username : "NONE", "diff" => $areaVersion->diff,
+          "version" => $areaVersion['version']);
+      }
     }
-    return $versions;
+    return $versions;   
   }
 
   public function getAreaCurrentVersion($name)
@@ -773,6 +775,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
       }
       $offset++;
       $class = ($info['archived'])? 'archived' : 'alive';
+      $class.= (!is_null($info['engine']))? ' engine-'.$info['engine'] : '';
       $item = array(
         "attributes" => array("id" => "tree-" . $info['id'], "class" => $class), 
         "data" => $info['title'],
@@ -818,7 +821,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     // Raw PDO for performance
     $connection = Doctrine_Manager::connection();
     $pdo = $connection->getDbh();
-    $query = "SELECT p.id, p.slug, p.view_is_secure, p.archived, p.lft, p.rgt, p.level, s.value AS title FROM pk_context_cms_page p
+    $query = "SELECT p.id, p.slug, p.view_is_secure, p.archived, p.lft, p.rgt, p.level, p.engine, s.value AS title FROM pk_context_cms_page p
       LEFT JOIN pk_context_cms_area a ON a.page_id = p.id AND a.name = 'title'
       LEFT JOIN pk_context_cms_area_version v ON v.area_id = a.id AND a.latest_version = v.version 
       LEFT JOIN pk_context_cms_area_version_slot avs ON avs.area_version_id = v.id

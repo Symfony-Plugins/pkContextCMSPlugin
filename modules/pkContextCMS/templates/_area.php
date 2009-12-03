@@ -14,10 +14,12 @@
 <?php slot('pk-history-controls') // START - PK-HISTORY SLOT ====================================  ?>
 <!-- .pk-controls.pk-area-controls History Module -->
 <li class="pk-controls-item history">
+  <?php $moreAjax = "jQuery.ajax({type:'POST',dataType:'html',success:function(data, textStatus){jQuery('#pk-history-items-$name').html(data);},url:'/admin/pkContextCMS/history/id/".$page->id."/name/$name/all/1'}); return false;"; ?>
 	<?php echo jq_link_to_remote("History", array(
       "url" => "pkContextCMS/history?" . http_build_query(array("id" => $page->id, "name" => $name)),
 			'before' => '$(".pk-history-browser .pk-history-items").attr("id","pk-history-items-'.$name.'");
-									 $(".pk-history-browser .pk-history-items").attr("rel","pk-area-'.$name.'");', 
+									 $(".pk-history-browser .pk-history-items").attr("rel","pk-area-'.$name.'");
+                   $(".pk-history-browser .pk-history-browser-view-more").attr("onClick", "'.$moreAjax.'").hide();',
       "update" => "pk-history-items-$name"), 
 			array(
 				'class' => 'pk-btn icon pk-history', 
