@@ -92,6 +92,7 @@
     </li>	
   <?php endif ?>
 <?php endif ?>
+<?php include_partial('pkContextCMS/breadcrumbExtra', array('page' => $page)) ?>
 </ul>
 
 <?php // TBB: moved this out of the manage 'if', it's not really connected to its contents ?>
