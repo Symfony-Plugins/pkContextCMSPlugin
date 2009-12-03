@@ -1,5 +1,3 @@
-<?php use_helper('editablePathComponent') ?>
-
 <?php if ($page->userHasPrivilege('edit')): ?>
 <script type="text/javascript">
 	$(function() { 
@@ -35,7 +33,7 @@
 
   <?php if ($page->id === $pinfo['id']): ?>
    <li class="pk-breadcrumb-title current-page" id="pk-breadcrumb-title-rename">
-    <?php echo editable_path_component($title, "pkContextCMS/rename", array("id" => $page->id), $page->userHasPrivilege('edit'), "epc") ?>
+     <?php include_partial('pkContextCMS/rename', array('page' => $page, 'edit' => $page->userHasPrivilege('edit'))) ?>
    </li>
 	<?php else: ?>
    <li class="pk-breadcrumb-title" id="pk-breadcrumb-title">
@@ -76,10 +74,11 @@
   								'class' => 'pk-btn icon pk-add', 
   								)) ?>
   	  <?php echo form_tag("pkContextCMS/create", array("id" => "pk-breadcrumb-create-childpage-form", 'class' => 'pk-breadcrumb-form', )) ?>
-  	  <?php echo input_hidden_tag("parent", $page->slug) ?>
-  	  <?php echo input_tag("title", "", array("class" => "pk-breadcrumb-create-childpage-title pk-breadcrumb-input")) ?>
+  	  <?php $form = new pkContextCMSCreateForm($page) ?>
+  	  <?php echo $form['parent'] ?>
+  	  <?php echo $form['title'] ?>
   		<ul class="pk-form-controls pk-breadcrumb-create-childpage-controls">
-  		  <li><?php echo submit_tag("Create Page", array("class" => "pk-submit")) ?></li>
+  		  <li><input type="submit" value="Create Page" class="pk-submit" /></li>
   		  <li><?php echo jq_link_to_function("cancel", 
   										'$("#pk-breadcrumb-create-childpage-form").hide(); 
   						 				 $("#pk-breadcrumb-create-childpage-button").fadeIn(); 
