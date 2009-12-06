@@ -259,6 +259,7 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
   protected static $engineCacheUrl = false;
   protected static $engineCachePage = false;
   protected static $engineCacheRemainder = false;
+  protected static $engineCacheFirstEnginePages = array();
   
   static public function getMatchingEnginePage($url, &$remainder)
   {
@@ -307,14 +308,20 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
   }
   
   // Used when generating an engine link from a page other than the engine page itself.
-  // Many engines are only placed in one location per site, so this is often reasonable
+  // Many engines are only placed in one location per site, so this is often reasonable.
+  // Cache this for acceptable performance
   static public function getFirstEnginePage($engine)
   {
+    if (isset(self::$engineCacheFirstEnginePages[$engine]))
+    {
+      return self::$engineCacheFirstEnginePages[$engine];
+    }
     $page = Doctrine_Query::create()->
      from('pkContextCMSPage p')->
      where('p.engine = ?', array($engine))->
      limit(1)->
      fetchOne();
+    self::$engineCacheFirstEnginePages[$engine] = $page;
     return $page;
   }
   
