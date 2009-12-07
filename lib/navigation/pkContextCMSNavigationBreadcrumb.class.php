@@ -1,37 +1,19 @@
 <?php
 
-class pkContextCMSNavigationBreadcrumb extends pkContextCMSNavigation
+class pkContextCMSNavigationBreadcrumb extends pkContextCMSNavigationTree
 {
-  public function unsetItems($items)
-  {
-    foreach($items as $key => $item)
-    {
-      if(!$item->isAncestor($this->activePage) && !$item->isCurrent())
-      {
-        if(!is_null($item->getParent()))
-        {
-          $peers = $item->getParent()->getChildren();
-          unset($peers[$key]);
-          $item->getParent()->setChildren($peers);
-        }
-        else
-        {
-          unset($this->items[$key]);
-        }
-      }
-      else
-      {
-        if($item->hasChildren())
-        {
-          $this->unsetItems($item->getChildren());
-        }
-      }
-    }
-  }
+  protected $template = "navigation";
+  protected $showPeers = false;
+  protected $showAncestorPeers = false;
+  protected $showDescendants = false;
   
-  public function buildNavigation($items)
+  public function buildNavigation($options = null)
   {
-    $this->unsetItems($items);
+    $tree = $this->rootPage->getTreeInfo($this->getLivingOnly(), $this->getOption('rootDepth'));
+    $rootArray = $this->rootPage->toArray(false);
+    $rootArray['title'] = $this->rootPage->getTitle();
+    $rootArray['children'] = $tree;
+    $this->setItems($this->createObjects(array($rootArray), null));
   }
   
 }

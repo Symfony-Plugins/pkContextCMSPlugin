@@ -8,6 +8,7 @@ abstract class pkContextCMSNavigation
   protected $type = null;
   protected $livingOnly = true;
   protected $items = array();
+  protected $template = "navigation";
   
   protected $baseItem;
     

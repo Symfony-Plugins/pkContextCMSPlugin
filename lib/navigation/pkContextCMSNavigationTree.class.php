@@ -2,15 +2,20 @@
 
 class pkContextCMSNavigationTree extends pkContextCMSNavigation
 { 
+  protected $showPeers = true;
+  protected $showAncestorPeers = true;
+  protected $showDescendants = 1;
   
-  public function buildNavigation($rootDepth = 2)
+  public function buildNavigation($options = null)
   {
+    $this->showPeers = isset($options['showPeers'])? $options['showPeers'] : $this->showPeers;
+    $this->showAncestorPeers = isset($options['showAncestorPeers'])? $options['showAncestorPeers'] : $this->showAncestorPeers;
+    $this->showDescendants = isset($options['showDescendants'])? $options['showDescendants'] : $this->showDescendants; 
     $tree = $this->rootPage->getTreeInfo($this->getLivingOnly(), $this->getOption('rootDepth'));
     $this->setItems($this->createObjects($tree, null));
-    $this->buildTree($this->getItems());
   }
   
-  private function createObjects($tree, $parent)
+  public function createObjects($tree, $parent)
   {
     $navItems = array();
     $n = 0;
@@ -21,62 +26,55 @@ class pkContextCMSNavigationTree extends pkContextCMSNavigation
       $navItem = $this->buildNavigationItem($tree, $item, $n++);
       if($navItem->isCurrent())
       {
-        $this->baseItem = $navItem;
         $peerBit = true;
       }
       elseif($navItem->isAncestor($this->activePage))
       {
-        $ancestorPeerBit = false;
+        $ancestorPeerBit = true;
         $navItem->ancestorOfCurrentPage = true;
       }
-      $navItem->setRelativeDepth($item['level'] - $this->rootPage->getLevel() - 1);
-      $navItem->setParent($parent);
-      //AbsoluteDepth is the same as level in pk_context_cms_page, need to rename to have better consistency
-      $navItem->setAbsoluteDepth($item['level']);
+      $navItem->setRelativeDepth($item['level'] - $this->rootPage->getLevel());
       if(isset($item['children']))
       {
         $navItem->setChildren($this->createObjects($item['children'], $navItem));
       }
-      $navItems[] = $navItem;
+    $navItems[] = $navItem;  
     }
-    foreach($navItems as $navItem)
+    foreach($navItems as $key => $navItem)
     {
-      if($peerBit)
+      if(!$this->showItem($navItem, $peerBit, $ancestorPeerBit))
       {
-        $navItem->peerOfCurrentPage = true;
+        unset($navItems[$key]);
       }
-      elseif($ancestorPeerBit)
-      {
-        $navItem->peerOfAncestorOfCurrentPage = true;
-      }
-      $navItem->setPeers($navItems);
     } 
     return $navItems;
   }
   
-  public function buildTree($items)
+  public function showItem(pkContextCMSNavigationItem $navItem, $peerBit, $ancestorPeerBit)
   {
-    foreach($items as $item)
+    if($peerBit && $this->showPeers)
     {
-      if(!$this->displayChildren($item))
-      {
-        $item->setChildren(array());
-      }
-      else
-      {
-        if($item->hasChildren())
-        {
-          $this->buildTree($item->getChildren());
-        }
-      }
+      $navItem->peerOfCurrentPage = true;
+      return true;
     }
-  }
-  public function displayChildren($item)
-  {
-    if($item->ancestorOfCurrentPage || $item->isCurrent())
+    elseif($navItem->ancestorOfCurrentPage)
     {
       return true;
     }
-    return false;
+    elseif($ancestorPeerBit && $this->showAncestorPeers)
+    {
+      $navItem->peerOfAncestorOfCurrentPage = true;
+      return true;
+    }
+    elseif($navItem->isDescendant($this->activePage) && $navItem->getLevel() <= $this->activePage->level + $this->showDescendants)
+    {
+      return true;
+    }
+    elseif($navItem->isCurrent())
+    {
+      return true;
+    }
+    else return false;
   }
+  
 }

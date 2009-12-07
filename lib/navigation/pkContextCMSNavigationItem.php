@@ -10,11 +10,10 @@ class pkContextCMSNavigationItem
   protected $current = false;
   protected $options = array();
   
-  protected $parent;
   protected $children = array();
   protected $peers = array();
   
-  protected $absoluteDepth;
+  protected $level;
   protected $relativeDepth;
   public $ancestorOfCurrentPage = false;
   public $peerOfAncestorOfCurrentPage = false;
@@ -28,6 +27,7 @@ class pkContextCMSNavigationItem
     $this->rgt = $pageInfo['rgt'];
     $this->slug = $pageInfo['slug'];
     $this->id = $pageInfo['id'];
+    $this->level = $pageInfo['level'];
     
     $this->options = $options;
     $this->first = isset($this->options['first']) ? $this->options['first'] : '';
@@ -90,14 +90,14 @@ class pkContextCMSNavigationItem
     return $this->relativeDepth;
   }
   
-  public function setAbsoluteDepth($absoluteDepth)
-  {
-    $this->absoluteDepth = $absoluteDepth;
-  }
-  
   public function getAbsoluteDepth()
   {
-    return $this->absoluteDepth;
+    return $this->level;
+  }
+  
+  public function getLevel()
+  {
+    return $this->level;
   }
   
   public function isAncestor(pkContextCMSPage $page)
@@ -117,43 +117,6 @@ class pkContextCMSNavigationItem
     }
     return false;
   }
-  
-  public function isPeer($slug)
-  {
-    return substr($this->slug, 0, strrpos($this->slug, "/")+1) == substr($slug, 0, strrpos($slug, "/")+1);
-  }
-  
-  public function isAncestorOfCurrentPage()
-  {
-    return $ancestorOfCurrentPage;
-  }
-  
-  public function isAncestorPeerOfCurrentPage()
-  {
-    return $peerOfAncestorOfCurrentPage; 
-  }
-  
-  public function getPeers(){
-    if(isset($this->parent))
-    {
-      $this->parent->getChildren();
-    }
-    else
-      return null;
-  }
-  
-  public function setPeers($peers){
-    $this->peers = $peers;
-  }
-  
-  public function getParent(){
-    return $this->parent;
-  }
-  
-  public function setParent($parent){
-    $this->parent = $parent;
-  }
-  
 }
 
 ?>

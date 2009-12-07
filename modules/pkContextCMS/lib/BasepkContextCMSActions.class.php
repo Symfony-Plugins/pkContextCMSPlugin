@@ -78,6 +78,24 @@ class BasepkContextCMSActions extends sfActions
   {
     return $this->sortBodyWrapper('pk-tab-nav-item', '/');
   }
+  
+  public function executeSortNav(sfRequest $request)
+  {
+    return $this->sortNavWrapper('pk-tab-nav-item');
+  }
+  
+  protected function sortNavWrapper($parameter)
+  {
+    $request = $this->getRequest();
+    $page = $this->retrievePageForEditingById('page');
+    $page = $page->getNode()->getParent();
+    $this->validAndEditable($page, 'edit');
+    $this->flunkUnless($page);
+    $order = $this->getRequestParameter($parameter);
+    $this->flunkUnless(is_array($order));
+    $this->sortBody($page, $order);
+    return sfView::NONE;
+  }
 
   protected function sortBodyWrapper($parameter, $slug = false)
   {
