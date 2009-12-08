@@ -301,6 +301,7 @@ display: block;
 .pk-slot-is-editable.pkContextCMSText .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSBlogPost .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSBlogCalendar .pk-slot-content-container,
+.pk-slot-is-editable.pkContextCMSBlogEvent .pk-slot-content-container,
 .pk-slot-is-editable.pkContextCMSRawHTML .pk-slot-content-container
 {
 	padding: 22px 0 0 0 !important;
