@@ -5,12 +5,14 @@ class pkContextCMSNavigationTree extends pkContextCMSNavigation
   protected $showPeers = true;
   protected $showAncestorPeers = true;
   protected $showDescendants = 1;
+  protected $showDescendantsRoot = false;
   
-  public function buildNavigation($options = null)
+  public function buildNavigation()
   {
-    $this->showPeers = isset($options['showPeers'])? $options['showPeers'] : $this->showPeers;
-    $this->showAncestorPeers = isset($options['showAncestorPeers'])? $options['showAncestorPeers'] : $this->showAncestorPeers;
-    $this->showDescendants = isset($options['showDescendants'])? $options['showDescendants'] : $this->showDescendants; 
+    $this->showPeers = isset($this->options['showPeers'])? $this->options['showPeers'] : $this->showPeers;
+    $this->showAncestorPeers = isset($this->options['showAncestorPeers'])? $this->options['showAncestorPeers'] : $this->showAncestorPeers;
+    $this->showDescendants = isset($this->options['showDescendants'])? $this->options['showDescendants'] : $this->showDescendants;
+    $this->showDescendantsRoot = isset($this->options['showDescendantsRoot'])? $this->options['showDescendantsRoot'] : $this->showDescendantsRoot; 
     $tree = $this->rootPage->getTreeInfo($this->getLivingOnly(), $this->getOption('rootDepth'));
     $this->setItems($this->createObjects($tree, null));
   }
@@ -66,7 +68,11 @@ class pkContextCMSNavigationTree extends pkContextCMSNavigation
       $navItem->peerOfAncestorOfCurrentPage = true;
       return true;
     }
-    elseif($navItem->isDescendant($this->activePage) && $navItem->getLevel() <= $this->activePage->level + $this->showDescendants)
+    elseif($navItem->isDescendant($this->activePage) && $navItem->getLevel() <= $this->activePage->getLevel() + $this->showDescendants)
+    {
+      return true;
+    }
+    elseif($this->showDescendantsRoot && $navItem->getLevel() <= $this->rootPage->getLevel() + $this->getOption('rootDepth'))
     {
       return true;
     }
