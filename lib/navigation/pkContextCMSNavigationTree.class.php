@@ -5,7 +5,7 @@ class pkContextCMSNavigationTree extends pkContextCMSNavigation
   protected $showPeers = true;
   protected $showAncestorPeers = true;
   protected $showDescendants = 1;
-  protected $showDescendantsRoot = false;
+  protected $showDescendantsRoot = 0;
   
   public function buildNavigation()
   {
@@ -72,7 +72,7 @@ class pkContextCMSNavigationTree extends pkContextCMSNavigation
     {
       return true;
     }
-    elseif($this->showDescendantsRoot && $navItem->getLevel() <= $this->rootPage->getLevel() + $this->getOption('rootDepth'))
+    elseif($this->showDescendantsRoot && $navItem->getLevel() <= $this->rootPage->getLevel() + $this->showDescendantsRoot )
     {
       return true;
     }
