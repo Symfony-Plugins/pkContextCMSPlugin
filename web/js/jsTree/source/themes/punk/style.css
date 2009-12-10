@@ -1,6 +1,7 @@
 .tree-punk li.open { background-image:url("minus.gif"); background-position:2px 5px; }
 .tree-punk li.closed, #jstree-dragged.tree-punk li li.open { background-image:url("plus.gif"); background-position:2px 5px; }
-.tree-punk li a, .tree-punk li span { background-image:url("pk-icon-page.png"); }
+.tree-punk li.archived a, .tree-punk li.archived span { background-image:url("pk-icon-page-archived.png"); }
+.tree-punk li a, .tree-punk li.alive a, .tree-punk li span { background-image:url("pk-icon-page.png"); }
 .tree-punk .rtl li.closed, #jstree-dragged.tree-punk .rtl li li.open { background-image:url("plus_rtl.gif"); }
 .tree-punk li a:hover { background-color:#999; border-color:#999; color:#fff; }
 .tree-punk li a.clicked, .tree-punk li a.clicked:hover, .tree-punk li span.clicked { background-color:#333; border-color:#333; color:#fff; }
