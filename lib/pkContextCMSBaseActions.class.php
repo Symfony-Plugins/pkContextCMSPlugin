@@ -118,7 +118,9 @@ class pkContextCMSBaseActions extends sfActions
     {
       $this->validationData['form'] = $this->form;
     }
-    return $this->editAjax(true);
+    $result = $this->editAjax(true);
+    $this->logMessage('XXX editRetry finished', 'info');
+    return $result;
   }
 
   protected function editAjax($editorOpen)
@@ -127,7 +129,6 @@ class pkContextCMSBaseActions extends sfActions
     // rerender the slot
     pkContextCMSTools::setCurrentPage(
       pkContextCMSPageTable::retrieveByIdWithSlots($this->page->id));
-
     // Symfony 1.2 can return partials rather than templates...
     // which gets us out of the "we need a template from some other
     // module" bind

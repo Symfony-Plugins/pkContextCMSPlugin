@@ -40,8 +40,8 @@
 <div class="pk-history-preview-notice">
 	<div>
   You are previewing another version of this material. 
-  This will not become the current version unless you click "Revert." If you change your
-  mind, click "cancel."
+  This will not become the current version unless you click "Save As Current Revision." If you change your
+  mind, click "Cancel."
 	</div>
 </div>
 

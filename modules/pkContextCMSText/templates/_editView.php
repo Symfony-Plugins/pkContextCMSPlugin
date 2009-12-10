@@ -1,15 +1,10 @@
-<?php if ($multiline): ?>
-  <?php // Remember, it's preescaped with valid HTML escape characters. ?>
-  <?php // And when multiline is active there are <br>'s as well, followed ?>
-  <?php // by \n. On the save side we'll convert \n back to <br>\n. ?>
-  <?php echo textarea_tag("value",
-    html_entity_decode(strip_tags($value)),
-    array_merge(array("id" => "$id-value", 'class' => 'pkContextCMSTextSlot multi-line'), $options)) ?>
-<?php else: ?>
-  <?php echo input_tag("value",
-    html_entity_decode(strip_tags($value)),
-    array_merge(array("id" => "$id-value", 'class' => 'pkContextCMSTextSlot single-line'), $options)) ?>
+<?php if (0): ?>
+<?php // We could echo the entire form here, which would include validation errors etc., but raw HTML slots are unvalidated by definition ?>
+<?php echo $form ?>
 <?php endif ?>
+
+<?php // For this simple case we just want the form field without a label, and we know there are no validation errors to display ?>
+<?php echo $form['value']->render() ?>
 
 <script type="text/javascript">
 

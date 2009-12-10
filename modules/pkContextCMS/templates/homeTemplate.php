@@ -6,8 +6,9 @@
 <?php slot('pk-subnav', '') ?>
 
 <?php pk_context_cms_area('body', array(
-	'allowed_types' => array('pkContextCMSRichText', 'pkContextCMSImage', 'pkContextCMSButton', 'pkContextCMSSlideshow', 'pkContextCMSVideo', 'pkContextCMSPDF'),
+	'allowed_types' => array('pkContextCMSText', 'pkContextCMSRichText', 'pkContextCMSImage', 'pkContextCMSButton', 'pkContextCMSSlideshow', 'pkContextCMSVideo', 'pkContextCMSPDF'),
   'type_options' => array(
+    'pkContextCMSText' => array('multiline' => true, 'class' => 'foobar'),
 		'pkContextCMSRichText' => array('tool' => 'Main'), 	
 		'pkContextCMSImage' => array('width' => 720, 'flexHeight' => true, 'resizeType' => 's'),
 		'pkContextCMSButton' => array('width' => 720, 'flexHeight' => true, 'resizeType' => 's'),

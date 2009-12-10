@@ -22,8 +22,21 @@ class pkContextCMSRawHTMLActions extends pkContextCMSBaseActions
     // break the rendering of the page to the point where you can't
     // easily edit it.
     
-    $value = $this->getRequestParameter('value');
-    $this->slot->value = $value;
-    return $this->editSave();
+    $value = $this->getRequestParameter('slotform-' . $this->id);
+    $this->form = new pkContextCMSRawHTMLForm($this->id);
+    $this->form->bind($value);
+    if ($this->form->isValid())
+    {
+      $this->slot->value = $this->form->getValue('value');
+      $result = $this->editSave();
+      return $result;
+    }
+    else
+    {
+      // Makes $this->form available to the next iteration of the
+      // edit view so that validation errors can be seen (although there
+      // aren't any in this case)
+      return $this->editRetry();
+    }
   }
 }

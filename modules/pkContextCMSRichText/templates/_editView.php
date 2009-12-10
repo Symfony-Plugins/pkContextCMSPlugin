@@ -1,17 +1,12 @@
-<?php // We can start calling regular textarea_tag when they fix ?>
-<?php // http://trac.symfony-project.com/ticket/732 ?>
+<?php echo $form['value']->render() ?>
 
-<?php use_helper('PkForm') ?>
-<?php echo pk_textarea_tag("value-$id",
-  $value, 
-  array_merge($options, array("rich" => "fck"))) ?>
 <script type="text/javascript">
 pkContextCMS.registerOnSubmit("<?php echo $id ?>", 
   function(slotId)
   {
-    <?php # FCK doesn't do this automatically on an AJAX "form" submit ?>
-    var value = FCKeditorAPI.GetInstance('value-<?php echo $id ?>').GetXHTML();
-    $('#value-<?php echo $id ?>').val(value);
+    <?php # FCK doesn't do this automatically on an AJAX "form" submit on every major browser ?>
+    var value = FCKeditorAPI.GetInstance('slotform-<?php echo $id ?>-value').GetXHTML();
+    $('#slotform-<?php echo $id ?>-value').val(value);
   }
 );
 </script>

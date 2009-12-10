@@ -5,11 +5,11 @@ class pkContextCMSTextComponents extends pkContextCMSBaseComponents
   public function executeEditView()
   {
     $this->setup();
-    $this->multiline = $this->getOption('multiline');
-    // The rest of the options array is passed as HTML
-    // options to the helper function, but this
-    // should not be
-    unset($this->options['multiline']);
+    // Careful, sometimes we get an existing form from a previous validation pass
+    if (!isset($this->form))
+    {
+      $this->form = new pkContextCMSTextForm($this->id, $this->slot->value, $this->options);
+    }
   }
   public function executeNormalView()
   {

@@ -5,6 +5,13 @@ class pkContextCMSRichTextComponents extends pkContextCMSBaseComponents
   public function executeEditView()
   {
     $this->setup();
+    // Careful, don't clobber a form object provided to us with validation errors
+    // from an earlier pass
+    if (!isset($this->form))
+    {
+      $this->form = new pkContextCMSRichTextForm($this->id, $this->options);
+      $this->form->setDefault('value', $this->slot->value);
+    }
   }
   public function executeNormalView()
   {
