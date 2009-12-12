@@ -34,26 +34,27 @@ class BasepkContextCMSActions extends sfActions
 
     return 'Template';
   }
-
-
   
-  // Note that these fetch based on the id or slug found in the
-  // named parameter of the request
-
-  protected function retrievePageForEditingById($parameter = 'id', $privilege = 'edit|manage')
+  protected function retrievePageForEditingByIdParameter($parameter = 'id', $privilege = 'edit|manage')
   {
-    $value = $this->getRequestParameter($parameter);
-    $this->logMessage("ZZ parameter is $parameter value is $value");
-    $page = pkContextCMSPageTable::retrieveByIdWithSlots(
-      $this->getRequestParameter($parameter));
+    return $this->retrievePageForEditingById($this->getRequestParameter($parameter));
+  }
+  
+  protected function retrievePageForEditingById($id, $privilege = 'edit|manage')
+  {
+    $page = pkContextCMSPageTable::retrieveByIdWithSlots($id);
     $this->validAndEditable($page, $privilege);
     return $page;
   }
 
-  protected function retrievePageForEditingBySlug($parameter = 'slug', $privilege = 'edit|manage')
+  protected function retrievePageForEditingBySlugParameter($parameter = 'slug', $privilege = 'edit|manage')
   {
-    $page = pkContextCMSPageTable::retrieveBySlugWithSlots(
-      $this->getRequestParameter($parameter));
+    return $this->retrievePageForEditingBySlug($this->getRequestParameter($parameter));
+  }
+
+  protected function retrievePageForEditingBySlug($slug, $privilege = 'edit|manage')
+  {
+    $page = pkContextCMSPageTable::retrieveBySlugWithSlots($slug);
     $this->validAndEditable($page, $privilege);
     return $page;
   }
@@ -87,7 +88,7 @@ class BasepkContextCMSActions extends sfActions
   protected function sortNavWrapper($parameter)
   {
     $request = $this->getRequest();
-    $page = $this->retrievePageForEditingById('page');
+    $page = $this->retrievePageForEditingByIdParameter('page');
     $page = $page->getNode()->getParent();
     $this->validAndEditable($page, 'edit');
     $this->flunkUnless($page);
@@ -110,7 +111,7 @@ class BasepkContextCMSActions extends sfActions
     } 
     else
     {
-      $page = $this->retrievePageForEditingById('page');
+      $page = $this->retrievePageForEditingByIdParameter('page');
       $this->logMessage("ZZ got page for editing by id");      
     }
     $this->logMessage("ZZ Page is " . $page->id, "info");
@@ -160,7 +161,7 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeRename(sfRequest $request)
   {
-    $page = $this->retrievePageForEditingById();
+    $page = $this->retrievePageForEditingByIdParameter();
     $this->flunkUnless($page);
     $this->flunkUnless($page->userHasPrivilege('edit|manage'));    
     // Rename never changes the slug, just the title
@@ -170,7 +171,7 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeShowArchived(sfRequest $request)
   {
-    $page = $this->retrievePageForEditingById();
+    $page = $this->retrievePageForEditingByIdParameter();
     $this->state = $request->getParameter('state');
     $this->getUser()->setAttribute(
       'show-archived', $this->state, 'pk-context-cms');
@@ -187,7 +188,7 @@ class BasepkContextCMSActions extends sfActions
   public function executeCreate()
   {
     $this->flunkUnless($this->getRequest()->getMethod() == sfRequest::POST);
-    $parent = $this->retrievePageForEditingBySlug('parent', 'manage');
+    $parent = $this->retrievePageForEditingBySlugParameter('parent', 'manage');
     
     $title = trim($this->getRequestParameter('title'));
 
@@ -249,7 +250,7 @@ class BasepkContextCMSActions extends sfActions
     // Careful: if we don't build the query our way,
     // we'll get *all* slots as soon as we peek at ->slots,
     // including slots that are not current etc.
-    $page = $this->retrievePageForEditingById();
+    $page = $this->retrievePageForEditingByIdParameter();
     $name = $this->getRequestParameter('name');
     $all = $this->getRequestParameter('all');
     $this->versions = $page->getAreaVersions($name, false, isset($all)? null : 10);
@@ -261,7 +262,7 @@ class BasepkContextCMSActions extends sfActions
   
   public function executeAddSlot(sfRequest $request)
   {
-    $page = $this->retrievePageForEditingById();
+    $page = $this->retrievePageForEditingByIdParameter();
     pkContextCMSTools::setCurrentPage($page);
     $this->name = $this->getRequestParameter('name');
     $this->type = $this->getRequestParameter('type');
@@ -279,7 +280,7 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeMoveSlot(sfRequest $request)
   {
-    $page = $this->retrievePageForEditingById();
+    $page = $this->retrievePageForEditingByIdParameter();
     pkContextCMSTools::setCurrentPage($page);
     $this->name = $this->getRequestParameter('name');
     $slots = $page->getArea($this->name);
@@ -315,7 +316,7 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeDeleteSlot(sfRequest $request)
   {
-    $page = $this->retrievePageForEditingById();
+    $page = $this->retrievePageForEditingByIdParameter();
     pkContextCMSTools::setCurrentPage($page);
     $this->name = $this->getRequestParameter('name');
     $page->newAreaVersion($this->name, 'delete', 
@@ -368,15 +369,18 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeSettings(sfRequest $request)
   {
-    $from = 'id';
-    if ($request->hasParameter('settings[id]'))
+    if ($request->hasParameter('settings'))
     {
-      $from = 'settings[id]';
+      $settings = $request->getParameter('settings');
+      $this->page = $this->retrievePageForEditingById($settings['id']);
     }
-    $this->page = $this->retrievePageForEditingById($from);
+    else
+    {
+      $this->page = $this->retrievePageForEditingByIdParameter();
+    }
     
     $this->form = new pkContextCMSPageSettingsForm($this->page);
-    if ($from === 'settings[id]')
+    if ($request->hasParameter('settings'))
     {
       $this->form->bind($request->getParameter("settings"));
       if ($this->form->isValid())
@@ -413,7 +417,7 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeDelete()
   {
-    $page = $this->retrievePageForEditingById('id', 'manage');
+    $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
     $parent = $page->getParent();
     if (!$parent)
     {
@@ -534,8 +538,8 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeTreeMove($request)
   {
-    $page = $this->retrievePageForEditingById('id', 'manage');
-    $refPage = $this->retrievePageForEditingById('refId', 'manage');
+    $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
+    $refPage = $this->retrievePageForEditingByIdParameter('refId', 'manage');
     $type = $request->getParameter('type');
     if ($refPage->slug === '/')
     {
@@ -567,7 +571,7 @@ class BasepkContextCMSActions extends sfActions
   
   public function executeMoveUp($request)
   {
-    $page = $this->retrievePageForEditingById('id', 'manage');
+    $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
     $this->forward404Unless($page->userHasPrivilege('move-up'));
     $parent = $page->getParent();
     $this->forward404Unless($parent);
@@ -579,8 +583,8 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeMoveDown($request)
   {
-    $page = $this->retrievePageForEditingById('id', 'manage');
-    $peer = $this->retrievePageForEditingById('peer', 'manage');
+    $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
+    $peer = $this->retrievePageForEditingByIdParameter('peer', 'manage');
     $this->forward404Unless($page->userHasPrivilege('move-down'));
     // Make sure they have the same parent, no monkey business to escape privs checks
     if ($page->getParent()->id !== $peer->getParent()->id)

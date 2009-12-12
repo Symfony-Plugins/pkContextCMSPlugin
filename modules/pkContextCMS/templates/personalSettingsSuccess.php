@@ -12,18 +12,18 @@
 	    "name" => "pk-personal-settings-form", 
 	    "id" => "pk-personal-settings-form")) ?>
 
+	<h3 id="pk-personal-settings-heading">User Preferences for <span><?php echo $sf_user->getGuardUser()->getUsername() ?></span></h3>
+
 	<?php // We need this to distinguish the original AJAX POST from an ?>
 	<?php // actual form submit; we can't use a name attribute on the ?>
 	<?php // submit tag because that doesn't work in jq_form_remote_tag ?>
-	<h3 id="pk-personal-settings-heading">User Preferences for <span><?php echo $sf_user->getGuardUser()->getUsername() ?></span></h3>
-
-	<?php echo input_hidden_tag('submit', 1) ?>
+  <input type="hidden" name="submit" value="1" />
 
 	<?php echo $form ?>
 	
 	<ul id="pk-personal-settings-footer" class="pk-controls pk-personal-settings-form-controls">
 		<li>
-			<?php echo submit_tag("Save Changes", array("class" => "pk-submit", "id" => "pk-personal-settings-submit")) ?>
+		  <input type="submit" name="pk-personal-settings-submit" value="Save Changes" id="pk-personal-settings-submit" class="pk-submit" />
 		</li>
 		<li>
 			<?php echo jq_link_to_function('Cancel', '
