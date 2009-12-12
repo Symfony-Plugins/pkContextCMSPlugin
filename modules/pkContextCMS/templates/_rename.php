@@ -1,4 +1,4 @@
-<?php use_helper('jQuery', 'Form') ?>
+<?php use_helper('jQuery', 'Url') ?>
 
 <?php $page = pkContextCMSTools::getCurrentPage() ?>
 <?php if ($edit): ?>

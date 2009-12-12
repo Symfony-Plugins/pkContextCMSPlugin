@@ -1,4 +1,4 @@
-<?php use_helper('Form', 'jQuery') ?>
+<?php use_helper('Url', 'jQuery') ?>
 
 <?php $n=0; foreach ($versions as $version => $data): ?>
 <tr class="pk-history-item" id="pk-history-item-<?php echo $data['version'] ?>">

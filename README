@@ -61,7 +61,7 @@ If you are choosing a Linux distribution, we recommend Ubuntu. Ubuntu includes a
 
 ### PHP Libraries ###
 
-* Symfony 1.2 or 1.3 (provided with cmstest)
+* Symfony 1.2, 1.3 or 1.4 (provided with cmstest)
 * sfJqueryReloadedPlugin (provided with cmstest)
 * sfDoctrineGuardPlugin (provided with cmstest)
 * pkToolkitPlugin (provided with cmstest)
@@ -95,9 +95,13 @@ FOR SYMFONY 1.2 (not recommended for new projects):
 
     svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
 
-FOR SYMFONY 1.3 (recommended for new projects):
+FOR SYMFONY 1.3 (recommended only if you are stuck with other 1.2 code that isn't fully 1.4-ready yet):
 
 svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/sandbox/branches/1.3 cmstest
+
+FOR SYMFONY 1.4 (recommended for new projects):
+
+svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/sandbox/branches/1.4 cmstest
 
 Better yet, copy it to your own repository with [svnforeigncopy](https://sourceforge.net/projects/svnforeigncopy/) each time you want to start a new site. That's what we do. With `svnforeigncopy` you get a copy of the cmstest project in your own svn repository, with the `svn:ignore` and `svn:externals` properties completely intact. You don't get the project history, but since 99% of the code is in the externally referenced plugins and libraries, that's really not a big deal.
 

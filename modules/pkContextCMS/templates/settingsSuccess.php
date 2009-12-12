@@ -1,6 +1,6 @@
 <div class="pk-chad"></div>
 
-<?php use_helper('Form', 'jQuery') ?>
+<?php use_helper('Url', 'jQuery') ?>
 
 	<?php echo jq_form_remote_tag(
 	  array(
