@@ -72,6 +72,12 @@
   			window.pkContextCMS.callOnSubmit('<?php echo $id ?>');
   			return true;
   	});
+
+	<?php if ($showEditor): ?>
+		var editBtn = $('#pk-slot-edit-<?php echo $name ?>-<?php echo $permid ?>');
+		editBtn.parent().addClass('editing-now');
+	<?php endif; ?>
+
   });
   </script>
 <?php endif ?>
