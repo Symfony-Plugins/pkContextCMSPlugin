@@ -11,11 +11,7 @@
 									"id" => "epc-rename-button", 
 									"class" => "epc-rename-button",
 								)) ?>
-	<?php echo form_tag('pkContextCMS/rename', 
-      array(
-				"id" => "epc-rename-form", 
-        'class' => "epc-form pk-breadcrumb-form",	
-			)) ?>
+  <form method="POST" action="<?php echo url_for('pkContextCMS/rename') ?>" id="epc-rename-form" class="epc-form pk-breadcrumb-form">
 	<?php $form = new pkContextCMSRenameForm($page) ?>
 	<?php echo $form['id'] ?>
 	<?php echo $form['title'] ?>

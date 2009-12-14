@@ -73,7 +73,7 @@
   								'id' => 'pk-breadcrumb-create-childpage-button', 
   								'class' => 'pk-btn icon pk-add', 
   								)) ?>
-  	  <?php echo form_tag("pkContextCMS/create", array("id" => "pk-breadcrumb-create-childpage-form", 'class' => 'pk-breadcrumb-form', )) ?>
+  	  <form method="POST" action="<?php echo url_for('pkContextCMS/create') ?>" id="pk-breadcrumb-create-childpage-form" class="pk-breadcrumb-form">
   	  <?php $form = new pkContextCMSCreateForm($page) ?>
   	  <?php echo $form['parent'] ?>
   	  <?php echo $form['title'] ?>
