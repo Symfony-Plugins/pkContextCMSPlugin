@@ -1,5 +1,3 @@
-# pkContextCMSPlugin #
-
 ## READ THIS FIRST ##
 
 Did you download this plugin from the Symfony plugins site? Depending on your needs, you're probably doing it the hard way. Please read the "Installation" section!
@@ -91,17 +89,17 @@ For the time being, we recommend that you check out our
 sample project via Subversion. You don't need to be an svn expert
 to use this command:
 
-FOR SYMFONY 1.2 (not recommended for new projects):
+FOR SYMFONY 1.4 (recommended for new projects):
 
-    svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
+		svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/sandbox/trunk cmstest
 
 FOR SYMFONY 1.3 (recommended only if you are stuck with other 1.2 code that isn't fully 1.4-ready yet):
 
-svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/sandbox/branches/1.3 cmstest
+		svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/sandbox/branches/1.3 cmstest
 
-FOR SYMFONY 1.4 (recommended for new projects):
+FOR SYMFONY 1.2 (*not recommended for new projects*):
 
-svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/sandbox/trunk cmstest
+    svn co http://svn.symfony-project.com/plugins/pkContextCMSPlugin/cmstest cmstest
 
 Better yet, copy it to your own repository with [svnforeigncopy](https://sourceforge.net/projects/svnforeigncopy/) each time you want to start a new site. That's what we do. With `svnforeigncopy` you get a copy of the cmstest project in your own svn repository, with the `svn:ignore` and `svn:externals` properties completely intact. You don't get the project history, but since 99% of the code is in the externally referenced plugins and libraries, that's really not a big deal.
 
