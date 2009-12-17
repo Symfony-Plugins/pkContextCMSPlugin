@@ -899,6 +899,24 @@ For performance reasons this task only looks at the latest version of each slot.
 
 If you are implementing custom slot types that have a need to participate in the refresh task (see below for more information about custom slot types), just implement a public `refreshSlot` method in those slot classes. This method takes no arguments and returns nothing. 
 
+IMPORTANT: command line Symfony tasks have no idea what the hostname of the site is, which is a problem for tasks like pkContextCMS:refresh. If you are using this task with our media slots, you will need to tell Symfony what the hostname of your site is, or what the hostname of the media plugin site is (if they are different). In most cases the CMS site and the media plugin site are one and the same.
+
+As far as our plugins are concerned, the simplest way to tell Symfony the hostname of the site is to set:
+
+all:
+  cli:
+    host: www.mysite.com
+
+(You can specify different settings for different environments of course.)
+
+If you want to specify the location of the media server only, you can do that this way:
+
+all:
+  pkMedia:
+    client_site: media.mysite.com
+
+(See the media plugin README for more information about setting up a media server on a separate site.)
+
 ## Creating Custom Slot Types ##
 
 You are not limited to the two slot types provided with

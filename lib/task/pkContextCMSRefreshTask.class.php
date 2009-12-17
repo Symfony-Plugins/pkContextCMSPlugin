@@ -56,7 +56,8 @@ EOF;
   {
     // We need a proper environment. This also gives us superadmin privileges
     pkTaskTools::signinAsTaskUser($this->createConfiguration($options['application'], $options['env']), $options['connection']);
-
+    pkTaskTools::setCliHost();
+    
     // Get all of the current pages with their slots. For efficiency this normally does not return slots 
     // that are not the current version
     
