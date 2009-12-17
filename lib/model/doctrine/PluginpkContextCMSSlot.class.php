@@ -35,6 +35,9 @@ abstract class PluginpkContextCMSSlot extends BasepkContextCMSSlot
     return '';
   }
 
+  // Conveniences for slots that use $this->value to store all of their state
+  // and wish to store an array there.
+  
   public function getArrayValue($default = array())
   {
     if (strlen($this->value))
@@ -51,6 +54,18 @@ abstract class PluginpkContextCMSSlot extends BasepkContextCMSSlot
       throw new Exception("Argument is not an array in setArrayValue");
     }
     $this->value = serialize($value);
+  }
+  
+  // Called on the current version of every slot by the pkContextCMS:refresh-slots task, 
+  // a periodic task used to update cached information that may be part of each slot's state 
+  // and which is subject to occasional change. Right now the best example is the use of 
+  // static URLs pointing directly to the media server for performance in
+  // media slots. These need refreshing if the frontend controller name changes
+  // as part of launch. Also media slots will clean up and remove references to
+  // deleted media items when refresh is called. 
+  
+  public function refreshSlot()
+  {
   }
   
   public function editDefault()

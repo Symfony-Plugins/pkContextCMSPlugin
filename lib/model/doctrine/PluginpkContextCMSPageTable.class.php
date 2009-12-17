@@ -139,8 +139,15 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     return $page;
   }
 
+  // If version is false you get the latest version of each slot.
+  
   // If culture is null you get the current user's culture,
   // or sf_default_culture if none is set or we're running in a task context
+  
+  // If culture is 'all' you get all cultures. This option is only for use in low level
+  // queries such as the implementation of the pkContextCMS:refresh task and will not 
+  // work as expected for page rendering purposes. Normally you never fetch all culture slots
+  // at once
 
   static public function queryWithSlots($version = false, $culture = null)
   {
@@ -150,8 +157,15 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
     }
     $query = Doctrine_Query::Create()->
       select("p.*, a.*, v.*, avs.*, s.*")->
-      from("pkContextCMSPage p")->
-      leftJoin('p.Areas a WITH a.culture = ?', array($culture));
+      from("pkContextCMSPage p");
+    if ($culture === 'all')
+    {
+      $query = $query->leftJoin('p.Areas a');
+    }
+    else
+    {
+      $query = $query->leftJoin('p.Areas a WITH a.culture = ?', array($culture));
+    }
     if ($version === false)
     {
       $query = $query->
@@ -166,6 +180,8 @@ class PluginpkContextCMSPageTable extends Doctrine_Table
       leftJoin('avs.Slot s')->
       orderBy('avs.rank asc');
   }
+  
+  
   
   static private $treeObject = null;
   

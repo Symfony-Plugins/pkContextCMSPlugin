@@ -264,6 +264,7 @@ abstract class PluginpkContextCMSPage extends BasepkContextCMSPage
     }
     return false;
   }
+  
   // $new can be a slot class name, an already-created slot object, or false.
   // If it is false no new slot is added to the list to be returned.
   // If it is a class name the slot is constructed for you. 
