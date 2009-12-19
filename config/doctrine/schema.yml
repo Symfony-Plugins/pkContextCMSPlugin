@@ -166,7 +166,7 @@ pkContextCMSSlot:
     type:
       type: string(100)
     value:
-      type: string
+      type: clob
 
 pkContextCMSTextSlot:
   inheritance:
