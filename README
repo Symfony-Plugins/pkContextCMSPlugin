@@ -134,9 +134,16 @@ of Symfony, such as a shared install for many sites (note that only 1.2.x is lik
 config/require-core.php.example to config/require-core.php and edit the 
 paths in that file. 
 
-Next, cd to the `cmstest` folder and run this command:
+Next, cd to the `cmstest` folder and run these commands:
 
-    ./symfony doctrine:build-all-load
+(For Symfony 1.3 and 1.4)
+
+		./symfony doctrine:build --all
+		./symfony doctrine:data-load
+	
+(For Symfony 1.2)
+
+    ./symfony doctrine:build-all-reload
 
 This will create a sample database from the fixtures files.
 
