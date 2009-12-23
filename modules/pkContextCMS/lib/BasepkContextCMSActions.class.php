@@ -549,6 +549,23 @@ class BasepkContextCMSActions extends sfActions
         $this->forward404();
       }
     }
+    $this->logMessage("TREEMOVE page slug: " . $page->slug . " ref page slug: " . $refPage->slug . " type: " . $type, "info");
+    // Refuse to move a page relative to one of its own descendants.
+    // Doctrine's NestedSet implementation produces an
+    // inconsistent tree in the 'inside' case and we're not too sure about
+    // the peer cases either. The javascript tree component we are using does not allow it
+    // anyway, but it can be fooled if you have two reorg tabs open
+    // or another user is using it at the same time etc. -Tom and Dan
+    // http://www.doctrine-project.org/jira/browse/DC-384
+    $ancestorsInfo = $refPage->getAncestorsInfo();
+    foreach ($ancestorsInfo as $info)
+    {
+      if ($info['id'] === $page->id)
+      {
+        $this->logMessage("TREEMOVE balked because page is an ancestor of ref page", "info");
+        $this->forward404();
+      }
+    }
     if ($type === 'after')
     {
       $page->getNode()->moveAsNextSiblingOf($refPage);
