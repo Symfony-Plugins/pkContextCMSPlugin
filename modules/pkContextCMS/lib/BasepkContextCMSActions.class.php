@@ -134,10 +134,14 @@ class BasepkContextCMSActions extends sfActions
 
   protected function sortBody($parent, $order)
   {
+    // Lock the tree against race conditions
+    $this->lockTree();
+    
     $this->logMessage("ZZ PARENT IS " . $parent->slug);
     // ACHTUNG: I've made attempts to rewrite this more efficiently. They resulted in
     // corrupted nested sets. Corrupted nested sets equal corrupted site page hierarchies
     // equal VERY BAD. I suggest leaving this rarely invoked function the way it is.
+    
     foreach ($order as $id)
     {
       $child = Doctrine::getTable('pkContextCMSPage')->find($id);
@@ -157,6 +161,7 @@ class BasepkContextCMSActions extends sfActions
     // Now: did that work consistently?
     $children = $parent->getNode()->getChildren();
     $this->logMessage("ZZ resulting order is " . implode(",", pkArray::getIds($children)));
+    $this->unlockTree();
   }
 
   public function executeRename(sfRequest $request)
@@ -538,78 +543,62 @@ class BasepkContextCMSActions extends sfActions
 
   public function executeTreeMove($request)
   {
-    $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
-    $refPage = $this->retrievePageForEditingByIdParameter('refId', 'manage');
-    $type = $request->getParameter('type');
-    if ($refPage->slug === '/')
+    $this->lockTree();
+    try
     {
-      // Root must not have peers
-      if ($type !== 'inside')
+      $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
+      $refPage = $this->retrievePageForEditingByIdParameter('refId', 'manage');
+      $type = $request->getParameter('type');
+      if ($refPage->slug === '/')
       {
-        $this->forward404();
+        // Root must not have peers
+        if ($type !== 'inside')
+        {
+          throw new sfException('root must not have peers');
+        }
       }
-    }
-    $this->logMessage("TREEMOVE page slug: " . $page->slug . " ref page slug: " . $refPage->slug . " type: " . $type, "info");
-    // Refuse to move a page relative to one of its own descendants.
-    // Doctrine's NestedSet implementation produces an
-    // inconsistent tree in the 'inside' case and we're not too sure about
-    // the peer cases either. The javascript tree component we are using does not allow it
-    // anyway, but it can be fooled if you have two reorg tabs open
-    // or another user is using it at the same time etc. -Tom and Dan
-    // http://www.doctrine-project.org/jira/browse/DC-384
-    $ancestorsInfo = $refPage->getAncestorsInfo();
-    foreach ($ancestorsInfo as $info)
-    {
-      if ($info['id'] === $page->id)
+      $this->logMessage("TREEMOVE page slug: " . $page->slug . " ref page slug: " . $refPage->slug . " type: " . $type, "info");
+    
+      // Refuse to move a page relative to one of its own descendants.
+      // Doctrine's NestedSet implementation produces an
+      // inconsistent tree in the 'inside' case and we're not too sure about
+      // the peer cases either. The javascript tree component we are using does not allow it
+      // anyway, but it can be fooled if you have two reorg tabs open
+      // or another user is using it at the same time etc. -Tom and Dan
+      // http://www.doctrine-project.org/jira/browse/DC-384
+      $ancestorsInfo = $refPage->getAncestorsInfo();
+      foreach ($ancestorsInfo as $info)
       {
-        $this->logMessage("TREEMOVE balked because page is an ancestor of ref page", "info");
-        $this->forward404();
+        if ($info['id'] === $page->id)
+        {
+          $this->logMessage("TREEMOVE balked because page is an ancestor of ref page", "info");
+          throw new sfException('page is ancestor of ref page');
+        }
       }
-    }
-    if ($type === 'after')
+      if ($type === 'after')
+      {
+        $page->getNode()->moveAsNextSiblingOf($refPage);
+      }
+      elseif ($type === 'before')
+      {
+        $page->getNode()->moveAsPrevSiblingOf($refPage);
+      }
+      elseif ($type === 'inside')
+      {
+        $page->getNode()->moveAsLastChildOf($refPage);
+      }
+      else
+      {
+        throw new sfException('Type parameter is bogus');
+      }
+    } catch (Exception $e)
     {
-      $page->getNode()->moveAsNextSiblingOf($refPage);
-    }
-    elseif ($type === 'before')
-    {
-      $page->getNode()->moveAsPrevSiblingOf($refPage);
-    }
-    elseif ($type === 'inside')
-    {
-      $page->getNode()->moveAsLastChildOf($refPage);
-    }
-    else
-    {
+      $this->unlockTree();
       $this->forward404();
     }
+    $this->unlockTree();
     echo("ok");
     return sfView::NONE;
-  }
-  
-  public function executeMoveUp($request)
-  {
-    $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
-    $this->forward404Unless($page->userHasPrivilege('move-up'));
-    $parent = $page->getParent();
-    $this->forward404Unless($parent);
-    $grandparent = $parent->getParent();
-    $this->forward404Unless($grandparent);
-    $page->getNode()->moveAsLastChildOf($grandparent);
-    return $this->redirect($page->getUrl());
-  }
-
-  public function executeMoveDown($request)
-  {
-    $page = $this->retrievePageForEditingByIdParameter('id', 'manage');
-    $peer = $this->retrievePageForEditingByIdParameter('peer', 'manage');
-    $this->forward404Unless($page->userHasPrivilege('move-down'));
-    // Make sure they have the same parent, no monkey business to escape privs checks
-    if ($page->getParent()->id !== $peer->getParent()->id)
-    {
-      $this->forward404();
-    }
-    $page->getNode()->moveAsLastChildOf($peer);
-    return $this->redirect($page->getUrl());
   }
   
   protected function getParentClasses($parents)
@@ -704,6 +693,38 @@ class BasepkContextCMSActions extends sfActions
         return 'Redirect';
       }
     }
+  }
+  
+  // There are potential race conditions in the Doctrine nested set code, and also 
+  // in our own code that decides when it's safe to call it. So we need an
+  // application-level lock for reorg functions. Dan says there are transactions in
+  // Doctrine that should make adding and deleting pages safe, so we don't lock
+  // those actions for now, but this code is available for that purpose too if need be
+  
+  protected $lockfp;
+  
+  protected function lockTree()
+  {
+    $dir = pkFiles::getWritableDataFolder(array('pkContextCMS', 'locks'));
+    $file = "$dir/tree.lck";
+    while (true)
+    {
+      $this->lockfp = fopen($file, 'a');
+      if (!$this->lockfp)
+      {
+        sleep(1);
+      }
+      else
+      {
+        break;
+      }
+    } 
+    flock($this->lockfp, LOCK_EX);
+  }
+  
+  protected function unlockTree()
+  {
+    fclose($this->lockfp);
   }
 }
 
