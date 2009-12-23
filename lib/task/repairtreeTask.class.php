@@ -20,9 +20,11 @@ class repairtreeTask extends sfBaseTask
     $this->name             = 'repair-tree';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
-The [repair-tree|INFO] task attempts to repair a damaged Doctrine
-nested set tree (i.e. the hierarchy of pages in the CMS). This is not
-guaranteed to work.
+The [repair-tree|INFO] task rebuilds the Doctrine nested set tree of your site
+based on the slugs of your pages. This will always work even if the nested set has
+somehow become corrupted. The order of pages at the same level will NOT be
+preserved, however parent-child relationships will be preserved, and you can
+then clean up the mess with the reorganize tool.
 
 Call it with:
 
@@ -36,57 +38,93 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'] ? $options['connection'] : null)->getConnection();
 
-    // add your code here
+    $pages = Doctrine::getTable('pkContextCMSPage')->createQuery('p')->orderBy('p.slug ASC')->execute();
+    // Rebuild the nested set via direct access to lft, rgt and level based on what
+    // we find in the slugs
     
-    // This is inefficient but we want to pull the information in the simplest
-    // way possible and then rebuild the tree, playing dumb as we go
-    
+    $pagesBySlug = array();
+    foreach ($pages as $page)
+    {
+      $pagesBySlug[$page->slug] = $page;
+    }
+    $root = $pagesBySlug['/'];
+    $tree = $this->buildSubtree($pages, $root);
+    $lft = 1;
+    $rgt = 1;
+    $this->rebuildAdjacencyList($pagesBySlug, $tree, $rgt);
+    $root->lft = $lft;
+    $rgt++;
+    $root->rgt = $rgt;
+    $root->level = $this->getSlugLevel($root->slug);
+    $root->save();
+  }
+  
+  function buildSubtree($pages, $parent)
+  {
     $tree = array();
-    $home = pkContextCMSPageTable::retrieveBySlug('/');
-    $tree = $this->getSubtree($home);
-    $this->hits = array();
-    $this->setSubtree($home, $tree, 1, 0, '');
-  }
-  
-  protected function getSubtree($page)
-  {
-    $result = array();
-    $children = $page->getNode()->getChildren();
-    if (!empty($children))
+    $slug = $parent->slug;
+    if (substr($slug, -1, 1) !== '/')
     {
-      foreach ($children as $child)
+      $slug .= '/';
+    }
+    $level = $this->getSlugLevel($slug);
+    // Find kids by slug. TODO: this is inefficient, we're making a lot of passes
+    // over the full list, clever use of a simple alpha sort would reduce that
+    
+    // Careful: there's only one iterator, don't recurse inside here
+    $kids = array();
+    foreach ($pages as $page)
+    {
+      $pslug = $page->slug; 
+      if (strpos($pslug, '/') === false)
       {
-        $result[$child->getId()] = $this->getSubtree($child);
+        // Leave the global page alone
+        continue;
       }
-    }
-    return $result;
-  }
-  
-  protected function setSubtree($page, $tree, $lft, $level, $prefix = '')
-  {
-    if (isset($this->hits[$page->id]))
-    {
-      echo("Second visit to " . $page->id . ", presumably due to damage. Skipping\n");
-      return $lft;
-    }
-    $this->hits[$page->id] = true;
-    echo($prefix . $page->slug);
-    $page->lft = $lft;
-    $lft++;
-    foreach ($tree as $id => $subTree)
-    {
-      $subPage = Doctrine::getTable('pkContextCMSPage')->find($id);
-      if (!$subPage)
+      if (substr($pslug, 0, strlen($slug)) !== $slug)
       {
-        echo("$id does not exist anymore, skipping\n");
+        continue;
       }
-      $lft = $this->setSubtree($subPage, $subTree, $lft, $level + 1, $prefix . '  ');
-      $last = $subPage;
+      if (($level + 1) !== $this->getSlugLevel($pslug))
+      {
+        continue;
+      }
+      
+      $kids[] = $page;
     }
-    $page->rgt = $lft;
-    $page->level = $level;
-    $page->save();
-    echo(' '. $page->lft . "-" . $page->rgt . "\n");
-    return $page->rgt + 1;
+    foreach ($kids as $page)
+    {
+      $tree[$page->slug] = $this->buildSubtree($pages, $page);
+    }
+    return $tree;
+  }  
+  
+  protected function rebuildAdjacencyList($pagesBySlug, $tree, &$rgt)
+  {
+    foreach ($tree as $slug => $subtree)
+    {
+      $rgt++;
+      $lft = $rgt;
+      $this->rebuildAdjacencyList($pagesBySlug, $subtree, $rgt);
+      $page = $pagesBySlug[$slug];
+      $page->lft = $lft;
+      $rgt++;
+      $page->rgt = $rgt;
+      $page->level = $this->getSlugLevel($slug);
+      $page->save();
+    }
+  }
+    
+  protected function getSlugLevel($slug)
+  {
+    if ($slug === '/')
+    {
+      return 0;
+    }
+    if (substr($slug, -1, 1) !== '/')
+    {
+      $slug .= '/';
+    }
+    return substr_count($slug, '/') - 1;
   }
 }
