@@ -37,7 +37,16 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
 
     if ($this->getObject()->hasChildren())
     {
-      unset($this['archived']);
+      $this->setWidget('cascade_archived', new sfWidgetFormInputCheckbox());
+      $this->setValidator('cascade_archived', new sfValidatorBoolean(array(
+        'true_values' =>  array('true', 't', 'on', '1'),
+        'false_values' => array('false', 'f', 'off', '0', ' ', '')
+      )));
+      $this->setWidget('cascade_view_is_secure', new sfWidgetFormInputCheckbox());
+      $this->setValidator('cascade_view_is_secure', new sfValidatorBoolean(array(
+        'true_values' =>  array('true', 't', 'on', '1'),
+        'false_values' => array('false', 'f', 'off', '0', ' ', '')
+      )));
     }
 
     $this->setWidget('view_is_secure', new sfWidgetFormChoice(array(
@@ -132,6 +141,24 @@ class pkContextCMSPageSettingsForm extends pkContextCMSPageForm
   public function updateObject($values = null)
   {
     $object = parent::updateObject($values);
+    
+    // Check for cascading operations
+    if($this->getValue('cascade_archived') || $this->getValue('cascade_view_is_secure'))
+    {
+      $q = Doctrine::getTable('pkContextCMSPage')->createQuery()
+        ->update()
+        ->where('lft > ? and rgt < ?', array($object->getLft(), $object->getRgt()));
+      if($this->getValue('cascade_archived'))
+      {
+        $q->set('archived', '?', $object->getArchived());
+        $q->set('is_published', '?', $object->getIsPublished());
+      }
+      if($this->getValue('cascade_view_is_secure'))
+      {
+        $q->set('view_is_secure', '?', $object->getViewIsSecure());
+      }
+      $q->execute();
+    }
     
     // This part isn't validation, it's just normalization.
     $slug = $object->slug;

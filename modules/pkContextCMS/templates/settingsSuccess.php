@@ -43,13 +43,13 @@
 			  <label>Page Status</label>
 			  	<div class="pk-page-settings-status">
 						<?php echo $form['view_is_secure'] ?>
-						
-						<?php if (isset($form['archived'])): ?>
-				  		<?php echo $form['archived'] ?>
-						<?php else: ?>
-							<div id="pk-page-settings-note" class="pk-note">This page has subpages which are turned on (see the side navigation for a list). If you wish to turn it off, you must first turn off its subpages.</div>
-						<?php endif ?>
-						
+						<?php if(isset($form['cascade_view_is_secure'])): ?>
+                <?php echo $form['cascade_view_is_secure'] ?> Cascade change to children
+            <?php endif ?> 
+				    <?php echo $form['archived'] ?>
+            <?php if(isset($form['cascade_archived'])): ?>
+              <?php echo $form['cascade_archived'] ?> Cascade change to children
+            <?php endif ?> 
 					</div>
 			</div>
 		</div>
@@ -85,8 +85,9 @@
 		</li>
 		<?php if ($page->userHasPrivilege('manage')): ?>
 		<li>
-			<?php echo link_to("Delete Page", "pkContextCMS/delete?id=" . $page->getId(), array("confirm" => "Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn icon pk-delete', )) ?>
-		</li>
+			<?php if($page->hasChildren()) $childMessage = "This page has children that will also be delteted.";
+      echo link_to("Delete Page", "pkContextCMS/delete?id=" . $page->getId(), array("confirm" => "$childMessage  Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn icon pk-delete', )) ?>
+    </li>
 		<?php endif ?>
 	</ul>
 
