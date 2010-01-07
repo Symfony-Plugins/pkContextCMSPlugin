@@ -23,32 +23,37 @@
 
 		<div id="pk-page-settings-left">
 			<?php if (isset($form['slug'])): ?>
-			  <div class="pk-form-row">
+			  <div class="pk-form-row slug">
 			    <label>Page Slug</label>
 			    <?php echo $form['slug'] ?>
 			    <?php echo $form['slug']->renderError() ?>
 			  </div>
 			<?php endif ?>
-			<div class="pk-form-row">
+			<div class="pk-form-row engine">
 			  <label>Page Engine</label>
 			  <?php echo $form['engine']->render(array('onClick' => 'pkUpdateEngineAndTemplate()')) ?>
 			  <?php echo $form['engine']->renderError() ?>
 			</div>
-			<div class="pk-form-row" id="pk-page-template">
+			<div class="pk-form-row template" id="pk-page-template">
 			  <label>Page Template</label>
 			  <?php echo $form['template'] ?>
 			  <?php echo $form['template']->renderError() ?>
 			</div>
-			<div class="pk-form-row">
+			<div class="pk-form-row status">
 			  <label>Page Status</label>
+			  	<div class="pk-page-settings-status">
+				    <?php echo $form['archived'] ?>
+            <?php if(isset($form['cascade_archived'])): ?>
+              <?php echo $form['cascade_archived'] ?> Cascade publish changes to children
+            <?php endif ?> 
+					</div>
+			</div>			
+			<div class="pk-form-row privacy">
+			  <label>Page Privacy</label>
 			  	<div class="pk-page-settings-status">
 						<?php echo $form['view_is_secure'] ?>
 						<?php if(isset($form['cascade_view_is_secure'])): ?>
-                <?php echo $form['cascade_view_is_secure'] ?> Cascade change to children
-            <?php endif ?> 
-				    <?php echo $form['archived'] ?>
-            <?php if(isset($form['cascade_archived'])): ?>
-              <?php echo $form['cascade_archived'] ?> Cascade change to children
+                <?php echo $form['cascade_view_is_secure'] ?> Cascade privacy changes to children
             <?php endif ?> 
 					</div>
 			</div>
@@ -58,14 +63,16 @@
 	
 		<h4>Page Permissions</h4>
 	
-	  <?php include_partial('pkContextCMS/privileges', 
-	    array('form' => $form, 'widget' => 'editors',
-	      'label' => 'Editors', 'inherited' => $inherited['edit'],
-	      'admin' => $admin['edit'])) ?>
-	  <?php include_partial('pkContextCMS/privileges', 
-	    array('form' => $form, 'widget' => 'managers',
-	      'label' => 'Managers', 'inherited' => $inherited['manage'],
-	      'admin' => $admin['manage'])) ?>
+		<div class="pk-page-permissions">
+		  <?php include_partial('pkContextCMS/privileges', 
+		    array('form' => $form, 'widget' => 'editors',
+		      'label' => 'Editors', 'inherited' => $inherited['edit'],
+		      'admin' => $admin['edit'])) ?>
+		  <?php include_partial('pkContextCMS/privileges', 
+		    array('form' => $form, 'widget' => 'managers',
+		      'label' => 'Managers', 'inherited' => $inherited['manage'],
+		      'admin' => $admin['manage'])) ?>
+			</div>
   </div>
 	
 	<ul id="pk-page-settings-footer" class="pk-controls pk-page-settings-form-controls">
@@ -85,8 +92,8 @@
 		</li>
 		<?php if ($page->userHasPrivilege('manage')): ?>
 		<li>
-			<?php if($page->hasChildren()) $childMessage = "This page has children that will also be delteted.";
-      echo link_to("Delete Page", "pkContextCMS/delete?id=" . $page->getId(), array("confirm" => "$childMessage  Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn icon pk-delete', )) ?>
+			<?php if($page->hasChildren()) $childMessage = "This page has children that will also be deleted.";
+      echo link_to("Delete This Page", "pkContextCMS/delete?id=" . $page->getId(), array("confirm" => "$childMessage  Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn icon pk-delete')) ?>
     </li>
 		<?php endif ?>
 	</ul>

@@ -3,7 +3,9 @@
   
       <label><?php echo $label ?></label>
       <div class="pk-page-settings-local-editors">
-        <h4>Local</h4>
+				<?php if (0): ?>
+        	<h4>Local</h4>	
+				<?php endif ?>
         <?php echo $form[$widget] ?>
       </div>
 

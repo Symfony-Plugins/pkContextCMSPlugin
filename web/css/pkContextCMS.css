@@ -782,6 +782,7 @@ padding: 0;
 color: #333;
 border-top: 1px solid #ddd;
 border-bottom: solid 10px #ddd;
+min-width: 960px;
 }
 
 #pk-page-settings-form,
@@ -790,7 +791,7 @@ border-bottom: solid 10px #ddd;
 width: auto;
 float: left;
 display: inline;
-margin: 0 28px;
+margin: 0 20px;
 padding: 20px 0;
 }
 
@@ -811,10 +812,14 @@ font-size: 16px;
 	color:#ac3;
 }
 
+#pk-page-settings h3
+{
+	margin-top: 0;
+}
+
 #pk-page-settings h4
 {
 font-size: 12px;
-font-weight: bold;
 margin: 0 0 10px 0;
 }
 
@@ -845,7 +850,7 @@ line-height: 20px;
 #pk-page-settings-right
 {
 float: left;
-width: 460px;
+width: 450px;
 margin: 10px 0 0 0;
 }
 
@@ -858,6 +863,14 @@ margin-right: 20px;
 {
 margin-top: 10px;
 line-height: 20px;
+}
+
+#pk-page-settings .pk-page-permissions
+{
+	float: left;
+	clear: both;
+	padding: 10px;
+	border: 1px solid #e0e0e0;
 }
 
 #pk-page-settings-footer,
