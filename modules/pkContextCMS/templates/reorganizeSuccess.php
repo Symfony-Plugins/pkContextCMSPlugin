@@ -1,5 +1,7 @@
 <?php use_helper('jQuery') ?>
 
+<?php slot('body_class','pk-admin') ?>
+
 <?php sfContext::getInstance()->getResponse()->addJavascript('/pkContextCMSPlugin/js/jsTree/_lib/css.js') ?>
 <?php sfContext::getInstance()->getResponse()->addJavascript('/pkContextCMSPlugin/js/jsTree/source/tree_component.js') ?>
 <?php sfContext::getInstance()->getResponse()->addStylesheet('/pkContextCMSPlugin/js/jsTree/source/tree_component.css') ?>
