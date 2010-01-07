@@ -77,6 +77,12 @@
 
 
 <script type="text/javascript">
+$(document).ready(function() {
+	// Stuff to do as soon as the DOM is ready;
+	$('.pk-history-browser-view-more').mousedown(function(){
+		$(this).children('img').fadeIn('fast');
+	})
+
 	$('.pk-history-item').click(function() {
 
 		$('.pk-history-browser').hide();
@@ -142,7 +148,8 @@
 	},function(){
 		$(this).css('cursor','default');		
 	})
-	
+
+	});
 </script>
 
 <?php

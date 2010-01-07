@@ -56,10 +56,21 @@ background-color: #fff;
 a.pk-history-browser-view-more
 {
 float: left;
-width: 100%;
-height: 100%;
+/*width: 100%;*/
+/*height: 100%;*/
 display: inline;
 padding: 8px;
+line-height: 20px;
+position: relative;
+}
+
+a.pk-history-browser-view-more .spinner
+{
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+	right: -16px;
+	display: none;
 }
 
 a.pk-history-browser-all:hover
@@ -114,11 +125,12 @@ border-top: 1px solid #ddd;
 /*	padding: 8px 4px;*/
 }
 
-.pk-history-browser .id
+/* This was commented out in the partial at some point - 1/7/2010 */
+/*.pk-history-browser .id
 {
 width: 10%;
 }
-
+*/
 .pk-history-browser .date
 {
 width: 15%;
@@ -131,7 +143,8 @@ width: 15%;
 
 .pk-history-browser .preview
 {
-width: 60%;
+/*width: 60%;*/
+width: 70%;
 }
 
 .pk-history-preview-notice

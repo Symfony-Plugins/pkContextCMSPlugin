@@ -18,7 +18,7 @@
 			<?php if (1): ?>
 			  <tr>
 				  <td colspan="4">
-				    <a href="#" class="pk-history-browser-view-more">View More Revisions</a>
+				    <a href="#" class="pk-history-browser-view-more">View More Revisions <img src="/pkToolkitPlugin/images/pk-icon-loader-ani.gif" class="spinner" /></a>
             </td>
 			  </tr>
 			<?php endif ?>
