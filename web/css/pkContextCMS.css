@@ -484,6 +484,8 @@ margin-right: 5px;
 	color: #000;
 }
 
+
+#pk-global-toolbar .pk-global-toolbar-breadcrumb
 /* == */
 /* Apostrophe BREADCRUMB =========================== */
 /* == */
@@ -537,7 +539,8 @@ width: auto;
 line-height: 24px;
 }
 
-#pk-breadcrumb .pk-breadcrumb-title.current-page
+#pk-breadcrumb .pk-breadcrumb-title.current-page,
+#pk-breadcrumb .pk-breadcrumb-width
 {
 font-size: 18px;
 line-height: 20px;
@@ -593,7 +596,7 @@ font-size: 12px;
 
 #pk-breadcrumb .epc-form #id
 {
-display: none;
+/*display: none;*/
 }
 
 #pk-breadcrumb .epc-form span,
@@ -649,17 +652,30 @@ color: #333;
 font: 18px/22px Arial, Sans-serif;
 letter-spacing: -.0125em;
 float: left;
-padding: 0 0 0 2px;
+padding: 0 2px;
 margin: 0;
 width: 100%;
 height: 20px;
-border: 1px solid #ddd;
+border: 1px solid #fff;
 clear: right;
+}
+
+#pk-breadcrumb input.pk-breadcrumb-input:focus
+{
+	color: #000;
+	background: #e6e6e6;
+	border: 1px solid #777;
+	border-style: inset;
 }
 
 #pk-breadcrumb input.pk-breadcrumb-create-childpage-title
 {
 width: 180px;
+}
+
+#pk-breadcrumb input#pk-breadcrumb-rename-title
+{
+	width: 1px;
 }
 
 #pk-breadcrumb a.pk-page-settings-button

@@ -92,8 +92,11 @@
 		</li>
 		<?php if ($page->userHasPrivilege('manage')): ?>
 		<li>
-			<?php if($page->hasChildren()) $childMessage = "This page has children that will also be deleted.";
-      echo link_to("Delete This Page", "pkContextCMS/delete?id=" . $page->getId(), array("confirm" => "$childMessage  Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn icon pk-delete')) ?>
+			<?php $childMessage = ''; ?>
+			<?php if($page->hasChildren()): ?>
+			<?php $childMessage = "This page has children that will also be deleted. "; ?>
+			<?php endif; ?>
+      <?php echo link_to("Delete This Page", "pkContextCMS/delete?id=" . $page->getId(), array("confirm" => $childMessage."Are you sure? This operation can not be undone. Consider archiving the page instead.", 'class' => 'pk-btn icon pk-delete')) ?>
     </li>
 		<?php endif ?>
 	</ul>
