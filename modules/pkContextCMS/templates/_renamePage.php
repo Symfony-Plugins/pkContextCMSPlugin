@@ -39,9 +39,11 @@
 		var renameInputWidth = checkInputWidth(renameSpacer.width());		
 		renameInput.css('width', renameInputWidth);		
 		
-		var currentTitle = renameInput[0].value;
+		var currentTitle = "<?php echo $page->getTitle() ?>";
+		renameInput[0].value = currentTitle;
 		var liveTitle = renameInput[0].value;
 		
+					
 		renameInput.bind('cancel', function(e){
 			renameSpacer.text(currentTitle)
 			renameInput[0].value = currentTitle;
@@ -53,7 +55,7 @@
 		
 		renameInput.focus(function(){
 			renameControls.fadeIn();
-			renameInput.selected;
+			renameInput.select();
 		})
 		
 		renameInput.blur(function(){
@@ -63,8 +65,6 @@
 		renameInput.keydown(function(e){
 			liveTitle = renameInput[0].value;
 			renameSpacer.text(liveTitle);
-			renameInputWidth = checkInputWidth(renameSpacer.width());
-			renameInput.css('width', renameInputWidth);
 		});
 
 		renameInput.keyup(function(e){
@@ -72,6 +72,8 @@
 			{
 				renameInput.trigger('cancel');
 			}			
+			renameInputWidth = checkInputWidth(renameSpacer.width());
+			renameInput.css('width', renameInputWidth);
 		});
 		
 		renameControls.find('.pk-cancel').click(function(){
