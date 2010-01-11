@@ -44,7 +44,7 @@
 			  	<div class="pk-page-settings-status">
 				    <?php echo $form['archived'] ?>
             <?php if(isset($form['cascade_archived'])): ?>
-              <?php echo $form['cascade_archived'] ?> Cascade publish changes to children
+              <?php echo $form['cascade_archived'] ?> Cascade <em>status</em> changes to children
             <?php endif ?> 
 					</div>
 			</div>			
@@ -53,7 +53,7 @@
 			  	<div class="pk-page-settings-status">
 						<?php echo $form['view_is_secure'] ?>
 						<?php if(isset($form['cascade_view_is_secure'])): ?>
-                <?php echo $form['cascade_view_is_secure'] ?> Cascade privacy changes to children
+                <?php echo $form['cascade_view_is_secure'] ?> Cascade <em>privacy</em> changes to children
             <?php endif ?> 
 					</div>
 			</div>
