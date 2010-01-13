@@ -1,4 +1,4 @@
-<div class="pk-history-browser">
+<div class="pk-history-browser dropshadow">
 	<h3>
 		You are browsing past revisions for this area.
   </h3>
