@@ -20,7 +20,12 @@
 <?php else: ?>
   <?php // You can easily turn off the 'Log In' link via app.yml ?>
   <?php if (sfConfig::get('app_pkContextCMS_login_link', true)): ?>
-    <li><?php echo link_to("Log In", sfConfig::get('app_pkContextCMS_actions_login', 'sfGuardAuth/signin'), array('class' => 'pk-btn', )) ?></li>
+    <li>
+			<?php echo jq_link_to_function('Login', "$('#pk-login-form-container').fadeIn(); $('#signin_username').focus(); $('.pk-page-overlay').fadeIn('fast');", array('class' => 'pk-btn','id' => 'pk-login-button')) ?>	
+			<div id="pk-login-form-container">
+				<?php include_component('pkContextCMS','signinForm') ?>
+			</div>
+		</li>
   <?php endif ?>
 <?php endif ?>
 </ul>
