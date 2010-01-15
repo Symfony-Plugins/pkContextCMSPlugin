@@ -138,27 +138,49 @@ class pkContextCMSTools
     }
     throw new sfException("Option group $groupName is not defined in app.yml");
   }
-  static public function getSlotTypeOptions($options)
+
+  // Cache this information for the duration of the request
+  static public $slotTypesInfo = null;
+  
+  static public function getSlotTypesInfo($options)
   {
-    $slotTypes = array_merge(
-      array(
-        'pkContextCMSText' => 'Plain Text',
-        'pkContextCMSRichText' => 'Rich Text'),
-      sfConfig::get('app_pkContextCMS_slot_types', array()));
-    if (isset($options['allowed_types']))
+    if (!isset(self::$slotTypesInfo))
     {
-      $newSlotTypes = array();
-      foreach($options['allowed_types'] as $type)
+      $slotTypes = array_merge(
+        array(
+          'pkContextCMSText' => 'Plain Text',
+          'pkContextCMSRichText' => 'Rich Text'),
+        sfConfig::get('app_pkContextCMS_slot_types', array()));
+      if (isset($options['allowed_types']))
       {
-        if (isset($slotTypes[$type]))
+        $newSlotTypes = array();
+        foreach($options['allowed_types'] as $type)
         {
-          $newSlotTypes[$type] = $slotTypes[$type];
+          if (isset($slotTypes[$type]))
+          {
+            $newSlotTypes[$type] = $slotTypes[$type];
+          }
         }
+        $slotTypes = $newSlotTypes;
       }
-      $slotTypes = $newSlotTypes;
+      $info = array();
+      
+      foreach ($slotTypes as $type => $label)
+      {
+        $info[$type]['label'] = $label;
+        $info[$type]['class'] = strtolower(preg_replace('/^pkContextCMS(\w)/', 'pk-$1', $type));
+      }
+      self::$slotTypesInfo = $info;
     }
-    return $slotTypes; 
+    return self::$slotTypesInfo;
   }
+  
+  // Includes classes for buttons for adding each slot type
+  static public function getSlotTypeOptionsAndClasses($options)
+  {
+    
+  }
+  
   static public function getOption($array, $name, $default)
   {
     if (isset($array[$name]))

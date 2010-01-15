@@ -277,7 +277,7 @@ class BasepkContextCMSActions extends sfActions
     // allowed slots for this area, not just the allowed slots globally.
     // There is very little harm in this as slots rarely have
     // security implications, but custom slots someday might.
-    if (!in_array($this->type, array_keys(pkContextCMSTools::getSlotTypeOptions($options))))
+    if (!in_array($this->type, array_keys(pkContextCMSTools::getSlotTypesInfo($options))))
     {
       $this->forward404();
     }
