@@ -8,7 +8,7 @@
 
 	<?php $form = new pkContextCMSRenameForm($page) ?>
 	<?php echo $form['id']->render(array('id' => 'pk-breadcrumb-rename-id', )) ?>
-	<?php echo $form['title']->render(array('id' => 'pk-breadcrumb-rename-title', )) ?>
+	<?php echo $form['title']->render(array('id' => 'pk-breadcrumb-rename-title')) ?>
 
 	  <ul id="pk-breadcrumb-rename-controls" class="pk-form-controls pk-breadcrumb-controls rename" style="display:none;">
 			<li>
@@ -24,22 +24,21 @@
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 
-			var renameForm = $('.pk-breadcrumb-form.rename')
-			renameForm.prepend('<b class="pk-breadcrumb-rename-title-spacer" style="display:none;float:left;white-space:nowrap;"><?php echo $page->getTitle() ?></b>')
+			var renameForm = $('#pk-breadcrumb-rename-form');
+			renameForm.prepend('<b id="pk-breadcrumb-rename-title-spacer" style="display:none;float:left;white-space:nowrap;"><?php echo str_replace(' ','-',$page->getTitle()) ?></b>');
 
 			var renameControls = $('#pk-breadcrumb-rename-controls');
-			var renameSpacer = $('.pk-breadcrumb-rename-title-spacer');
+			var renameSpacer = $('#pk-breadcrumb-rename-title-spacer');
 			var renameInput = $('#pk-breadcrumb-rename-title');
 			var renameInputWidth = checkInputWidth(renameSpacer.width());		
 			renameInput.css('width', renameInputWidth);		
 
-			var currentTitle = "<?php echo $page->getTitle() ?>";
+			var currentTitle = "<?php echo $page->getTitle() ?>"
 			renameInput[0].value = currentTitle;
 			var liveTitle = renameInput[0].value;
-
-
+			
 			renameInput.bind('cancel', function(e){
-				renameSpacer.text(currentTitle)
+				renameSpacer.text(cleanTitle(currentTitle))
 				renameInput[0].value = currentTitle;
 				renameInputWidth = checkInputWidth(renameSpacer.width());
 				renameInput.css('width', renameInputWidth);
@@ -58,7 +57,9 @@
 
 			renameInput.keydown(function(e){
 				liveTitle = renameInput[0].value;
-				renameSpacer.text(liveTitle);
+				renameSpacer.text(cleanTitle(liveTitle));				
+				renameInputWidth = checkInputWidth(renameSpacer.width());
+				renameInput.css('width', renameInputWidth);
 			});
 
 			renameInput.keyup(function(e){
@@ -68,15 +69,15 @@
 				}			
 				renameInputWidth = checkInputWidth(renameSpacer.width());
 				renameInput.css('width', renameInputWidth);
-			});
+			})
 
-			renameControls.find('.pk-cancel').click(function(){
+			renameControls.find('a.pk-cancel').click(function(){
 				renameInput.trigger('cancel');
 			});
 
 			function checkInputWidth(w)
 			{
-				var minWidth = 50;
+				var minWidth = 20;
 				var maxWidth = 250;
 				if (w < minWidth)
 				{
@@ -86,12 +87,17 @@
 				{
 					// we are not enforcing maxWidth at the moment;
 					// return maxWidth;
-					return w;
+					return w+1;
 				}
 				else
 				{
-					return w;
+					return w+1;
 				}
+			}
+			
+			function cleanTitle(t)
+			{
+				return t.replace(/ /g,'-');
 			}
 
 		});

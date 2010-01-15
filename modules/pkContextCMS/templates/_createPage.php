@@ -11,8 +11,8 @@
 <form method="POST" action="<?php echo url_for('pkContextCMS/create') ?>" id="pk-breadcrumb-create-childpage-form" class="pk-breadcrumb-form add">
 
 	<?php $form = new pkContextCMSCreateForm($page) ?>
-	<?php echo $form['parent'] ?>
-	<?php echo $form['title'] ?>
+	<?php echo $form['parent']->render(array('id' => 'pk-breadcrumb-create-parent', )) ?>
+	<?php echo $form['title']->render(array('id' => 'pk-breadcrumb-create-title', )) ?>
 
 	<ul class="pk-form-controls pk-breadcrumb-create-childpage-controls">
 	  <li>
@@ -28,5 +28,9 @@
 			)) ?>
 		</li>
 	</ul>
+
+	<script type="text/javascript" charset="utf-8">
+		pkInputSelfLabel('#pk-breadcrumb-create-title', 'Page Title');
+	</script>
 
 </form>

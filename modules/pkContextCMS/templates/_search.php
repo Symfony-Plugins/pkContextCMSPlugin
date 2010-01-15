@@ -5,6 +5,6 @@
   </form>
 </div>
 
-<script>
-pkInputSelfLabel('#pk-search-cms-field', 'Search');
+<script type="text/javascript" charset="utf-8">
+	pkInputSelfLabel('#pk-search-cms-field', 'Search');
 </script>

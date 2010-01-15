@@ -27,14 +27,14 @@
 			<?php include_partial('pkContextCMS/renamePage', array('page' => $page, 'edit' => $page->userHasPrivilege('edit'))) ?>
 		</li>
 	<?php else: ?>
-		<li class="pk-breadcrumb-title" id="pk-breadcrumb-title">
+		<li class="pk-breadcrumb-title" id="pk-breadcrumb-title-<?php echo $pinfo['id'] ?>">
 			<?php echo link_to($title, pkContextCMSTools::urlForPage($pinfo['slug'])) ?>
 		</li>
 	<?php endif ?>
 	
   <?php if ($page->id === $pinfo['id']): ?>
     <?php if ($page->userHasPrivilege('edit')): ?>  
-		<li class="pk-breadcrumb-page-settings">
+		<li class="pk-breadcrumb-page-settings" id="pk-breadcrumb-page-settings">
       <?php $id = $page->id ?>
       <?php // Sets up open and close buttons, ajax loading of form ?>
       <?php echo pk_remote_dialog_toggle(
@@ -54,7 +54,7 @@
     <?php include_slot('pk_add_page') ?>
   <?php else: ?>
   	<li class="pk-breadcrumb-slash">/</li>
-    <li class="pk-breadcrumb-create-childpage">
+    <li id="pk-breadcrumb-create-childpage" class="pk-breadcrumb-create-childpage">
 			<?php include_partial('pkContextCMS/createPage', array('page' => $page, 'edit' => $page->userHasPrivilege('edit'))); ?>
     </li>	
   <?php endif ?>
