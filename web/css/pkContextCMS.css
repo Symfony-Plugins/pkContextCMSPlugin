@@ -1468,7 +1468,7 @@ text-transform: capitalize;
 width: auto;
 }
 
-#pk-signin-form .pk-form-row.submit .pk-cancel
+#pk-signin-form .pk-form-row.submit .cancel
 {
 	margin-left: 5px;
 }
