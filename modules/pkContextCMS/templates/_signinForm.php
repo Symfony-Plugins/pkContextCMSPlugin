@@ -21,7 +21,7 @@
 		
 		<ul class="pk-form-row submit">
     	<li><input type="submit" value="<?php echo __('sign in') ?>" class="pk-submit" /></li>
-			<li><?php echo jq_link_to_function('Cancel', "$('#pk-login-form-container').fadeOut('fast'); $('.pk-page-overlay').fadeOut('fast');", array('class' => 'pk-cancel', )) ?></li>
+			<li><?php echo jq_link_to_function('Cancel', "$('#pk-login-form-container').fadeOut('fast'); $('.pk-page-overlay').fadeOut('fast');", array('class' => 'cancel', )) ?></li>
 		</ul>
 		
   </form>
