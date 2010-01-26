@@ -1,4 +1,5 @@
-<?php use_helper('Jquery') ?>
+<?php // Case must be correct! ?>
+<?php use_helper('jQuery') ?>
 
 <div id="pk-signin">
   <form action="<?php echo url_for('@sf_guard_signin') ?>" method="post" id="pk-signin-form" <?php echo ($form->hasErrors())? 'class="has-errors"':''; ?>>
