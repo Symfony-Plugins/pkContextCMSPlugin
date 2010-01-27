@@ -29,6 +29,7 @@
 
 			var renameControls = $('#pk-breadcrumb-rename-controls');
 			var renameSpacer = $('#pk-breadcrumb-rename-title-spacer');
+			var renameSubmitBtn = $('#a-breadcrumb-rename-submit');			
 			var renameInput = $('#pk-breadcrumb-rename-title');
 			var renameInputWidth = checkInputWidth(renameSpacer.width());		
 			renameInput.css('width', renameInputWidth);		
@@ -52,7 +53,20 @@
 			})
 
 			renameInput.blur(function(){
-				renameControls.hide();
+				$(this).oneTime(250, "hide", function() {
+					renameControls.hide();
+				});
+				// Tried to capture the click on the submit and cancel the hide
+				// $(document).mousedown(function(e){
+				// 	target = $(e.target);
+				// 	if (!target.hasClass('a-submit')) {
+				// 		renameControls.hide();						
+				// 	}
+				// })				
+			})
+			
+			renameSubmitBtn.click(function(){
+				renameInput.focus();
 			})
 
 			renameInput.keydown(function(e){

@@ -26,6 +26,7 @@ function _pk_context_cms_required_assets()
   $response->addJavascript('/pkToolkitPlugin/js/jquery.autogrow.js'); // Autogrowing Textareas
   // $response->addJavascript('/pkToolkitPlugin/js/jquery.pulse.js'); // Ajax update highlight a color  // I turned this off because we aren't using it right now 1-8-2010 JB
 	$response->addJavascript('/pkToolkitPlugin/js/jquery.keycodes-0.2.js'); // keycodes
+	$response->addJavascript('/pkToolkitPlugin/js/jquery.timer-1.2.js');		
   $webDir = sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin');
   $response->addJavascript("$webDir/js/pkContextCMS.js");
 
