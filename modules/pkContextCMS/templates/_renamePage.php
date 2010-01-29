@@ -25,7 +25,7 @@
 		$(document).ready(function() {
 
 			var renameForm = $('#pk-breadcrumb-rename-form');
-			renameForm.prepend('<b id="pk-breadcrumb-rename-title-spacer" style="display:none;float:left;white-space:nowrap;"><?php echo str_replace(' ','-',$page->getTitle()) ?></b>');
+			renameForm.prepend('<b id="pk-breadcrumb-rename-title-spacer" style="display:none;float:left;white-space:nowrap;">' + <?php echo json_encode(str_replace(' ','-',$page->getTitle())) ?> + '</b>');
 
 			var renameControls = $('#pk-breadcrumb-rename-controls');
 			var renameSpacer = $('#pk-breadcrumb-rename-title-spacer');
