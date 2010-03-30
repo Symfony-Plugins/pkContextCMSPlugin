@@ -18,7 +18,7 @@
 			<?php if (1): ?>
 			  <tr>
 				  <td colspan="4">
-				    <a href="#" class="pk-history-browser-view-more">View More Revisions <img src="/pkToolkitPlugin/images/pk-icon-loader-ani.gif" class="spinner" /></a>
+				    <a href="#" class="pk-history-browser-view-more">View More Revisions <img src="/pkToolkitPlugin/images/pk-icon-loader-ani.gif" class="spinner" alt="" /></a>
             </td>
 			  </tr>
 			<?php endif ?>
@@ -28,7 +28,7 @@
 				<?php if (0): ?>
 				  <td class="id"></td>
 				<?php endif ?>
-				<td class="date"><img src="/pkToolkitPlugin/images/pk-icon-loader-ani.gif"></td>
+				<td class="date"><img src="/pkToolkitPlugin/images/pk-icon-loader-ani.gif" alt="" /></td>
 				<td class="editor"></td>
 				<td class="preview"></td>
 			</tr>
