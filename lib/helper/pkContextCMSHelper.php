@@ -22,9 +22,7 @@ function _pk_context_cms_required_assets()
 
   $response->addJavascript('/pkToolkitPlugin/js/pkUI.js');
   $response->addJavascript('/pkToolkitPlugin/js/pkControls.js');
-  // $response->addJavascript('/pkToolkitPlugin/js/jquery.hotkeys-0.7.9.min.js'); // this is plugin for hotkey toggle for cms UI // I turned this off because we aren't using it right now 1-8-2010 JB
-  $response->addJavascript('/pkToolkitPlugin/js/jquery.autogrow.js'); // Autogrowing Textareas
-  // $response->addJavascript('/pkToolkitPlugin/js/jquery.pulse.js'); // Ajax update highlight a color  // I turned this off because we aren't using it right now 1-8-2010 JB
+  $response->addJavascript('/pkToolkitPlugin/js/jquery.simpleautogrow.js'); // Autogrowing Textareas
 	$response->addJavascript('/pkToolkitPlugin/js/jquery.keycodes-0.2.js'); // keycodes
 	$response->addJavascript('/pkToolkitPlugin/js/jquery.timer-1.2.js');		
   $webDir = sfConfig::get('sf_pkContextCMS_web_dir', '/pkContextCMSPlugin');

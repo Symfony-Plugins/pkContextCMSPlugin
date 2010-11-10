@@ -7,15 +7,7 @@
 <?php echo $form['value']->render() ?>
 
 <script type="text/javascript">
-
-$(document).ready (function() {
-	
-	$('textarea.pkContextCMSTextSlot.multi-line').autogrow({
-		// maxHeight: 400, //Max Height was causing problems.
-		minHeight: 30,
-		lineHeight: 16
+	$(document).ready (function() {
+		$('textarea.pkContextCMSTextSlot.multi-line').simpleautogrow();
 	});
-							
-});
-
 </script>

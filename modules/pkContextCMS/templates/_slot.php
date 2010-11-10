@@ -2,7 +2,7 @@
 <?php if ($editable): ?>
   <?php // JqueryReloadedPlugin won't let us assemble our own URL and force a query string, ?>
   <?php // so let's go jQuery native ?>
-  <form method="POST" action="#" class="pk-slot-form" name="pk-slot-form-<?php echo $id ?>" id="pk-slot-form-<?php echo $id ?>" style="display: <?php echo $showEditor ? "block" : "none" ?>">
+  <form method="post" action="#" class="pk-slot-form" name="pk-slot-form-<?php echo $id ?>" id="pk-slot-form-<?php echo $id ?>" style="display: <?php echo $showEditor ? "block" : "none" ?>">
   <?php include_component($editModule, 
     "editView", 
     array(
@@ -19,7 +19,7 @@
 	  <li><?php echo button_to_function("Cancel", "", array("class" => "pk-submit pk-cancel", 'id' => 'pk-slot-form-cancel-'.$name.'-'.$permid, )) ?></li>
 	</ul>
   </form>
-  <script>
+  <script type="text/javascript" charset="utf-8">
   $('#pk-slot-form-<?php echo $id ?>').submit(function() {
     $.post(
       <?php // These fields are the context, not something the user gets to edit. So rather than ?>

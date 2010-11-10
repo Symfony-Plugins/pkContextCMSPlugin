@@ -4,7 +4,7 @@
 
 <?php if ($edit): ?>
 
-  <form method="POST" action="<?php echo url_for('pkContextCMS/rename') ?>" id="pk-breadcrumb-rename-form" class="epc-form pk-breadcrumb-form rename">
+  <form method="post" action="<?php echo url_for('pkContextCMS/rename') ?>" id="pk-breadcrumb-rename-form" class="epc-form pk-breadcrumb-form rename">
 
 	<?php $form = new pkContextCMSRenameForm($page) ?>
 	<?php echo $form['id']->render(array('id' => 'pk-breadcrumb-rename-id', )) ?>

@@ -21,9 +21,6 @@
 
 <script type="text/javascript">
 	$(document).ready (function() {
-		$('textarea.pkContextCMSRawHTMLSlotTextarea').autogrow({
-			minHeight: 416,
-			lineHeight: 16
-		});
+		$('textarea.pkContextCMSRawHTMLSlotTextarea').simpleautogrow();
 	});
 </script>
